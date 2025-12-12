@@ -1,4 +1,4 @@
-package funciones;
+package funciones.calculadora;
 
 public class CalculadoraFunciones {
 

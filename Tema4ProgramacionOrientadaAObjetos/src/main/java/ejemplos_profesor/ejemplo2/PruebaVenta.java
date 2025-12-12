@@ -1,4 +1,4 @@
-package ejemplo_profesor2;
+package ejemplos_profesor.ejemplo2;
 
 public class PruebaVenta {
 

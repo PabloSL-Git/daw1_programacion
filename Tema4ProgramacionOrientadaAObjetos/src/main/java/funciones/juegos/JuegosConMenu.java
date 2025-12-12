@@ -1,4 +1,4 @@
-package funciones;
+package funciones.juegos;
 
 import javax.swing.JOptionPane;
 import java.util.InputMismatchException;

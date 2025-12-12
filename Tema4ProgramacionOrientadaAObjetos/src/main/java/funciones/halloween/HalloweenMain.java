@@ -1,4 +1,4 @@
-package funciones;
+package funciones.halloween;
 
 import javax.swing.JOptionPane;
 

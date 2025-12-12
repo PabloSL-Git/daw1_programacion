@@ -1,4 +1,4 @@
-package ejemplo_profesor;
+package ejemplos_profesor.ejemplo1;
 
 public class Mensajes {
 

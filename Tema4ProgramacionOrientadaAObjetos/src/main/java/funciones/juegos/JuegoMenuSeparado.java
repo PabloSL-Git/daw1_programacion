@@ -1,4 +1,4 @@
-package funciones;
+package funciones.juegos;
 
 
 import java.util.Random;

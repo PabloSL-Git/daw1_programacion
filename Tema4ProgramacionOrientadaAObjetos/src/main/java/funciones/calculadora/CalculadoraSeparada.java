@@ -1,4 +1,4 @@
-package funciones;
+package funciones.calculadora;
 
 import java.util.Scanner;
 import java.util.InputMismatchException;

@@ -1,4 +1,4 @@
-package funciones;
+package funciones.halloween;
 
 
 import java.util.Random;

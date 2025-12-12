@@ -1,4 +1,4 @@
-package funciones;
+package funciones.aceitunas;
 
 import javax.swing.JOptionPane;
 
