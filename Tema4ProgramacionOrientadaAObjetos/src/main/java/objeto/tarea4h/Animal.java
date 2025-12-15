@@ -20,16 +20,6 @@ public class Animal {
         this.estadoAnimal = "reposando";
     }
 
-    // Limitar opciones
-
-    public enum tipoAnimal {
-        gato, perro, lagarto, cobaya, periquito
-    }
-
-    public enum estadoAnimal {
-        comiendo, durmiendo, reposando, jugando
-    }
-
     // Constructor parametrizado
 
     public Animal(String nombreAnimal, LocalDate fechaNacimientoAnimal, String tipoAnimal, double pesoAnimal,
@@ -42,6 +32,18 @@ public class Animal {
         }
         if (pesoAnimal < 0 || pesoAnimal > 100000) { // gramos
             throw new IllegalArgumentException("El peso debe estar entre 0 y 100000 gramos");
+        }
+        if (!(tipoAnimal.equalsIgnoreCase("gato") || tipoAnimal.equalsIgnoreCase("perro")
+                || tipoAnimal.equalsIgnoreCase("lagarto")
+                || tipoAnimal.equalsIgnoreCase("cobaya") || tipoAnimal.equalsIgnoreCase("periquito"))) {
+            throw new IllegalArgumentException(
+                    "Animal debe ser uno de los siguientes: gato, perro, lagarto, cobaya, periquito");
+        }
+        if (!(estadoAnimal.equalsIgnoreCase("comiendo") || estadoAnimal.equalsIgnoreCase("durmiendo")
+                || estadoAnimal.equalsIgnoreCase("reposando")
+                || estadoAnimal.equalsIgnoreCase("jugando"))) {
+            throw new IllegalArgumentException(
+                    "Animal solo puede estar comiendo, durmiendo, reposando o jugando");
         }
 
         this.fechaNacimientoAnimal = fechaNacimientoAnimal;
@@ -114,6 +116,7 @@ public class Animal {
     // comer
 
     public void comer(double cantidadGramos) {
+        this.estadoAnimal = "comiendo";
         cantidadGramos = Math.abs(cantidadGramos);
         this.pesoAnimal += cantidadGramos;
     }
@@ -155,13 +158,13 @@ public class Animal {
 
     // Clonar Animal
 
-    public static Animal AnimalClonar(Animal pet2) {
+    public static Animal AnimalClonar(Animal animal) {
 
-        if (pet2 == null) {
+        if (animal == null) {
             throw new NullPointerException("Debe haber alguna mascota para clonar");
         }
 
-        return new Animal(pet2);
+        return new Animal(animal);
     }
 
 }

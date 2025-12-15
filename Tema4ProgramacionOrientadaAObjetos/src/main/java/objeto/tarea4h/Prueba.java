@@ -15,13 +15,15 @@ public class Prueba {
         // animales[0] = pet;
         // animales[1] = pet2;
 
-        System.out.println(pet.toString());
+        System.out.println(pet);
         System.out.println(pet2.toString());
 
         // Animal petClone = Animal.AnimalClonar(pet2);
 
         colega.llamar(pet);
+        System.out.println(pet);
         colega.llamar(pet2);
+        System.out.println(pet2);
 
         colega2.jugar(pet2, 120);
 

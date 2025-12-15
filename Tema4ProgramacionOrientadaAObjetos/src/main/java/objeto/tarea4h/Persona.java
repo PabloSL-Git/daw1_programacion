@@ -46,21 +46,21 @@ public class Persona {
 
     // Llamar
 
-    public void llamar(Animal pet) {
+    public void llamar(Animal animal) {
         // pet.setEstadoAnimal("despierto");
-        pet.despertar();
+        animal.despertar();
     }
 
     // Alimentar
 
-    public void alimentar (Animal pet, double cantidadGramos){
-        pet.comer(cantidadGramos);
+    public void alimentar (Animal animal, double cantidadGramos){
+        animal.comer(cantidadGramos);
     }
 
     // Jugar
 
-    public void jugar(Animal pet, int cantidadMinutos) {
-        pet.jugar(cantidadMinutos);
+    public void jugar(Animal animal, int cantidadMinutos) {
+        animal.jugar(cantidadMinutos);
     }
 
 
