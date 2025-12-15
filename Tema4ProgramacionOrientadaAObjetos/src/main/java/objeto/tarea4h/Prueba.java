@@ -1,9 +1,6 @@
-package objeto.tarea4h.programa;
+package objeto.tarea4h;
 
 import java.time.LocalDate;
-
-import objeto.tarea4h.modelo.Animal;
-import objeto.tarea4h.modelo.Persona;
 
 public class Prueba {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package funciones;
+package funciones.validar_usuario;
 
 import javax.swing.JOptionPane;
 

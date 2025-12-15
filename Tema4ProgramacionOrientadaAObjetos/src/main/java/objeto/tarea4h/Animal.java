@@ -1,4 +1,4 @@
-package objeto.tarea4h.modelo;
+package objeto.tarea4h;
 
 import java.time.LocalDate;
 

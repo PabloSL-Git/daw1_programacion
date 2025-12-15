@@ -1,4 +1,4 @@
-package objeto;
+package objeto.ejemplo;
 
 public class Main {
     public static void main(String[] args) {

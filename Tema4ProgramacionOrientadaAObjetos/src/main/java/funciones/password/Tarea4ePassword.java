@@ -1,4 +1,4 @@
-package funciones;
+package funciones.password;
 
 import java.util.Random;
 import java.util.Scanner;
