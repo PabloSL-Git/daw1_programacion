@@ -4,9 +4,8 @@
  */
 package tema4_segundo;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 /**
@@ -28,21 +27,17 @@ public class TarjetaCredito {
     // Constructor
     public TarjetaCredito(String titular, int creditoInicial) {
 
-        String numeroTarjetaRandom = generador.nextNumeric(16);
-        YearMonth fechaInicialSumada = YearMonth.from(LocalDate.now());
-        int pinTarjetaRandom = Integer.parseInt(generador.nextNumeric(4));
-
         if (creditoInicial < 500 || creditoInicial > 3000) { // gramos
             throw new IllegalArgumentException("Credito debe comenzar entre 500 y 3000 euros");
         }
 
         this.entidadEmisora = "DAWBANK";
         this.titular = titular;
-        this.numeroTarjeta = numeroTarjetaRandom;
-        this.fechaCaducidad = fechaInicialSumada;
+        this.numeroTarjeta = generador.nextNumeric(16);
+        this.fechaCaducidad = YearMonth.now().plusYears(4);
         this.credito = creditoInicial;
         this.activada = false;
-        this.pinTarjeta = pinTarjetaRandom;
+        this.pinTarjeta = Integer.parseInt(generador.nextNumeric(4));
     }
 
     // Constructor copia
@@ -86,7 +81,7 @@ public class TarjetaCredito {
         return pinTarjeta;
     }
 
-    //Setter
+    // Setter
     public void setEntidadEmisora(String entidadEmisora) {
         this.entidadEmisora = entidadEmisora;
     }
@@ -121,36 +116,34 @@ public class TarjetaCredito {
     }
 
     // pagar
-    
-    public static boolean pagar(int pinTarjeta, int cantidadPagar){
-        
-        if (pinTarjeta != this.pinTarjeta){
+
+    public boolean pagar(int pinTarjeta, int cantidadPagar) {
+
+        if (pinTarjeta != this.pinTarjeta) {
             return false;
         }
-        if (cantidadPagar > this.credito){
+        if (!this.activada) {
             return false;
         }
-        if (!(this.activada)){
+        if (cantidadPagar > this.credito) {
             return false;
         }
-        
-        
+
+        this.credito -= cantidadPagar;
         return true;
- 
+
     }
-    
-    
-    
-    
-    // toString
+
     @Override
     public String toString() {
-        return titular + entidadEmisora
-                + fechaCaducidad + credito + numeroTarjeta
-                + activada + pinTarjeta;
+        return "Titular: " + titular +
+                "\nEntidad: " + entidadEmisora +
+                "\nNúmero: " + numeroTarjeta +
+                "\nCaducidad: " + fechaCaducidad +
+                "\nCrédito disponible: " + credito +
+                "\nActivada: " + activada +
+                "\nPIN: " + pinTarjeta + "\n";
     }
-    
-    
 
     public static TarjetaCredito Clonar(TarjetaCredito tarjeta) {
         return new TarjetaCredito(tarjeta);
