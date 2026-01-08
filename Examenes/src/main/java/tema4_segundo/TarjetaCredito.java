@@ -8,11 +8,11 @@ public class TarjetaCredito {
 
     private static final RandomStringUtils generador = RandomStringUtils.secure();
 
-    public String entidadEmisora;
+    public static final String ENTIDAD_EMISORA = "DAWBANK";
     private String titular;
     private String numeroTarjeta;
     private YearMonth fechaCaducidad;
-    private int credito;
+    private double credito;
     private boolean activada;
     private int pinTarjeta;
 
@@ -23,7 +23,6 @@ public class TarjetaCredito {
             throw new IllegalArgumentException("Credito debe comenzar entre 500 y 3000 euros");
         }
 
-        this.entidadEmisora = "DAWBANK";
         this.titular = titular;
         this.numeroTarjeta = generador.nextNumeric(16);
         this.fechaCaducidad = YearMonth.now().plusYears(4);
@@ -34,7 +33,6 @@ public class TarjetaCredito {
 
     // Constructor copia
     public TarjetaCredito(TarjetaCredito otroTarjetaCredito) {
-        this.entidadEmisora = otroTarjetaCredito.entidadEmisora;
         this.titular = otroTarjetaCredito.titular;
         this.numeroTarjeta = otroTarjetaCredito.numeroTarjeta;
         this.fechaCaducidad = otroTarjetaCredito.fechaCaducidad;
@@ -45,9 +43,6 @@ public class TarjetaCredito {
     }
 
     // Getter
-    public String getEntidadEmisora() {
-        return entidadEmisora;
-    }
 
     public String getTitular() {
         return titular;
@@ -61,7 +56,7 @@ public class TarjetaCredito {
         return fechaCaducidad;
     }
 
-    public int getCredito() {
+    public double getCredito() {
         return credito;
     }
 
@@ -74,10 +69,6 @@ public class TarjetaCredito {
     }
 
     // Setter
-    public void setEntidadEmisora(String entidadEmisora) {
-        this.entidadEmisora = entidadEmisora;
-    }
-
     public void setCredito(int credito) {
         this.credito = credito;
     }
@@ -109,27 +100,38 @@ public class TarjetaCredito {
 
     // pagar
 
-    public boolean pagar(int pinTarjeta, int cantidadPagar) {
+    public boolean pagar(int pin, int cantidadPagar) {
 
-        if (pinTarjeta != this.pinTarjeta) {
+        if (!activada) {
+            System.out.println("La tarjeta está desactivada");
             return false;
         }
-        if (!this.activada) {
+        if (YearMonth.now().isAfter(fechaCaducidad)) {
+            System.out.println("La tarjeta ha caducado");
+            return false;
+        }
+        if (pin != this.pinTarjeta) {
+            System.out.println("PIN incorrecto");
+            return false;
+        }
+        if (cantidadPagar <= 0) {
+            System.out.println("La cantidad debe ser mayor que cero");
             return false;
         }
         if (cantidadPagar > this.credito) {
+            System.out.println("Crédito insuficiente");
             return false;
         }
-
         this.credito -= cantidadPagar;
+        if (this.credito == 0) {
+            this.desactivar();
+        }
         return true;
-
     }
 
     @Override
     public String toString() {
         return "Titular: " + titular +
-                "\nEntidad: " + entidadEmisora +
                 "\nNúmero: " + numeroTarjeta +
                 "\nCaducidad: " + fechaCaducidad +
                 "\nCrédito disponible: " + credito +
