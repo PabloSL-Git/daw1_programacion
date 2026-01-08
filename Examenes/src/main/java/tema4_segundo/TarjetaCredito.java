@@ -9,9 +9,9 @@ public class TarjetaCredito {
     private static final RandomStringUtils generador = RandomStringUtils.secure();
 
     public static final String ENTIDAD_EMISORA = "DAWBANK";
-    private String titular;
-    private String numeroTarjeta;
-    private YearMonth fechaCaducidad;
+    private final String titular;
+    private final String numeroTarjeta;
+    private final YearMonth fechaCaducidad;
     private double credito;
     private boolean activada;
     private int pinTarjeta;
