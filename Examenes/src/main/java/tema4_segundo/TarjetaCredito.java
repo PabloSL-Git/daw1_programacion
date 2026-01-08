@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package tema4_segundo;
 
 import java.time.YearMonth;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-/**
- *
- * @author usuario
- */
 public class TarjetaCredito {
 
     private static final RandomStringUtils generador = RandomStringUtils.secure();
