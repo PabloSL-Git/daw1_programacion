@@ -1,0 +1,12 @@
+body {
+    background-color: blue;
+}
+
+h1 {
+    font-family: Verdana;
+    color: white;
+}
+
+li {
+    text-decoration: underline;
+}       

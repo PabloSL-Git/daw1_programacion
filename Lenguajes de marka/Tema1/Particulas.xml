@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="particulas.xsl"?>
+<particulas>
+    <particula>
+        <nombre>Electrón</nombre>
+        <tipo>Subatómica</tipo>
+
+    </particula>
+
+    <particula>
+        <nombre>Protón</nombre>
+        <tipo>Subatómica</tipo>
+        <carga>+1</carga>
+
+    </particula>
+
+    <particula>
+        <nombre>Neutrón</nombre>
+        <tipo>Subatómica</tipo>
+    <carga>0</carga>
+
+    </particula>
+
+    <particula>
+        <nombre>Fotón</nombre>
+        <tipo>Cuántica</tipo>
+        <carga>0</carga>
+
+    </particula>
+</particulas>

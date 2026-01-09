@@ -1,0 +1,20 @@
+body {
+    background-color: #3f8f87; /* verde fondo */
+    font-family: Arial;
+}
+
+
+table {
+    margin: 0 auto; /* Centra la tabla */
+    background-color: rgba(255,255,255,0.2);
+}
+
+th, td {
+    border: 1px solid #004d40;
+    padding: 8px 15px;
+    font-size: 18px;
+}
+
+th {
+    background-color: #3c62eb; /* Azul de la primera fila */
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="PracticaExamen2.xsl"?>
+
+<cuerpo>
+
+<baile1>
+    <nombre>tango</nombre>
+    <precio>mensual a 27 en euros</precio>
+    <plazas>20</plazas>
+    <fechacomienzo>1/1/2026</fechacomienzo>
+    <fechafinal>1/12/2026</fechafinal>
+    <profesor>Roberto García</profesor>
+    <sala>sala 1</sala>
+</baile1>
+
+<baile2>
+    <nombre>cha-cha-cha</nombre>
+    <precio>trimestral a 80 en euros</precio>
+    <plazas>18</plazas>
+    <fechacomienzo>1/2/2026</fechacomienzo>
+    <fechafinal>31/07/2026</fechafinal>
+    <profesor>Miriam Guerrero</profesor>
+    <sala>sala 1</sala>
+</baile2>
+
+<baile3>
+    <nombre>rock</nombre>
+    <precio>mensual a 30 en euros</precio>
+    <plazas>15</plazas>
+    <fechacomienzo>1/1/2026</fechacomienzo>
+    <fechafinal>1/12/2026</fechafinal>
+    <profesor>Laura Mendoza</profesor>
+    <sala>sala 1</sala>
+</baile3>
+
+<baile4>
+    <nombre>merengue</nombre>
+    <precio>trimestral a 75 en dolares</precio>
+    <plazas>12</plazas>
+    <fechacomienzo>1/1/2026</fechacomienzo>
+    <fechafinal>1/12/2026</fechafinal>
+    <profesor>Jesús Lozano</profesor>
+    <sala>sala 2</sala>
+</baile4>
+
+<baile5>
+    <nombre>salsa</nombre>
+    <precio>mensual a 32 en euros</precio>
+    <plazas>10</plazas>
+    <fechacomienzo>1/1/2026</fechacomienzo>
+    <fechafinal>1/12/2026</fechafinal>
+    <profesor>Jesús Lozano</profesor>
+    <sala>sala 2</sala>
+</baile5>
+
+<baile6>
+    <nombre>pasodoble</nombre>
+    <precio>anual a 320 en euros</precio>
+    <plazas>8</plazas>
+    <fechacomienzo>1/1/2026</fechacomienzo>
+    <fechafinal>1/12/2026</fechafinal>
+    <profesor>Miriam Gutiérrez</profesor>
+    <sala>sala 2</sala>
+</baile6>
+
+</cuerpo>

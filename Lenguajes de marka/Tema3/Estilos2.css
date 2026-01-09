@@ -1,0 +1,34 @@
+/* Estilo para parrafos */
+p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+/* Estilo para fondo */
+body {
+    background-color: #d8b08f;
+}
+
+/* Parrafo destacado */
+.destacado {
+    color: darkred;
+    font-size: 20px;
+}
+
+/* Contenedor principal */
+.contenedor {
+    background-color: white;
+    border: 2px solid #999; 
+    margin: 20px;
+    padding: 15px;
+}
+
+/* Lista */
+.lista {
+    list-style-type: square;    
+    padding-left: 40px;
+}
+
+.lista li {
+    margin-bottom: 10px;
+}
