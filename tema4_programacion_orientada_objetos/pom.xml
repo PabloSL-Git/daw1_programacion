@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>teoria</groupId>
-    <artifactId>Tema4ProgramacionOrientadaAObjetos</artifactId>
+    <artifactId>tema4_programacion_orientada_objetos</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -21,5 +21,5 @@
             <type>jar</type>
         </dependency>
     </dependencies>
-
+    <name>tema4_programacion_orientada_objetos</name>
 </project>
