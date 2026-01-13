@@ -28,13 +28,13 @@ public class Prueba4 {
         String pinUsuario = tec.nextLine();
 
         // Buscar
-        int pos = buscarPin(pines, pinUsuario);
+        int posicion = buscarPin(pines, pinUsuario);
 
         // Resultado
-        if (pos == -1) {
+        if (posicion == -1) {
             System.out.println("El PIN NO está en la lista.");
         } else {
-            System.out.println("El PIN está en la posición: " + pos);
+            System.out.println("El PIN está en la posición: " + posicion);
         }
     }
 
