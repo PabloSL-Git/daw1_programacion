@@ -34,7 +34,7 @@ public class Prueba4 {
         if (posicion == -1) {
             System.out.println("El PIN NO está en la lista.");
         } else {
-            System.out.println("El PIN está en la posición: " + posicion);
+            System.out.println("El PIN está en la posición: " + (posicion+1));
         }
     }
 
