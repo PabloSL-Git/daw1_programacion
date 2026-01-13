@@ -4,19 +4,19 @@ to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit 
 this template
  */
-package javafile.prueva1;
+package javafile.ejercicios_basicos;
 import java.util.ArrayList;
     
 /**
  *
  * @author usuario
  */
-public class Main {
+public class Prueba1 {
 
     public static void main(String[] args) {
         
          // Crear lista vacía
-         
+        
         ArrayList<Integer> numeros = new ArrayList<>();
 
         // Añadir elementos
