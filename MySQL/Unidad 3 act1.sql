@@ -29,9 +29,9 @@ where fecinem <= '2025/1/12'
 order by fecinem;
 
 -- 10
-select concat(nomem,'',
-	          ape1em,'',
-              ifnull(ape2em,'')) as nombreCompleto
+select concat(nomem,' ',
+	          ape1em,' ',
+              ifnull(ape2em,' ')) as nombreCompleto
 
 from empleados
 where fecinem between date_sub(curdate(), interval 3 year)
