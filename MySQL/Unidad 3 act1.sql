@@ -62,7 +62,7 @@ order by fecinem;
 
 select concat(nomem,' ',
 	          ape1em,' ',
-              ifnull(ape2em,' ')) as nombreCompleto
+              ifnull(ape2em,' ')) as nombreCompleto -- no hace falta en concat_ws
 
 from empleados
 where fecinem between date_sub(curdate(), interval 3 year)

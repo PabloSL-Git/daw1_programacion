@@ -21,8 +21,7 @@ JOIN empleados
 
 -- 1 Obtener todos los datos de todos los empleados y el nombre del departamento al que pertenecen.
 
-select concat_ws(' ', nomem, ape1em, ape2em) as nombreCompleto,
-		nomde
+select *, nomde
 from empleados join departamentos
 	using (numde);
 
@@ -38,17 +37,16 @@ where nomem = 'juan' and ape1em = 'lopez';
 
 -- 3 Obtener el nombre completo y en una sola columna de los empleados del departamento “Personal” y “Finanzas”.
 
-select concat_ws(' ', nomem, ape1em, ape2em) as nombreCompleto
+select concat_ws(' ', nomem, ape1em, ape2em) as nombreCompleto,
+nomde
 from empleados join departamentos
 	using (numde)
-where nomde = 'PERSONAL' or 'FINANZAS';
+where nomde = 'PERSONAL' or nomde = 'FINANZAS';
 
 -- 4 Obtener el nombre del director actual del departamento “Personal”.
 
 SELECT nomem
-FROM centros JOIN departamentos
-	USING (numce)
-JOIN dirigir
+FROM departamentos JOIN dirigir
 	ON departamentos.numde = dirigir.numdepto
 JOIN empleados
 	ON empleados.numem = dirigir.numempdirec
@@ -83,16 +81,6 @@ from empleados join departamentos
 join dirigir
 	ON empleados.numem = dirigir.numempdirec
 ;
-
-
-
-
-
-
-
-
-
-
 
 
 
