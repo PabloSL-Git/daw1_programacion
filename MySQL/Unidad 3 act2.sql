@@ -61,7 +61,7 @@ where nomce = ' SEDE CENTRAL'; -- fallava por que en la base de datos tenia un e
 
 -- 6 Obtener el nombre de los centros de trabajo cuyo presupuesto esté entre 100000 € y 150000 €.
 
-select numce
+select nomce
 from centros join departamentos
 	using (numce)
 where presude between 100000 and 150000;
