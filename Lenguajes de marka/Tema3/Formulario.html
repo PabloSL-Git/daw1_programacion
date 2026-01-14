@@ -9,17 +9,19 @@
 <body>
 
 <h1>Encuesta al profesorado</h1>
-<h2>Por favor, si es usted docente responda a las siguientes cuestiones:</h2>
-<h2>Este formulario se visualizará mejor con navegadores de última generación</h2>
 
 <form>
     <fieldset>
         <legend>1. Información personal</legend>
 
         <p>Nombre: </p>
+        <textarea rows="1" cols="50"></textarea>
         <p>Apellido: </p>
+        <textarea rows="1" cols="50"></textarea>
         <p>Fecha de nacimiento:</p>
+        <textarea rows="1" cols="50"></textarea>
         <p>Sexo:</p>
+        <textarea rows="1" cols="50"></textarea>
         
     </fieldset>
 
@@ -27,24 +29,57 @@
         <legend>2. Contacto y datos profesionales</legend>
 
         <p>Teléfono: </p>
+        <textarea rows="1" cols="50"></textarea>
         <p>Email: </p>
+        <textarea rows="1" cols="50"></textarea>
         <p>Centro de trabajo: </p>
+        <textarea rows="1" cols="50"></textarea>
         <p>Localidad: </p>
+        <p><textarea rows="1" cols="50"></textarea></p>
 
         <label><input type="checkbox" name="funcionario"> Soy funcionario/a</label>
 
-        <p>Seminario / nivel:
+        <p>Seminario:
             <select>
                 <option>Lengua y Literatura</option>
                 <option>Geografía e Historia</option>
                 <option>Tecnología</option>
                 <option>Educación Física</option>
                 <option>Bachillerato</option>
+                <option>Fisica y Quimica</option>
+                <option>Etica y Filosofia</option>
+            </select>
+        </p>
+
+        <p>Nivel:
+            <select>
+                <option>Primer ciclo ESO</option>
+                <option>Segundo ciclo ESO</option>
+                <option>Bachillerato</option>
             </select>
         </p>
     </fieldset>
 
-    <input type="submit" value="Enviar">
+    <fieldset>
+        <legend>4. Por favor, facilítenos la siguiente información</legend>
+
+        <p>¿Cómo llegó hasta aquí?</p>
+         <textarea rows="1" cols="50"></textarea>
+         
+        <p>Introduzca aquí sus comentarios:</p>
+        <textarea rows="4" cols="50"></textarea>
+
+        <p>¿Desearía más información sobre...?</p>
+        <label><input type="checkbox" name="info" value="material"> Material</label><br>
+        <label><input type="checkbox" name="info" value="textos"> Textos electrónicos</label><br>
+        <label><input type="checkbox" name="info" value="libros"> Libros de texto</label><br>
+        <label><input type="checkbox" name="info" value="disenos"> Diseños curriculares</label><br>
+        <label><input type="checkbox" name="info" value="legislacion"> Legislación educativa</label>
+    </fieldset>
+
+    <input type="submit" value="Enviar los datos del formulario">
+    <input type="reset" value="Borrar los datos introducidos">
+
 </form>
 
 </body>
