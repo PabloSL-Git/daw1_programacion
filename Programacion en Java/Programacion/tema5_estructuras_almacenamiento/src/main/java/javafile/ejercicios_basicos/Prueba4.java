@@ -9,32 +9,32 @@ public class Prueba4 {
 
     public static void main(String[] args) {
 
-        ArrayList<String> pines = new ArrayList<>();
+        ArrayList<String> listaPines = new ArrayList<>();
 
         // Generar 50 pines sin repetir
-        while (pines.size() < 50) {
+        while (listaPines.size() < 50) {
             String pin = generarPin();
-            if (!pines.contains(pin)) {
-                pines.add(pin);
+            if (!listaPines.contains(pin)) {
+                listaPines.add(pin);
             }
         }
 
         // Mostrar lista
         System.out.println("Lista de PINs generados:");
-        System.out.println(pines);
+        System.out.println(listaPines);
 
         // Pedir pin al usuario
         System.out.print("Introduce un PIN para buscar: ");
         String pinUsuario = tec.nextLine();
 
         // Buscar
-        int posicion = buscarPin(pines, pinUsuario);
+        int posicion = buscarPin(listaPines, pinUsuario);
 
         // Resultado
         if (posicion == -1) {
             System.out.println("El PIN NO está en la lista.");
         } else {
-            System.out.println("El PIN está en la posición: " + (posicion+1));
+            System.out.println("El PIN está en la posición: " + (posicion + 1));
         }
     }
 
@@ -48,12 +48,15 @@ public class Prueba4 {
     }
 
     public static int buscarPin(ArrayList<String> lista, String pin) {
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).equals(pin)) {
-                return i;
-            }
-        }
-        return -1;
+
+        return lista.indexOf(pin);
+
+        // for (int i = 0; i < lista.size(); i++) {
+        // if (lista.get(i).equals(pin)) {
+        // return i;
+        // }
+        // }
+        // return -1
     }
 
 }
