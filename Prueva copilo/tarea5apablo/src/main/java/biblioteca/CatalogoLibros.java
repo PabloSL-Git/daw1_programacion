@@ -2,6 +2,9 @@ package biblioteca;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -12,6 +15,21 @@ public class CatalogoLibros {
 
     public CatalogoLibros() {
         this.catalogo = new ArrayList<>(100);
+    }
+
+    public Libro crearLibro() {
+        JOptionPane.showMessageDialog(null, "Dame los datos del libro");
+        String titulo = JOptionPane.showInputDialog("Dame titulo");
+        String autor = JOptionPane.showInputDialog("Dame autor");
+        String añoTxt = JOptionPane.showInputDialog("Dame año");
+        int año = Integer.parseInt(añoTxt);
+        String isbnTxt = JOptionPane.showInputDialog("Dame isbn");
+        long isbn = Long.parseLong(isbnTxt);
+        String genero = JOptionPane.showInputDialog(
+                "Dame genero, debe ser novela, ficcion, poesia o relato");
+        Libro.Genero generoEnum = Libro.Genero.valueOf(genero.trim().toUpperCase());
+        Libro libroNuevo = new Libro(titulo, autor, año, isbn, generoEnum, true);
+        return libroNuevo;
     }
 
     public int cantidad() {
@@ -38,7 +56,7 @@ public class CatalogoLibros {
         catalogo.remove(posicion);
     }
 
-    public boolean eliminar(String isbn) {
+    public boolean eliminar(long isbn) {
         Libro libro = buscarConIsbn(isbn);
         if (libro != null) {
             catalogo.remove(libro);
@@ -59,11 +77,11 @@ public class CatalogoLibros {
         }
     }
 
-    public int buscar(Libro libro) {
+    public int buscarLibroCompleto(Libro libro) {
         return catalogo.indexOf(libro);
     }
 
-    public List<Libro> buscar(String autor) {
+    public List<Libro> buscarAutor(String autor) {
         List<Libro> resultado = new ArrayList<>();
         for (Libro libro : catalogo) {
             if (libro.getAutor().equalsIgnoreCase(autor)) {
@@ -73,9 +91,9 @@ public class CatalogoLibros {
         return resultado;
     }
 
-    public Libro buscarConIsbn(String isbn) {
+    public Libro buscarConIsbn(long isbn) {
         for (Libro libro : catalogo) {
-            if (String.valueOf(libro.getIsbn()).equals(isbn)) {
+            if (libro.getIsbn() == isbn) {
                 return libro;
             }
         }
@@ -100,28 +118,7 @@ public class CatalogoLibros {
             }
         });
         System.out.println("Catalogo ordenado por autor.");
-    }
-
-    public int buscarPorTitulo(String titulo) {
-        Libro libroABuscar = new Libro(titulo, "", 0, 1234567890123L, Libro.Genero.NOVELA, true);
-        int posicion = Collections.binarySearch(catalogo, libroABuscar, new Comparator<Libro>() {
-            @Override
-            public int compare(Libro l1, Libro l2) {
-                return l1.getTitulo().compareTo(l2.getTitulo());
-            }
-        });
-        return posicion;
-    }
-
-    public int buscarPorAutor(String autor) {
-        Libro libroABuscar = new Libro("", autor, 0, 1234567890123L, Libro.Genero.NOVELA, true);
-        int posicion = Collections.binarySearch(catalogo, libroABuscar, new Comparator<Libro>() {
-            @Override
-            public int compare(Libro l1, Libro l2) {
-                return l1.getAutor().compareTo(l2.getAutor());
-            }
-        });
-        return posicion;
+    
     }
 
 }

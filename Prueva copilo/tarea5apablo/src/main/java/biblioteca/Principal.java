@@ -70,28 +70,88 @@ public class Principal {
 
                                 1. Ver cantidad de libros
                                 2. Ver si no hay ningun libro
-                                3. Ver posicion del libro
+                                3. Ver que libro se encuentra en la posicion
                                 4. Cambiar un libro por otro
                                 5. Añadir libro a catalogo
                                 6. Eliminar libro segun su posicion (posicion o isbn)
                                 7. Imprime los libros de la lista
-                                8. Buscar libro (titulo, autor, isbn)
+                                8. Buscar libro (libro, autor o isbn)
                                 (Introduzca el numero de la funcion)
                                 """.formatted();
                 String menuSeleccionTxt = JOptionPane.showInputDialog(menu);
                 int menuSeleccion = Integer.parseInt(menuSeleccionTxt);
+                Libro libroNuevo;
+                int posicion;
+                String posicionTxt;
 
-                if (menuSeleccion == 1) {
-                        catalogo.cantidad();
-                        JOptionPane.showMessageDialog(null,  "Cantidad: " +  catalogo.cantidad());
+                switch (menuSeleccion) {
+                        case 1:
+                                JOptionPane.showMessageDialog(null, "Cantidad: " + catalogo.cantidad());
+                                break;
+                        case 2:
+                                boolean vacio = catalogo.estaVacia();
+                                if (vacio) {
+                                        JOptionPane.showMessageDialog(null, "Esta vacio");
+                                } else {
+                                        JOptionPane.showMessageDialog(null, "No esta vacio");
+                                }
+                                break;
+                        case 3:
+                                posicionTxt = JOptionPane.showInputDialog("Dame posicion");
+                                posicion = Integer.parseInt(posicionTxt);
+                                JOptionPane.showMessageDialog(null, "Posicion: " + catalogo.obtener(posicion));
+                                break;
+                        case 4:
+                                libroNuevo = catalogo.crearLibro();
+                                posicionTxt = JOptionPane.showInputDialog("Dame posicion a ocupar");
+                                posicion = Integer.parseInt(posicionTxt);
+                                catalogo.cambiar(posicion, libroNuevo);
+                                JOptionPane.showMessageDialog(null, "CambioCompletado");
+                                break;
+                        case 5:
+                                libroNuevo = catalogo.crearLibro();
+                                catalogo.guardar(libroNuevo);
+                                JOptionPane.showMessageDialog(null, "Libro añadido");
+                                break;
+                        case 6:
+                                String seleccionEliminar = JOptionPane
+                                                .showInputDialog("Eliminar a traves de posicion o isbn");
+                                if (seleccionEliminar.equalsIgnoreCase("posicion")) {
+                                        posicionTxt = JOptionPane.showInputDialog("Dame posicion");
+                                        posicion = Integer.parseInt(posicionTxt);
+                                        catalogo.eliminar(posicion);
+                                } else {
+                                        String isbnTxt = JOptionPane.showInputDialog("Dame isbn");
+                                        long isbn = Long.parseLong(isbnTxt);
+                                        catalogo.eliminar(isbn);
+                                }
+
+                                break;
+                        case 7:
+                                catalogo.imprimir();
+                                break;
+                        case 8:
+                                String seleccionBusqueda = JOptionPane
+                                                .showInputDialog("Eliminar a traves de libro, autor o isbn");
+                                if (seleccionBusqueda.equalsIgnoreCase("libro")) {
+                                        libroNuevo = catalogo.crearLibro();
+                                        JOptionPane.showMessageDialog(null,
+                                                        "Libro: " + catalogo.buscarLibroCompleto(libroNuevo));
+                                        catalogo.buscarLibroCompleto(libroNuevo);
+                                }
+                                if (seleccionBusqueda.equalsIgnoreCase("autor")) {
+                                        String autor = JOptionPane.showInputDialog("Dame autor");
+                                        JOptionPane.showMessageDialog(null, "Libro: " + catalogo.buscarAutor(autor));
+                                } 
+                                ;
+                                if (seleccionBusqueda.equalsIgnoreCase("isbn")){
+                                        String isbnTxt = JOptionPane.showInputDialog("Dame isbn");
+                                        long isbn = Long.parseLong(isbnTxt);
+                                        JOptionPane.showMessageDialog(null, "Libro: " + catalogo.buscarConIsbn(isbn));
+                                } 
+                                break;
+
                 }
 
-                // switch (menuSeleccion) {
-                //     case 1:
-                //         JOptionPane.showMessageDialog(null, "Cantidad de libros: " + catalogo.cantidad(), 
-                //             "CANTIDAD", JOptionPane.INFORMATION_MESSAGE);
-                //         break;
-
         }
-
 }
