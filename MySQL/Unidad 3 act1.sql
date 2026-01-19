@@ -67,9 +67,55 @@ select concat(nomem,' ',
 from empleados
 where fecinem between date_sub(curdate(), interval 3 year)
 			  and date_sub(curdate(), interval 1 year);	
+		
+-- 11 Prepara un procedimiento almacenado que ejecute la consulta del apartado 1 y otro que ejecute la del apartado 5.
+
+delimiter $$;
+create procedure apartado11a()
+begin
+
+select *
+from empleados;
+
+end
+$$;
               
-              
-              
-              
-              
-              
+delimiter $$;
+create procedure apartado11b()
+begin
+
+select CONCAT_WS(' ', nomem, ape1em, ape2em) as nombreCompleto
+from empleados
+where comisem is null ;
+
+end
+$$;              
+        
+-- 12 Prepara un procedimiento almacenado que ejecute la consulta del apartado 2 
+-- de forma que nos sirva para averiguar la extensión del empleado que deseemos en cada caso.
+
+delimiter $$;
+create procedure apartado12(IN nombre varchar (20), IN apellido1 varchar (20))
+begin
+
+select extelem
+from empleados
+where nomem = nombre and ape1em = apellido1;
+
+end
+$$;
+
+-- 13 Prepara un procedimiento almacenado que ejecute la consulta del apartado 3
+ -- y otro para la del apartado 4 de forma que nos sirva para averiguar
+ -- el nombre de aquellos que tengan el número de hijos que deseemos en cada caso.
+ 
+ delimiter $$;
+create procedure apartado13()
+begin
+
+select nomem, ape1em, ape2em
+from empleados
+where numhiem > 0;
+
+end
+$$;
