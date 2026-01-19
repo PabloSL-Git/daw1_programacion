@@ -1,3 +1,15 @@
+-- ejercicio clase
+-- direccion de trbajo del empleado a travez del numero del trabajador
+
+SELECT dirce
+FROM centros JOIN departamentos
+	USING (numce)
+JOIN dirigir
+	ON departamentos.numde = dirigir.numdepto
+JOIN empleados
+	ON empleados.numem = dirigir.numempdirec
+;
+
 -- 1 Obtener todos los datos de todos los empleados.
 
 select *
