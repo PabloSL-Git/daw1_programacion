@@ -1,4 +1,4 @@
-package biblioteca;
+package javafile.tarea5abiblioteca;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +76,10 @@ public class CatalogoLibros {
             System.out.println("Posicion " + i + ": " + catalogo.get(i));
         }
     }
+
+
+    // investigar de aqui a abajo
+    // IMPORTANTE
 
     public int buscarLibroCompleto(Libro libro) {
         return catalogo.indexOf(libro);
