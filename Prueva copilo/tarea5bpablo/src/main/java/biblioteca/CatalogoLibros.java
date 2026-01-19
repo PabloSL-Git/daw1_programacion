@@ -85,8 +85,8 @@ public class CatalogoLibros {
         return catalogo.indexOf(libro);
     }
 
-    public List<Libro> buscarAutor(String autor) {
-        List<Libro> resultado = new ArrayList<>();
+    public ArrayList<Libro> buscarAutor(String autor) {
+        ArrayList<Libro> resultado = new ArrayList<>();
         for (Libro libro : catalogo) {
             if (libro.getAutor().equalsIgnoreCase(autor)) {
                 resultado.add(libro);
