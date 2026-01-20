@@ -1,7 +1,6 @@
 package biblioteca;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -12,10 +11,6 @@ public class CatalogoLibros {
 
     // lista de libros
     private ArrayList<Libro> catalogo;
-
-    public CatalogoLibros() {
-        this.catalogo = new ArrayList<>(100);
-    }
 
     public Libro crearLibro() {
         JOptionPane.showMessageDialog(null, "Dame los datos del libro");
