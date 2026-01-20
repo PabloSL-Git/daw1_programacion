@@ -1,52 +1,33 @@
--- ejercicio clase
--- direccion de trbajo del empleado a travez del numero del trabajador
-
-SELECT dirce
-FROM centros JOIN departamentos
-	USING (numce)
-JOIN dirigir
-	ON departamentos.numde = dirigir.numdepto
-JOIN empleados
-	ON empleados.numem = dirigir.numempdirec
-;
-
 -- 1 Obtener todos los datos de todos los empleados.
-
 select *
 from empleados;
 
 -- 2 Obtener la extensión telefónica de “Juan López”.
-
 select *
 from empleados
 where nomem = 'Juan' and ape1em = 'Lopez' ;
 
 -- 3 Obtener el nombre completo de los empleados que tienen más de un hijo.
-
 select nomem, ape1em, ape2em
 from empleados
 where numhiem > 0;
 
 -- 4 Obtener el nombre completo y en una sola columna de los empleados que tienen entre 1 y 3 hijos.
-
 select CONCAT_WS(' ', nomem, ape1em, ape2em) as nombreCompleto
 from empleados
 where numhiem between 1 and 3;
 
 -- 5 Obtener el nombre completo y en una sola columna de los empleados sin comisión.
-
 select CONCAT_WS(' ', nomem, ape1em, ape2em) as nombreCompleto
 from empleados
 where comisem is null ;
 
 -- 6 Obtener la dirección del centro de trabajo “Sede Central”.
-
 select dirce
 from centros
 where nomce = ' SEDE CENTRAL';
 
 -- 7 Obtener el nombre de los departamentos que tienen más de 6000 € de presupuesto.
-
 select nomde
 from departamentos
 where presude > 6000;
@@ -81,7 +62,6 @@ where fecinem between date_sub(curdate(), interval 3 year)
 			  and date_sub(curdate(), interval 1 year);	
 		
 -- 11 Prepara un procedimiento almacenado que ejecute la consulta del apartado 1 y otro que ejecute la del apartado 5.
-
 delimiter $$;
 create procedure apartado11a()
 begin
@@ -105,7 +85,6 @@ $$;
         
 -- 12 Prepara un procedimiento almacenado que ejecute la consulta del apartado 2 
 -- de forma que nos sirva para averiguar la extensión del empleado que deseemos en cada caso.
-
 delimiter $$;
 create procedure apartado12(IN nombre varchar (20), IN apellido1 varchar (20))
 begin
@@ -120,14 +99,13 @@ $$;
 -- 13 Prepara un procedimiento almacenado que ejecute la consulta del apartado 3
  -- y otro para la del apartado 4 de forma que nos sirva para averiguar
  -- el nombre de aquellos que tengan el número de hijos que deseemos en cada caso.
- 
  delimiter $$;
-create procedure apartado13()
+create procedure apartado13(in niños int(5))
 begin
 
 select nomem, ape1em, ape2em
 from empleados
-where numhiem > 0;
+where numhiem > niños;
 
 end
 $$;
