@@ -4,7 +4,7 @@
 -- devuelva -> 1 dato -> funcion
 --          -> varios datos -> procedimiento con parametro de salida	
 
--- drop procedure
+-- drop procedure if exist ____
 
 -- PRACTICA CLASE
 -- direccion de trabajo del empleado a travez del numero del trabajador
@@ -17,20 +17,20 @@ JOIN empleados
 	ON empleados.numem = dirigir.numempdirec
 ;
 
--- Obtener el nombre y el presupuesto de los departamentos que están ubicados en la “SEDE CENTRAL”. (Dos procedimientos)
+-- Obtener el nombre y el presupuesto de los departamentos que están ubicados en la “SEDE CENTRAL”. (Los dos procedimientos)
 -- en procedimiento
 delimiter $$;
-create procedure apartado5practicaA(ubicacion varchar (20))
+create procedure apartado5practicaA(in nombreCentro varchar (20))
 begin
 
 select numde, presude, nomce
 from  departamentos join centros
 	using (numce)
-where nomce = ubicacion
+where nomce = nombreCentro
 order by numde desc;
 
 end
-$$
+$$;
 
 -- en procedimiento con parametros de salida
 delimiter $$;
@@ -41,7 +41,7 @@ select departamentos.nomde, departamentos.presude into nombreDepto, presupuestoD
 from  departamentos join centros
 	using (numce)
 where trim(centros.nomce) = trim(nombreCentro)
-order by numde desc
+order by nomde desc
 limit 1;
 
 end
@@ -84,3 +84,11 @@ set @resul2 = 7;
 
 call suma(@resul1, @resul2, @resul3, @resul4);
 select @resul1, ' ', @resul2, ' ', @resul3, ' ', @resul4;
+
+-- ejemplos funciones
+select departamentos.numde, nomde, count(*), count(extelem),
+       count(distinct extelem), sum(salarem),
+       avg(salarem), max(salarem), min(salarem)
+from empleados join departamentos 
+	using(numde)
+group by numde
