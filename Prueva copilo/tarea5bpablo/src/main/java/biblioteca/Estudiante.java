@@ -48,21 +48,21 @@ public class Estudiante {
                 '}';
     }
 
-    // equals y hashCode
+    // equals y hashCode (por dni)
 
-    // @Override
-    // public boolean equals(Object o) {
-    //     if (this == o) return true;
-    //     if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    //     Estudiante that = (Estudiante) o;
+        Estudiante that = (Estudiante) o;
 
-    //     if (dni != null) {
-    //         return dni.equals(that.dni);
-    //     } else {
-    //         return that.dni == null;
-    //     }
-    // }
+        if (dni != null) {
+            return dni.equals(that.dni);
+        } else {
+            return that.dni == null;
+        }
+    }
 
     @Override
     public int hashCode() {
