@@ -1,4 +1,4 @@
-package javafile.tarea5abiblioteca;
+package javafile.tarea5b_biblioteca;
 
 public class Libro {
 

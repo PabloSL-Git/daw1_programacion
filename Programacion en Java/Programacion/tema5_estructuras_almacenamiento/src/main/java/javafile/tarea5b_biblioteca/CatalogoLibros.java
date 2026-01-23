@@ -1,7 +1,6 @@
-package javafile.tarea5abiblioteca;
+package javafile.tarea5b_biblioteca;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -12,10 +11,6 @@ public class CatalogoLibros {
 
     // lista de libros
     private ArrayList<Libro> catalogo;
-
-    public CatalogoLibros() {
-        this.catalogo = new ArrayList<>(100);
-    }
 
     public Libro crearLibro() {
         JOptionPane.showMessageDialog(null, "Dame los datos del libro");
@@ -85,8 +80,8 @@ public class CatalogoLibros {
         return catalogo.indexOf(libro);
     }
 
-    public List<Libro> buscarAutor(String autor) {
-        List<Libro> resultado = new ArrayList<>();
+    public ArrayList<Libro> buscarAutor(String autor) {
+        ArrayList<Libro> resultado = new ArrayList<>();
         for (Libro libro : catalogo) {
             if (libro.getAutor().equalsIgnoreCase(autor)) {
                 resultado.add(libro);

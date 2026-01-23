@@ -1,4 +1,4 @@
-package javafile.tarea5abiblioteca;
+package javafile.tarea5a_biblioteca;
 
 import javax.swing.JOptionPane;
 
