@@ -41,36 +41,24 @@ public class Estudiante {
 
     @Override
     public String toString() {
-        return "Estudiante {" +
+        return "Estudiante{" +
                 "nombre='" + nombre + '\'' +
                 ", apellidos='" + apellidos + '\'' +
                 ", dni='" + dni + '\'' +
                 '}';
     }
 
-    // equals y hashCode (por dni)
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Estudiante that = (Estudiante) o;
-
-        if (dni != null) {
-            return dni.equals(that.dni);
-        } else {
-            return that.dni == null;
-        }
+        Estudiante estudiante = (Estudiante) o;
+        return dni != null ? dni.equals(estudiante.dni) : estudiante.dni == null;
     }
 
     @Override
     public int hashCode() {
-        if (dni != null) {
-            return dni.hashCode();
-        } else {
-            return 0;
-        }
+        return dni != null ? dni.hashCode() : 0;
     }
 
 }

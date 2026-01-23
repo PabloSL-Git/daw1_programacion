@@ -2,33 +2,54 @@ package biblioteca;
 
 import javax.swing.JOptionPane;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class Main {
 
+        private static ListaLibros libros = new ListaLibros();
+        private static ListaPrestamos prestamos = new ListaPrestamos();
+        private static ListaEstudiantes estudiantes = new ListaEstudiantes();
+
+        public Prestamo crearPrestamo() {
+
+                String idTxt = JOptionPane.showInputDialog("Dame id");
+                int id = Integer.parseInt(idTxt);
+
+                String isbn = JOptionPane.showInputDialog("Dame isbn");
+                Libro libro = libros.buscarIsbn(isbn);
+
+                String dni = JOptionPane.showInputDialog("Dame dni");
+                Estudiante estudiante = estudiantes.buscarPorDni(dni);
+
+                LocalDate fecha = LocalDate.now();
+
+                Prestamo prestamoNuevo = new Prestamo(id, estudiante, libro, fecha);
+                prestamos.guardar(prestamoNuevo);
+
+                return prestamoNuevo;
+        }
+
         public static void main(String[] args) {
 
+                // Lista libros
+
                 Libro libro1 = new Libro("Cien años de soledad", "Gabriel García Márquez", 1967,
-                                9788497592207L, Libro.Genero.NOVELA, true);
+                                "9788497592207", Genero.NOVELA, true);
                 Libro libro2 = new Libro("Harry Popoter", "J.L. Rowing", 1997,
-                                9788478884453L, Libro.Genero.FICCION, true);
+                                "9788478884453", Genero.FICCION, true);
                 Libro libro3 = new Libro("La Odisea", "Homero", 2023,
-                                9788497592214L, Libro.Genero.POESIA, true);
+                                "9788497592214", Genero.POESIA, true);
 
-                // Crear catálogos para pruebas
-                CatalogoLibros catalogo = new CatalogoLibros();
-                catalogo.guardar(libro1);
-                catalogo.guardar(libro2);
-                catalogo.guardar(libro3);
+                libros.guardar(libro1);
+                libros.guardar(libro2);
+                libros.guardar(libro3);
 
-                // Crear cartera de estudiantes
-                CarteraEstudiantes cartera = new CarteraEstudiantes();
-                cartera.añadir(new Estudiante("Pablo", "Santamaria García", "11111111A"));
-                cartera.añadir(new Estudiante("Rosi", "Loredo López", "22222222B"));
-                cartera.añadir(new Estudiante("Marious", "Loredo López", "33333333C"));
+                // Lista estudiantes
+                estudiantes.guardar(new Estudiante("Pablo", "Santamaria García", "11111111A"));
+                estudiantes.guardar(new Estudiante("Rosi", "Loredo López", "22222222B"));
+                estudiantes.guardar(new Estudiante("Marious", "Loredo López", "33333333C"));
 
-                // Lista de préstamos
-                ArrayList<Prestamo> prestamos = new ArrayList<>();
+                // Lista préstamos
+                // ListaPrestamos listaPrestamos = new ListaPrestamos();
 
                 String menu = """
                                 Bienbenido a la biblioteca ¿Que desea hacer?
@@ -51,13 +72,14 @@ public class Main {
                 Libro libroNuevo;
                 int posicion;
                 String posicionTxt;
+                String isbn;
 
                 switch (menuSeleccion) {
                         case 1:
-                                JOptionPane.showMessageDialog(null, "Cantidad: " + catalogo.cantidad());
+                                JOptionPane.showMessageDialog(null, "Cantidad: " + libros.cantidad());
                                 break;
                         case 2:
-                                boolean vacio = catalogo.estaVacia();
+                                boolean vacio = libros.estaVacia();
                                 if (vacio) {
                                         JOptionPane.showMessageDialog(null, "Esta vacio");
                                 } else {
@@ -67,18 +89,18 @@ public class Main {
                         case 3:
                                 posicionTxt = JOptionPane.showInputDialog("Dame posicion");
                                 posicion = Integer.parseInt(posicionTxt);
-                                JOptionPane.showMessageDialog(null, "Posicion: " + catalogo.obtener(posicion));
+                                JOptionPane.showMessageDialog(null, "Posicion: " + libros.obtener(posicion));
                                 break;
                         case 4:
-                                libroNuevo = catalogo.crearLibro();
+                                libroNuevo = libros.crearLibro();
                                 posicionTxt = JOptionPane.showInputDialog("Dame posicion a ocupar");
                                 posicion = Integer.parseInt(posicionTxt);
-                                catalogo.cambiar(posicion, libroNuevo);
+                                libros.cambiar(posicion, libroNuevo);
                                 JOptionPane.showMessageDialog(null, "CambioCompletado");
                                 break;
                         case 5:
-                                libroNuevo = catalogo.crearLibro();
-                                catalogo.guardar(libroNuevo);
+                                libroNuevo = libros.crearLibro();
+                                libros.guardar(libroNuevo);
                                 JOptionPane.showMessageDialog(null, "Libro añadido");
                                 break;
                         case 6:
@@ -87,88 +109,41 @@ public class Main {
                                 if (seleccionEliminar.equalsIgnoreCase("posicion")) {
                                         posicionTxt = JOptionPane.showInputDialog("Dame posicion");
                                         posicion = Integer.parseInt(posicionTxt);
-                                        catalogo.eliminar(posicion);
+                                        libros.eliminar(posicion);
                                 } else {
-                                        String isbnTxt = JOptionPane.showInputDialog("Dame isbn");
-                                        long isbn = Long.parseLong(isbnTxt);
-                                        catalogo.eliminar(isbn);
+                                        isbn = JOptionPane.showInputDialog("Dame isbn");
+                                        libros.eliminar(isbn);
                                 }
                                 break;
                         case 7:
-                                catalogo.imprimir();
+                                libros.imprimir();
                                 break;
                         case 8:
                                 String seleccionBusqueda = JOptionPane
                                                 .showInputDialog("Buscar a traves de libro, autor o isbn");
                                 if (seleccionBusqueda.equalsIgnoreCase("libro")) {
-                                        libroNuevo = catalogo.crearLibro();
+                                        libroNuevo = libros.crearLibro();
                                         JOptionPane.showMessageDialog(null,
-                                                        "Libro: " + catalogo.buscarLibroCompleto(libroNuevo));
-                                        catalogo.buscarLibroCompleto(libroNuevo);
+                                                        "Libro: " + libros.buscarLibroCompleto(libroNuevo));
+                                        libros.buscarLibroCompleto(libroNuevo);
                                 }
                                 if (seleccionBusqueda.equalsIgnoreCase("autor")) {
                                         String autor = JOptionPane.showInputDialog("Dame autor");
-                                        JOptionPane.showMessageDialog(null, "Libro: " + catalogo.buscarAutor(autor));
+                                        JOptionPane.showMessageDialog(null, "Libro: " + libros.buscarAutor(autor));
                                 }
                                 if (seleccionBusqueda.equalsIgnoreCase("isbn")) {
-                                        String isbnTxt = JOptionPane.showInputDialog("Dame isbn");
-                                        long isbn = Long.parseLong(isbnTxt);
-                                        JOptionPane.showMessageDialog(null, "Libro: " + catalogo.buscarConIsbn(isbn));
+                                        isbn = JOptionPane.showInputDialog("Dame isbn");
+                                        JOptionPane.showMessageDialog(null, "Libro: " + libros.buscarIsbn(isbn));
                                 }
                                 break;
                         case 9:
-                                cartera.imprimir();
+                                estudiantes.imprimir();
                                 break;
                         case 10:
-                                String dni = JOptionPane.showInputDialog("Introduce el DNI del estudiante:");
-                                if (dni != null) {
-                                        Estudiante estudiante = cartera.buscarEstudiante(dni);
-                                        if (estudiante == null) {
-                                                JOptionPane.showMessageDialog(null, "El estudiante no existe");
-                                        } else {
-                                                String isbnTxt = JOptionPane
-                                                                .showInputDialog("Introduce el ISBN del libro:");
-                                                if (isbnTxt != null) {
-                                                        try {
-                                                                long isbn = Long.parseLong(isbnTxt);
-                                                                Libro libro = catalogo.buscarConIsbn(isbn);
-                                                                if (libro == null) {
-                                                                        JOptionPane.showMessageDialog(null,
-                                                                                        "El libro no existe");
-                                                                } else if (!libro.isDisponible()) {
-                                                                        JOptionPane.showMessageDialog(null,
-                                                                                        "El libro no está disponible");
-                                                                } else {
-                                                                        Prestamo prestamo = new Prestamo(estudiante,
-                                                                                        libro, LocalDate.now());
-                                                                        prestamos.add(prestamo);
-                                                                        libro.prestar();
-                                                                        JOptionPane.showMessageDialog(null,
-                                                                                        prestamo.toString());
-                                                                }
-                                                        } catch (NumberFormatException e) {
-                                                                JOptionPane.showMessageDialog(null, "ISBN inválido");
-                                                        }
-                                                }
-                                        }
-                                }
+
                                 break;
                         case 11:
-                                if (prestamos.isEmpty()) {
-                                        JOptionPane.showMessageDialog(null, "No hay préstamos registrados");
-                                        break;
-                                }
 
-                                String texto = "PRÉSTAMOS:\n";
-
-                                for (int i = 0; i < prestamos.size(); i++) {
-                                        Prestamo p = prestamos.get(i);
-                                        texto += (i + 1) + ". "
-                                                        + p.getEstudiante().getNombre() + " - "
-                                                        + p.getLibro().getTitulo() + "\n";
-                                }
-
-                                JOptionPane.showMessageDialog(null, texto);
                                 break;
 
                 }

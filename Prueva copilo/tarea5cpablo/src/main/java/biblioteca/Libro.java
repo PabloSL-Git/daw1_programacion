@@ -2,41 +2,23 @@ package biblioteca;
 
 public class Libro {
 
-    // Enum para el género con descripción
-    public enum Genero {
-        NOVELA("Novela - Narración ficticia extensa"),
-        FICCION("Ficción - Obra de imaginación"),
-        POESIA("Poesía - Expresión artística con verso"),
-        RELATO("Relato - Narración breve de hechos");
-
-        private String descripcion;
-
-        Genero(String descripcion) {
-            this.descripcion = descripcion;
-        }
-
-        public String getDescripcion() {
-            return descripcion;
-        }
-    }
-
     // Atributos
     private String titulo;
     private String autor;
-    private int aniPublicacion;
-    private final long isbn; // No cambia de valor una vez creado
+    private int anioPublicacion;
+    private final String isbn; // No cambia de valor una vez creado
     private Genero genero;
     private boolean disponible;
 
     // Constructor parametrizado (validando isbn de 13 dígitos)
-    public Libro(String titulo, String autor, int aniPublicacion, long isbn, Genero genero, boolean disponible) {
+    public Libro(String titulo, String autor, int aniPublicacion, String isbn, Genero genero, boolean disponible) {
         // Validar que isbn sea de 13 dígitos
-        if (String.valueOf(isbn).length() != 13 || isbn < 0) {
+        if (isbn == null || isbn.length() != 13) {
             throw new IllegalArgumentException("El ISBN debe ser un número de 13 dígitos");
         }
         this.titulo = titulo;
         this.autor = autor;
-        this.aniPublicacion = aniPublicacion;
+        this.anioPublicacion = aniPublicacion;
         this.isbn = isbn;
         this.genero = genero;
         this.disponible = disponible;
@@ -46,8 +28,8 @@ public class Libro {
     public Libro() {
         this.titulo = "Desconocido";
         this.autor = "Desconocido";
-        this.aniPublicacion = 2024;
-        this.isbn = 1234567890123L; // 13 dígitos
+        this.anioPublicacion = 2024;
+        this.isbn = "1234567890123"; // 13 dígitos
         this.genero = Genero.NOVELA;
         this.disponible = true;
     }
@@ -61,11 +43,11 @@ public class Libro {
         return autor;
     }
 
-    public int getAniPublicacion() {
-        return aniPublicacion;
+    public int getAnioPublicacion() {
+        return anioPublicacion;
     }
 
-    public long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
@@ -86,8 +68,8 @@ public class Libro {
         this.autor = autor;
     }
 
-    public void setAniPublicacion(int aniPublicacion) {
-        this.aniPublicacion = aniPublicacion;
+    public void setAnioPublicacion(int aniPublicacion) {
+        this.anioPublicacion = aniPublicacion;
     }
 
     public void setGenero(Genero genero) {
@@ -117,30 +99,38 @@ public class Libro {
     // toString
     @Override
     public String toString() {
-        return "Libro {\n" +
-                "  título='" + titulo + "'\n" +
-                "  autor='" + autor + "'\n" +
-                "  año=" + aniPublicacion + "\n" +
-                "  isbn=" + isbn + "\n" +
-                "  género=" + genero.getDescripcion() + "\n" +
-                "  disponible=" + disponible + "\n" +
-                "}";
+        return "Libro{" +
+                "tit='" + titulo + '\'' +
+                ", aut='" + autor + '\'' +
+                ", año=" + anioPublicacion +
+                ", isbn=" + isbn +
+                ", gen=" + genero +
+                ", disp=" + disponible +
+                '}';
     }
 
-    // equals (usando isbn)
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
+        return result;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (obj == null)
             return false;
-        Libro libro = (Libro) obj;
-        return isbn == libro.isbn;
-    }
-
-    // hashCode (usando isbn)
-    @Override
-    public int hashCode() {
-        return Long.hashCode(isbn);
+        if (getClass() != obj.getClass())
+            return false;
+        Libro other = (Libro) obj;
+        if (isbn == null) {
+            if (other.isbn != null)
+                return false;
+        } else if (!isbn.equals(other.isbn))
+            return false;
+        return true;
     }
 }
