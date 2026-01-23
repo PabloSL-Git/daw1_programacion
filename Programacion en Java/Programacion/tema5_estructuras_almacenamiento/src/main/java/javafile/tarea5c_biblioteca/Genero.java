@@ -1,4 +1,4 @@
-package biblioteca;
+package javafile.tarea5c_biblioteca;
 
 /**
  * Enum que representa los géneros literarios disponibles.
