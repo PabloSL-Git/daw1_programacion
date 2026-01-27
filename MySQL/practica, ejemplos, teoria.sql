@@ -92,3 +92,90 @@ select departamentos.numde, nomde, count(*), count(extelem),
 from empleados join departamentos 
 	using(numde)
 group by numde
+
+-- ejemplo funcion
+delimiter $$
+drop function if exists SumaDosNumeros
+$$
+
+create function SumaDosNumeros (num1 int, num2 int)
+returns int
+deterministic
+begin
+	declare rtdo int default 0;
+	set rtdo = num1 + num2;
+    
+return rtdo;
+
+end $$
+delimiter ;
+
+-- ejemplo devolver nombre completo dado su codigo
+delimiter $$
+create function FNombreEmpleado (numEmpleado int)
+returns varchar(80)
+deterministic
+begin
+	declare nombreEmpleado varchar(80);
+	select concat_ws(' ', nomem, ape1em, ape2em) into nombreEmpleado
+	from empleados
+	where numem = numEmpleado;
+    return nombreEmpleado;
+
+end $$
+delimiter ;
+select FNombreEmpleado (190) as NombreCompleto;
+
+-- version con procedure
+delimiter $$
+drop procedure if exists ProcNombreEmpleado
+$$
+create procedure ProcNombreEmpleado (numEmpleado int)
+deterministic
+begin
+	select concat_ws(' ', nomem, ape1em, ape2em) as nombreEmpleado
+	from empleados
+	where numem = numEmpleado;
+
+end $$
+delimiter ;
+call ProcNombreEmpleado (190);
+
+-- ejemplo devuelve nombre completo y extension tejefonica en base codigo
+delimiter $$
+drop procedure if exists ProcNombreEmpleadoExtension
+$$
+create procedure ProcNombreEmpleadoExtension (numEmpleado int, out nombre varchar(80), out extension char(3))
+deterministic
+begin
+	select concat_ws(' ', nomem, ape1em, ape2em), extelem into nombre, extension
+	from empleados
+	where numem = numEmpleado;
+
+end $$
+delimiter ;
+call ProcNombreEmpleadoExtension (190, @nombre, @extension);
+select @nombre, @extension;
+
+-- dado un numero de empleado devolver nombre de departamente en el que se encuentra
+delimiter $$
+drop function if exists EjNombreDepartamento
+$$
+create function EjNombreDepartamento (numEmpleado int)
+returns varchar(80)
+deterministic
+begin
+	declare nombreDep varchar(80);
+    
+    SELECT nomde INTO nombreDep
+	from empleados join departamentos
+    on empleados.numde = departamentos.numde
+	where numem = numEmpleado;
+return nombreDep;
+
+end $$
+delimiter ;
+select EjNombreDepartamento (190);
+
+
+
