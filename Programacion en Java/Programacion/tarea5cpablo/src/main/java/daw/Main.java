@@ -42,15 +42,17 @@ public class Main {
                 }
             }
             case 3 -> {
-                String[][] matrizAvion = Ej3.AsientosAvion();
+                char[][] matrizAvion = Ej3.AsientosAvion();
 
-                for (int i = 0; i < matrizAvion.length; i++) {
-                    for (int j = 0; j < matrizAvion[i].length; j++) {
-                        System.out.print(matrizAvion[i][j] + " ");
+                System.out.println("   A  B  C  D  E  F");
+
+                for (int i = 0; i < 30; i++) {
+                    System.out.print((i + 1) + " ");
+                    for (int j = 0; j < 6; j++) {
+                        System.out.print(" " + matrizAvion[i][j] + " ");
                     }
                     System.out.println();
                 }
-
 
             }
         }
