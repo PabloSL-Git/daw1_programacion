@@ -2,9 +2,11 @@
 -- preparemos una rutina con la que podamos obtener la dirección en la que trabaja dicho empleado.
 -- Diseña las siguientes rutinas:
 
--- a
+-- a) Al llamarla (call), muestre la dirección del empleado.
 delimiter $$
-create procedure TareaDeClase1(in numeroEmpleado int (60))
+drop procedure if exists TareaDeClase1a
+$$
+create procedure TareaDeClase1a(in numeroEmpleado int (60))
 begin
 
 SELECT dirce
@@ -17,10 +19,13 @@ where numem = numeroEmpleado;
 end
 $$
 delimiter ;
+call TareaDeClase1a (190);
 
--- b
+-- b) Al llamarla (call), devuelva la dirección del empleado.
 delimiter $$
-create procedure TareaDeClase1(in numeroEmpleado int (60), OUT direccion VARCHAR(60))
+drop procedure if exists TareaDeClase1b
+$$
+create procedure TareaDeClase1b(in numeroEmpleado int (60), OUT direccion VARCHAR(60))
 begin
 
 SELECT dirce into direccion
@@ -32,13 +37,16 @@ where numem = numeroEmpleado;
 
 end
 $$
-
+call TareaDeClase1b (190, @direccion);
+select @direccion;
 delimiter ;
 
--- c
+-- c) Al ejecutarla devuelva la dirección del empleado.
 
 delimiter $$
-create function TareaDeClaseC(numeroEmpleado int (60))
+drop function if exists TareaDeClase1c
+$$
+create function TareaDeClase1c(numeroEmpleado int (60))
 returns VARCHAR(60)
 deterministic
 begin
@@ -53,5 +61,5 @@ where numem = numeroEmpleado;
 return direccion;
 end
 $$
-
 delimiter ;
+select TareaDeClase1c (190) as numeroEmpleado;
