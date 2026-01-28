@@ -48,3 +48,7 @@ hs_err_pid*
 
 # Others
 *.log
+
+# png
+*.png
+*.jpeg

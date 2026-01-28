@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <h1>Cambio de imágenes con JavaScript</h1>
+
+    <img id="imagen" onclick="cambiaPic()" src="Fotos/a.png" width="100" height="100" alt="imagen" />
+
+
+    <p>Haz click sobre las letras para cambiarlas.</p>
+
+    <script>
+        function cambiaPic() {
+            var image = document.getElementById('imagen');
+            if (image.src.match("Fotos/a.png")) {
+                image.src = "Fotos/b.png";
+            } else if (image.src.match("Fotos/b.png")) {
+                image.src = "Fotos/c.jpeg";
+            } else if (image.src.match("Fotos/c.jpeg")) {
+                image.src = "Fotos/d.png";
+            } else if (image.src.match("Fotos/d.png")) {
+                image.src = "Fotos/a.png";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
