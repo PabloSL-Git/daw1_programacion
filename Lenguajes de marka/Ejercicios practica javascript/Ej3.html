@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>Ejercicio 3</title>
 </head>
 
 <body>
@@ -10,73 +11,74 @@
 <h1>Elige opcion correcta</h1>
 
 <p id="primera">Primera pregunta</p>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'green';">
-Respuesta correcta
+
+<button type="button" onclick="cambiarColor('primera', true)">
+1   
 </button>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'red';">
-Respuesta incorrecta
+<button type="button" onclick="cambiarColor('primera', false)">
+2
 </button>
 
 <p id="segunda">Segunda pregunta</p>
 
-<button type="button"
-onclick="document.getElementById('segunda').style.color = 'green';">
-Respuesta correcta
+<button type="button" onclick="cambiarColor('segunda', true)">
+1
 </button>
-<button type="button"
-onclick="document.getElementById('segunda').style.color = 'red';">
-Respuesta incorrecta
+<button type="button" onclick="cambiarColor('segunda', false)">
+2
+</button>
 
 <p id="tercera">Tercera pregunta</p>
 
-<button type="button"
-onclick="document.getElementById('tercera').style.color = 'green';">
-Respuesta correcta
+<button type="button" onclick="cambiarColor('tercera', true)">
+1
 </button>
-<button type="button"
-onclick="document.getElementById('tercera').style.color = 'red';">
-Respuesta incorrecta
-
-<p id="segunda">Segunda pregunta</p>
-
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'green';">
-Respuesta correcta
+<button type="button" onclick="cambiarColor('tercera', false)">
+1
 </button>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'red';">
-Respuesta incorrecta
 
-<p id="segunda">Segunda pregunta</p>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'green';">
-Respuesta correcta
-</button>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'red';">
-Respuesta incorrecta
+<p id="cuarta">Cuarta pregunta</p>
 
-<p id="segunda">Segunda pregunta</p>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'green';">
-Respuesta correcta
+<button type="button" onclick="cambiarColor('cuarta', true)">
+1
 </button>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'red';">
-Respuesta incorrecta
+<button type="button" onclick="cambiarColor('cuarta', false)">
+2
+</button>
 
-<p id="segunda">Segunda pregunta</p>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'green';">
-Respuesta correcta
+<p id="quinta">Quinta pregunta</p>
+<button type="button" onclick="cambiarColor('quinta', true)">
+1
 </button>
-<button type="button"
-onclick="document.getElementById('primera').style.color = 'red';">
-Respuesta incorrecta
+<button type="button" onclick="cambiarColor('quinta', false)">
+2
+</button>
 
+<p id="septima">Septima pregunta</p>
+<button type="button" onclick="cambiarColor('septima', true)">
+1
 </button>
+<button type="button" onclick="cambiarColor('septima', false)">
+2
+</button>
+
+<p id="octava">Octava pregunta</p>
+<button type="button" onclick="cambiarColor('octava', true)">
+1
+</button>
+<button type="button" onclick="cambiarColor('octava', false)">
+2
+</button>
+
+<script>
+    function cambiarColor(id, esCorrecta) {
+        if (esCorrecta) {
+            document.getElementById(id).style.color = "green";
+        } else {
+            document.getElementById(id).style.color = "red";
+        }
+    }
+</script>
 
 </body>
 </html>
