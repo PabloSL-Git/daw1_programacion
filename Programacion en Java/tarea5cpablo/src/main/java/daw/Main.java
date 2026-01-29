@@ -12,7 +12,6 @@ public class Main {
                 Ejercicio 2
                 Ejercicio 3
                 Ejercicio 4
-                Ejercicio 5
                 """;
 
         System.out.println(menu);
