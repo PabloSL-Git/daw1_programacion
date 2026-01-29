@@ -16,6 +16,8 @@ public class Ej1 {
 
         int[][] matriz = new int[4][4];
 
+        // eneseña y crea matriz
+
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 matriz[i][j] = new Random().nextInt(1, 10);
@@ -24,6 +26,7 @@ public class Ej1 {
             System.out.println();
         }
 
+        // crea lista para coordenadas para que sea mas facil pasarla
 
         List<int[]> coordenadas = new ArrayList<>();
 
