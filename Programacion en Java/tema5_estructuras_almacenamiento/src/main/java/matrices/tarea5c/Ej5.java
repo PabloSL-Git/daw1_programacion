@@ -1,4 +1,4 @@
-package daw;
+package matrices.tarea5c;
 
 import java.util.Scanner;
 
