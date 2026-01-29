@@ -55,6 +55,12 @@ public class Main {
                 }
 
             }
+            case 4 -> {
+                List<int[]> resultado = Ej4.Buscador0();
+                for (int[] i : resultado) {
+                    System.out.println("Fila: " + i[0] + " Columna: " + i[1]);
+                }
+            }
         }
     }
 }
