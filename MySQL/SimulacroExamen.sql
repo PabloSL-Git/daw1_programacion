@@ -48,7 +48,7 @@ $$
 create procedure simulacroP4(codigoCasa int(30))
 deterministic
 begin	
-	select nomcaracter
+	select nomcaracter as caracteristica
     from caracteristicas
     where numcaracter = codigoCasa;
 
@@ -74,6 +74,49 @@ end $$
 delimiter ;
 call simulacroP5("jazmin");
 
+-- P6 Si el preciobase de la casa es el precio del alquiler de cada día,
+-- prepara una rutina que permita ver el valor medio de lo que ha costado
+-- cada reserva (ten en cuenta que tenemos el número de días de cada estancia en las reservas).
+-- ¿Y si fuera solo de las reservas no anuladas?
+
+delimiter $$
+drop procedure if exists simulacroP6;
+$$
+create procedure simulacroP6( codreserva int (10))
+deterministic
+begin 
+	select codreserva, preciobase, numdiasestancia, preciobase * numdiasestancia as calculoPrecio, numdevol
+    from casas join reservas
+    using(codcasa)
+    join devoluciones
+    using(codreserva)
+    where numdevol is null;
+end $$
+delimiter ;
+call simulacroP6(4);
+
+-- P7 Prepara una rutina que, dado el código de una reserva, devuelva:
+-- El nombre del propietario de la casa que se ha reservado 
+-- y el teléfono y correo juntos separados por ‘//’.
+
+delimiter $$
+drop procedure if exists simulacroP7;
+$$
+create procedure simulacroP7(codigoReserva int (19), out nombre varchar (100), out telefono_correo varchar(60))
+deterministic
+begin
+	SELECT nompropietario, concat(tlf_contacto, ' // ', correoelectronico) into nombre, telefono_correo
+	from reservas join casas
+    using(codcasa)
+    join propietarios
+    on casas.codpropi = propietarios.codpropietario
+where reservas.codreserva = codigoReserva;
+end $$
+delimiter ;
+call simulacroP7(2, @nombre, @telefono_correo);
+select @nombre, @telefono_correo;
+
+-- P8
 
 
 
