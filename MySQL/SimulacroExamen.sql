@@ -14,7 +14,7 @@ from clientes join reservas
 on clientes.codcli = reservas.codcliente
 join devoluciones
 on reservas.codreserva = devoluciones.codreserva
-where fecanulacion >= 2006/1/1 and numdevol > 0;
+where fecanulacion >= '2006/1/1' and numdevol > 0;
 
 -- P3 Prepara una rutina que, dado un código de característica, muestre el código, nombre,
 -- población y tipo de casa (nombre del tipo) de las casas que tienen esa característica.
