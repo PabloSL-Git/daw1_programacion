@@ -9,7 +9,7 @@ public class VaqueriaOrdenada {
     private Set<Vaca> lista;
 
     public VaqueriaOrdenada() {
-        lista = new TreeSet<>(); // TreeSet ordena automáticamente por compareTo
+        lista = new TreeSet<>(); // TreeSet ordena automaticamente por compareTo
     }
 
     // Numero de vacas

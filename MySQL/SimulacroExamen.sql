@@ -94,7 +94,7 @@ begin
     where numdevol is null;
 end $$
 delimiter ;
-call simulacroP6(4);
+call simulacroP6(1);
 
 -- P7 Prepara una rutina que, dado el código de una reserva, devuelva:
 -- El nombre del propietario de la casa que se ha reservado 
@@ -125,21 +125,21 @@ select @nombre, @telefono_correo;
 DELIMITER $$
 DROP PROCEDURE IF EXISTS simulacroP8a;
 $$
-CREATE PROCEDURE simulacroP8(fechaUsuario DATE)
+CREATE PROCEDURE simulacroP8a()
 BEGIN
     SELECT *
     FROM reservas
-    WHERE YEAR(fecreserva) = YEAR(fechaUsuario);
+    WHERE YEAR(fecreserva) = YEAR('2025/1/12');
 END
 $$
 DELIMITER ;
-CALL simulacroP8('2012-04-02');
+CALL simulacroP8a();
 
 -- version function
 delimiter $$
 drop function if exists simulacroP8b;
 $$
-create function simulacroP8b(fechaUsuario date)
+create function simulacroP8b()
 returns int(30)
 deterministic
 begin
@@ -147,11 +147,11 @@ begin
     
 	select COUNT(*) into reserva
     from reservas
-    WHERE YEAR(reservas.fecreserva) = YEAR(fechaUsuario);
+    WHERE YEAR(reservas.fecreserva) = YEAR('2025/1/12');
 return reserva;
 end $$
 delimiter ;
-select simulacroP8b('2012-04-02');
+
 
 -- P9 Prepara una rutina que, dado un código de zona,
 -- muestre el número de reservas que se han hecho este año en dicha zona.
@@ -198,6 +198,4 @@ FUNCIONES IMPORTANTES:
 - MAX y MIN funcionan aunque haya NULL
 - Se suelen usar con GROUP BY
 */
-
-
 

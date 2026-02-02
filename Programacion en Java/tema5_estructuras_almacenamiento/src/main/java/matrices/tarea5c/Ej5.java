@@ -11,7 +11,7 @@ public class Ej5 {
         System.out.print("Introduce el año: ");
         int año = tec.nextInt();
 
-        Temperaturas t = new Temperaturas(localidad, año);
+        Temperaturas temperatura = new Temperaturas(localidad, año);
 
         int opcion;
         do {
@@ -24,39 +24,39 @@ public class Ej5 {
                     5. Mostrar temperaturas de un día
                     0. Salir
                     """);
-            System.out.print("Elige una opción: ");
+            System.out.print("Elige una opcion: ");
             opcion = tec.nextInt();
 
             switch (opcion) {
                 case 1 -> {
                     System.out.print("Mes (1-12): ");
                     int mes = tec.nextInt();
-                    System.out.print("Día: ");
+                    System.out.print("Dia: ");
                     int dia = tec.nextInt();
                     System.out.print("Temperatura: ");
                     double temp = tec.nextDouble();
-                    t.guardarTemperatura(mes, dia, temp);
+                    temperatura.guardarTemperatura(mes, dia, temp);
                 }
                 case 2 -> {
                     System.out.print("Mes (1-12): ");
                     int mes = tec.nextInt();
-                    System.out.print("Día: ");
+                    System.out.print("Dia: ");
                     int dia = tec.nextInt();
-                    t.borrarTemperatura(mes, dia);
+                    temperatura.borrarTemperatura(mes, dia);
                 }
-                case 3 -> t.mostrarTemperaturas();
+                case 3 -> temperatura.mostrarTemperaturas();
                 case 4 -> {
                     System.out.print("Mes (1-12): ");
                     int mes = tec.nextInt();
-                    t.mostrarTemperaturaMes(mes);
+                    temperatura.mostrarTemperaturaMes(mes);
                 }
                 case 5 -> {
-                    System.out.print("Día: ");
+                    System.out.print("Dia: ");
                     int dia = tec.nextInt();
-                    t.mostrarTemperaturaDia(dia);
+                    temperatura.mostrarTemperaturaDia(dia);
                 }
                 case 0 -> System.out.println("Saliendo...");
-                default -> System.out.println("Opción no válida.");
+                default -> System.out.println("Opcion no valida.");
             }
 
         } while (opcion != 0);

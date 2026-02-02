@@ -4,7 +4,7 @@ public class Temperaturas {
     private String localidad;
     private int año;
     private double[][] matrizTemperatura; // 12 meses x 31 días
-    private final int[] diasMes = {31,28,31,30,31,30,31,31,30,31,30,31}; // días por mes
+    private final int[] diasMes = {31,28,31,30,31,30,31,31,30,31,30,31}; // dias por mes
 
     // Constructor
     public Temperaturas(String localidad, int año) {
@@ -74,7 +74,7 @@ public class Temperaturas {
         }
     }
 
-    // Mostrar temperaturas de un día en todos los meses
+    // Mostrar temperaturas de un dia en todos los meses
     public void mostrarTemperaturaDia(int dia) {
         if (dia < 1 || dia > 31) {
             System.out.println("Día inválido.");
