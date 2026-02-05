@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calcular precio con descuento</title>
+</head>
+
+<body>
+
+    <h1>Calcular precio con descuento</h1>
+
+    <button onclick="calcular()">Calcular precio final</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            let precio = parseFloat(prompt("Introduce el precio del producto:"));
+            let descuento = parseFloat(prompt("Introduce el porcentaje de descuento:"));
+
+            let descuentoTotal = precio * descuento / 100;
+            let precioFinal = precio - descuentoTotal;
+
+            document.getElementById("resultado").innerHTML =
+                "El precio final con descuento es: " + precioFinal;
+        }
+    </script>
+
+</body>

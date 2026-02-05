@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calcular promedio de tres numeros</title>
+</head>
+
+<body>
+
+    <h1>Calcular promedio de tres numeros</h1>
+
+    <button onclick="calcular()">Calcular promedio</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            let num1 = parseFloat(prompt("Introduce el primer numero:"));
+            let num2 = parseFloat(prompt("Introduce el segundo numero:"));
+            let num3 = parseFloat(prompt("Introduce el tercer numero:"));
+
+            let promedio = (num1 + num2 + num3) / 3;
+
+            document.getElementById("resultado").innerHTML =
+                "El promedio es: " + promedio;
+        }
+    </script>
+
+</body>
+
+</html>

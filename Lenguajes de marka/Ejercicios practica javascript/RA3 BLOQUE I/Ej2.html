@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calcular de Celsius a Fahrenheit</title>
+</head>
+
+<body>
+
+    <h1>Calcular de Celsius a Fahrenheit</h1>
+
+    <button onclick="calcular()">Celsius a Fahrenheit</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            let celsius = parseFloat(prompt("Introduce los grados Celsius:"));
+
+            let fahrenheit = (celsius * 5 / 9) + 32;
+
+            document.getElementById("resultado").innerHTML =
+                "La temperatura en Fahrenheit es: " + fahrenheit;
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calcular tiempo estimado de viaje</title>
+</head>
+
+<body>
+
+    <h1>Calcular tiempo estimado de viaje</h1>
+
+    <button onclick="calcular()">Calcular tiempo</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            let distancia = parseFloat(prompt("Introduce la distancia en km:"));
+            let velocidad = parseFloat(prompt("Introduce la velocidad en km/h:"));
+
+            let tiempo = distancia / velocidad;
+
+            document.getElementById("resultado").innerHTML =
+                "El tiempo estimado de viaje es: " + tiempo + " horas";
+        }
+    </script>
+
+</body>

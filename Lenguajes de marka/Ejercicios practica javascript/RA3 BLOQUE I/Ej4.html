@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Convertir minutos a horas y minutos</title>
+</head>
+
+<body>
+
+    <h1>Convertir minutos a horas y minutos</h1>
+
+    <button onclick="calcular()">Convertir</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            let minutosTotales = parseInt(prompt("Introduce el total de minutos:"));
+
+            let horas = Math.floor(minutosTotales / 60);
+            let minutos = minutosTotales % 60;
+
+            document.getElementById("resultado").innerHTML =
+                minutosTotales + " minutos son " + horas + " horas y " + minutos + " minutos";
+        }
+    </script>
+
+</body>

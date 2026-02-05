@@ -8,20 +8,24 @@
 
 <body>
 
-<h1 id="prueba2">Calcular area del triangulo</h1>
+    <h1>Calcular area del triangulo</h1>
 
+    <button onclick="calcularArea()">Calcular area</button>
 
-<button type="button"
-onclick="document.getElementById('prueba').innerHTML = 'CAMBIANDO el contenido';">
-¡Dale!
-</button>
+    <p id="resultado"></p>
 
-<br><br>
-  
-<button type="button"
-onclick="document.getElementById('prueba2').innerHTML = 'CAMBIANDO el contenido';">
-¡Dale!
-</button>
+    <script>
+        function calcularArea() {
+            let base = parseFloat(prompt("Introduce la base del triángulo:"));
+            let altura = parseFloat(prompt("Introduce la altura del triángulo:"));
+
+            let area = (base * altura) / 2;
+
+            document.getElementById("resultado").innerHTML =
+                "El área del triángulo es: " + area;
+        }
+    </script>
 
 </body>
+
 </html>
