@@ -65,7 +65,9 @@ public class Vaca implements Comparable<Vaca> {
     }
 
     @Override
-    public int compareTo(Vaca otra) {
-        return this.id.compareTo(otra.id);
+    public int compareTo(Vaca vaca) {
+        return this.id.compareTo(vaca.id);
     }
+
+
 }

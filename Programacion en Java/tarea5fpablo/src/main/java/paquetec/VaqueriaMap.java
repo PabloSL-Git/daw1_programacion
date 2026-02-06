@@ -23,10 +23,8 @@ public class VaqueriaMap {
     // Imprimir lista completa
     public void imprimirLista() {
         for (HashMap.Entry<String, Vaqueria> entry : lista.entrySet()) {
-            String id = entry.getKey();
-            Vaqueria vaqueria = entry.getValue();
 
-            System.out.println("ID: " + id + " | Vaqueria: " + vaqueria);
+            System.out.println("ID: " + entry.getKey() + " | Vaqueria: \n" + entry.getValue());
         }
     }
 }

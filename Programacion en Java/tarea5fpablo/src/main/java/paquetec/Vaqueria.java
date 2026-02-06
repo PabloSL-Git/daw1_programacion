@@ -73,7 +73,12 @@ public class Vaqueria {
 
     @Override
     public String toString() {
-        return " Vacas = " + lista ;
+        // return " Vacas = " + lista ;
+        String aux = "";
+        for (Vaca vaca : lista) {
+            aux += vaca.getId() + " " + vaca.getFechaNacimiento() + "\n"; 
+        }
+        return aux;
     }
 
     

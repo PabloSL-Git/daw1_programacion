@@ -22,7 +22,7 @@ public class Main {
         // Modificar entrada
         traductor.modificarEntrada("car", "automovil");
         System.out.println("Nueva traduccion de 'car': " + traductor.traducir("car"));
-
+        
         // Eliminar entrada
         traductor.eliminarEntrada("dog");
         System.out.println("Traducción de 'dog': " + traductor.traducir("dog"));
