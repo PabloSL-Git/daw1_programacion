@@ -1,14 +1,6 @@
 -- 1
 INSERT INTO reservas (codreserva, codcliente, codcasa, fecreserva, fecinestancia, numdiasestancia, pagoacuenta)
-VALUES (
-    (SELECT MAX(codreserva) + 1 FROM reservas),  -- genera nuevo código
-    520,
-    315,
-    CURDATE(),               -- fecha de hoy
-    '2026-08-05',           -- inicio de estancia
-    7,
-    100
-);
+VALUES (3501, 520, 315, CURDATE(), '2026-08-05', 7, 100);
 
 -- 2
 INSERT INTO caracteristicasdecasas (codcasa, codcaracter, tiene, observaciones)
@@ -31,47 +23,37 @@ VALUES (
     200
 );
 
--- 4
-
 DELIMITER $$
+
 CREATE PROCEDURE BajaPropietario(IN p_codprop INT)
 BEGIN
-    DECLARE cant_reservas INT;
-
-    START TRANSACTION;
-
-    -- Comprobar si el propietario tiene casas con reservas activas
-    SELECT COUNT(*) INTO cant_reservas
-    FROM casas c
-    JOIN reservas r ON c.codcasa = r.codcasa
-    WHERE c.codpropi = p_codprop AND r.fecanulacion IS NULL;
-
-    IF cant_reservas > 0 THEN
-        -- No se puede eliminar, hay reservas activas
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede eliminar propietario con reservas activas';
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
         ROLLBACK;
-    ELSE
-        -- Borrar reservas canceladas y devoluciones si existen
-        DELETE r
-        FROM reservas r
-        JOIN casas c ON r.codcasa = c.codcasa
-        WHERE c.codpropi = p_codprop;
+    END;
+        START TRANSACTION;
+    -- Borrar devoluciones
+    DELETE d
+    FROM devoluciones d
+    JOIN reservas r ON d.codreserva = r.codreserva
+    JOIN casas c ON r.codcasa = c.codcasa
+    WHERE c.codpropi = p_codprop;
 
-        DELETE d
-        FROM devoluciones d
-        JOIN reservas r ON d.codreserva = r.codreserva
-        JOIN casas c ON r.codcasa = c.codcasa
-        WHERE c.codpropi = p_codprop;
+    -- Borrar reservas
+    DELETE r
+    FROM reservas r
+    JOIN casas c ON r.codcasa = c.codcasa
+    WHERE c.codpropi = p_codprop;
 
-        -- Borrar casas
-        DELETE FROM casas WHERE codpropi = p_codprop;
+    -- Borrar casas
+    DELETE FROM casas WHERE codpropi = p_codprop;
 
-        -- Borrar propietario
-        DELETE FROM propietarios WHERE codproprietario = p_codprop;
+    -- Borrar propietario
+    DELETE FROM propietarios WHERE codpropietario = p_codprop;
 
-        COMMIT;
-    END IF;
+    COMMIT;
 END $$
+
 DELIMITER ;
 
 -- 5
@@ -79,45 +61,54 @@ UPDATE casas
 SET numhabit = 3, m2 = 200, minpersonas = 4, maxpersonas = 8
 WHERE codcasa = 5789;
 
--- 6
 DELIMITER $$
+
 CREATE PROCEDURE IncorporarDatosOtraEmpresa()
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
     START TRANSACTION;
 
-    -- Insertar propietarios
     INSERT INTO propietarios (codpropietario, nompropietario, personaContacto, dni_cif, tlf_contacto, correoElectronico)
     SELECT codprop, nomprop, ape1prop, dni_cif, tlf_contacto, correoElectronico
     FROM GBDDatosViviendasYPropiOrigen.propietarios;
 
-    -- Insertar casas
     INSERT INTO casas (codcasa, nomcasa, numbanios, numhabit, m2, minpersonas, maxpersonas, preciobase, codpropi, codtipocasa, codzona)
     SELECT codViv, nomViv, numbanios, numhabit, m2, minpersonas, maxpersonas, preciobase, codpropi, codtipocasa, codzona
     FROM GBDDatosViviendasYPropiOrigen.viviendas;
 
     COMMIT;
 END $$
+
 DELIMITER ;
 
+
 -- 7
--- Otro usuario intenta consultar casas de una zona
-SELECT * 
-FROM casas
-WHERE codzona = 3;
--- Dependiendo del nivel de aislamiento:
--- READ UNCOMMITTED → verá casas a medio insertar
--- READ COMMITTED → solo verá casas confirmadas
--- SERIALIZABLE → puede quedar bloqueado hasta que COMMIT termine
+/*
+Respuesta 1: Consultar las casas de una zona
 
--- Otro usuario intenta añadir una casa nueva
-INSERT INTO casas (codcasa, nomcasa, numbanios, numhabit, m2, minpersonas, maxpersonas, preciobase, codpropi, codtipocasa, codzona)
-VALUES (9999, 'Casa Prueba', 2, 3, 120, 2, 6, 100, 1, 1, 3);
--- Dependiendo del bloqueo que aplique la transacción, este INSERT puede:
--- - Esperar hasta que se haga COMMIT
--- - O fallar si la tabla está bloqueada
+Sin aislamiento:
+Si el proceso principal se ejecuta sin transacciones, el usuario puede consultar viviendas mientras estas están siendo insertadas o modificadas. Como resultado, puede obtener datos incompletos o inconsistentes, produciéndose lecturas sucias.
 
--- Otro usuario intenta añadir una reserva para una casa que está siendo incorporada
-INSERT INTO reservas (codreserva, codcliente, codcasa, fecreserva, fecinestancia, numdiasestancia, pagoacuenta)
-VALUES ((SELECT MAX(codreserva)+1 FROM reservas), 100, 5640, CURDATE(), '2026-08-10', 7, 200);
--- Si la casa 5640 aún no se ha insertado en la BD principal, este INSERT puede fallar por FK
+Con aislamiento:
+Si el proceso se ejecuta de forma aislada, el usuario solo podrá consultar las viviendas que ya estén confirmadas en la base de datos. Las nuevas viviendas no serán visibles hasta que finalice la transacción, evitando inconsistencias.
 
+Respuesta 2: Añadir una casa nueva
+
+Sin aislamiento:
+El usuario puede intentar insertar una nueva vivienda al mismo tiempo que el proceso principal está insertando otras viviendas. Esto puede provocar conflictos de escritura, duplicación de claves o pérdida de integridad referencial.
+
+Con aislamiento:
+La inserción de la nueva vivienda quedará bloqueada o se rechazará hasta que finalice la transacción principal. De esta forma se garantiza la consistencia y se evitan errores de concurrencia.
+
+Respuesta 3: Añadir una reserva de una vivienda existente
+
+Sin aislamiento:
+El usuario puede añadir la reserva mientras el proceso principal se está ejecutando. Aunque la vivienda ya existía previamente, existe riesgo de inconsistencias si se están modificando datos relacionados.
+
+Con aislamiento:
+La operación se permite sin problemas, ya que la vivienda ya estaba registrada antes de iniciar el proceso principal y no se ve afectada por la incorporación de la base de datos de la otra empresa.
+*/
