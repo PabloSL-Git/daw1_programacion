@@ -1,5 +1,5 @@
 -- 1
-INSERT INTO reservas (codreserva, codcliente, codcasa, fecreserva, fecinestancia, numdiasestancia, pagoacuenta)
+INSERT INTO reservas (codreserva, codcliente, codcasa, fecreserva, feciniestancia, numdiasestancia, pagocuenta)
 VALUES (3501, 520, 315, CURDATE(), '2026-08-05', 7, 100);
 
 -- 2
@@ -22,6 +22,8 @@ VALUES (
     2450,
     200
 );
+
+-- 4
 
 DELIMITER $$
 
@@ -61,6 +63,8 @@ UPDATE casas
 SET numhabit = 3, m2 = 200, minpersonas = 4, maxpersonas = 8
 WHERE codcasa = 5789;
 
+-- 6
+
 DELIMITER $$
 
 CREATE PROCEDURE IncorporarDatosOtraEmpresa()
@@ -88,27 +92,34 @@ DELIMITER ;
 
 -- 7
 /*
-Respuesta 1: Consultar las casas de una zona
+1. Consultar las casas de una zona
 
 Sin aislamiento:
-Si el proceso principal se ejecuta sin transacciones, el usuario puede consultar viviendas mientras estas están siendo insertadas o modificadas. Como resultado, puede obtener datos incompletos o inconsistentes, produciéndose lecturas sucias.
+El usuario puede consultar las casas mientras el proceso de incorporación está insertando datos.
+Esto puede provocar que se obtengan resultados incompletos o inconsistentes,
+ya que podrían mostrarse casas que aún no forman parte definitivamente de la base de datos (lecturas sucias).
 
 Con aislamiento:
-Si el proceso se ejecuta de forma aislada, el usuario solo podrá consultar las viviendas que ya estén confirmadas en la base de datos. Las nuevas viviendas no serán visibles hasta que finalice la transacción, evitando inconsistencias.
+El usuario solo podrá consultar las casas que ya estaban confirmadas antes del inicio de la transacción.
+Las nuevas casas no serán visibles hasta que el proceso finalice con COMMIT, evitando lecturas inconsistentes.
 
-Respuesta 2: Añadir una casa nueva
+🔹 2. Añadir una casa nueva
 
 Sin aislamiento:
-El usuario puede intentar insertar una nueva vivienda al mismo tiempo que el proceso principal está insertando otras viviendas. Esto puede provocar conflictos de escritura, duplicación de claves o pérdida de integridad referencial.
+El usuario puede insertar una nueva casa de forma concurrente al proceso principal. Esto puede provocar conflictos, 
+como colisiones de claves primarias o problemas de integridad referencial si ambos procesos acceden a las mismas tablas simultáneamente.
 
 Con aislamiento:
-La inserción de la nueva vivienda quedará bloqueada o se rechazará hasta que finalice la transacción principal. De esta forma se garantiza la consistencia y se evitan errores de concurrencia.
+La inserción de la nueva casa puede quedar bloqueada hasta que finalice la transacción principal.
+De esta forma se garantiza la consistencia de los datos y se evita que se produzcan conflictos durante el proceso de incorporación.
 
-Respuesta 3: Añadir una reserva de una vivienda existente
+🔹 3. Añadir una reserva de una casa existente
 
 Sin aislamiento:
-El usuario puede añadir la reserva mientras el proceso principal se está ejecutando. Aunque la vivienda ya existía previamente, existe riesgo de inconsistencias si se están modificando datos relacionados.
+El usuario puede añadir la reserva mientras el proceso principal se está ejecutando. Aunque la casa ya existía previamente,
+pueden producirse inconsistencias si el proceso principal modifica o bloquea datos relacionados.
 
 Con aislamiento:
-La operación se permite sin problemas, ya que la vivienda ya estaba registrada antes de iniciar el proceso principal y no se ve afectada por la incorporación de la base de datos de la otra empresa.
+La operación puede quedar temporalmente bloqueada mientras se ejecuta la transacción principal,
+dependiendo del nivel de aislamiento utilizado. No obstante, una vez finalizada la transacción, la reserva podrá realizarse sin inconsistencias, garantizando la integridad de la base de datos.
 */
