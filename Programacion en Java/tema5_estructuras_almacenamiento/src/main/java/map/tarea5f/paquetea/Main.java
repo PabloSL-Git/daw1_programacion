@@ -1,4 +1,4 @@
-package map.paquetea;
+package map.tarea5f.paquetea;
 
 public class Main {
     private static Traductor traductor = new Traductor();

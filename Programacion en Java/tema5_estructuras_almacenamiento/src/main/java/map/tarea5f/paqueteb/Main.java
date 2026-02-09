@@ -1,4 +1,4 @@
-package map.paqueteb;
+package map.tarea5f.paqueteb;
 
 import java.util.Scanner;
 

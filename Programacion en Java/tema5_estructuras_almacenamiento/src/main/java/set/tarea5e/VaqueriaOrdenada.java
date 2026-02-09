@@ -1,15 +1,15 @@
-package set.granja;
+package set.tarea5e;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
-public class Vaqueria {
+public class VaqueriaOrdenada {
 
     private Set<Vaca> lista;
 
-    public Vaqueria() {
-        lista = new HashSet<>();
+    public VaqueriaOrdenada() {
+        lista = new TreeSet<>(); // TreeSet ordena automaticamente por compareTo
     }
 
     // Numero de vacas
@@ -45,7 +45,7 @@ public class Vaqueria {
     // Buscar y devolver vaca por id
     public Vaca buscarPorId(String id) {
         for (Vaca vaca : lista) {
-            if (vaca.getId().equals(id)){
+            if (vaca.getId().equals(id)) {
                 return vaca;
             }
         }

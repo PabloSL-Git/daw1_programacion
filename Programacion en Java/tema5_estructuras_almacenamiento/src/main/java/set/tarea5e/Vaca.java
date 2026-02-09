@@ -1,4 +1,4 @@
-package map.paquetec;
+package set.tarea5e;
 
 import java.time.LocalDate;
 
@@ -65,9 +65,7 @@ public class Vaca implements Comparable<Vaca> {
     }
 
     @Override
-    public int compareTo(Vaca vaca) {
-        return this.id.compareTo(vaca.id);
+    public int compareTo(Vaca otra) {
+        return this.id.compareTo(otra.id);
     }
-
-
 }

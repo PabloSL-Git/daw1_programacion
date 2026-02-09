@@ -1,4 +1,4 @@
-package map.paquetec;
+package set.tarea5e;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,16 +70,4 @@ public class Vaqueria {
         }
         return false;
     }
-
-    @Override
-    public String toString() {
-        // return " Vacas = " + lista ;
-        String aux = "";
-        for (Vaca vaca : lista) {
-            aux += vaca.getId() + " " + vaca.getFechaNacimiento() + "\n"; 
-        }
-        return aux;
-    }
-
-    
 }
