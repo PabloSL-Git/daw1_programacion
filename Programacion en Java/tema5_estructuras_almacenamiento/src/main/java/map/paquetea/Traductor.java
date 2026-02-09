@@ -1,4 +1,4 @@
-package paquetea;
+package map.paquetea;
 
 import java.util.ArrayList;
 import java.util.List;

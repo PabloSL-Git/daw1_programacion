@@ -1,4 +1,4 @@
-package paquetec;
+package map.paquetec;
 
 import java.time.LocalDate;
 

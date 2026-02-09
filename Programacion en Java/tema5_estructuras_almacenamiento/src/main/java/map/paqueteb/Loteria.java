@@ -1,4 +1,4 @@
-package paqueteb;
+package map.paqueteb;
 
 import java.util.Random;
 import java.util.TreeMap;

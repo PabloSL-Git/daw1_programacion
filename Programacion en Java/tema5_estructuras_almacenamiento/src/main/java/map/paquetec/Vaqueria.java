@@ -1,4 +1,4 @@
-package paquetec;
+package map.paquetec;
 
 import java.util.ArrayList;
 import java.util.HashSet;
