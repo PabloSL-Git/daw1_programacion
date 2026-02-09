@@ -1,0 +1,136 @@
+package daw;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Instituto {
+    private String nombre;
+    private Set<Alumno> alumnos;
+    private Set<Curso> cursos;
+    private Map<String, List<Curso>> matriculas;
+
+    public Instituto(String nombre, Set<Alumno> alumnos, Set<Curso> cursos, Map<Integer, List<Curso>> matriculas) {
+        this.nombre = nombre;
+        this.alumnos = alumnos;
+        this.cursos = cursos;
+        this.matriculas = null;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public Set<Alumno> getAlumnos() {
+        return alumnos;
+    }
+
+    public Set<Curso> getCursos() {
+        return cursos;
+    }
+
+    public Map<String, List<Curso>> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setAlumnos(Set<Alumno> alumnos) {
+        this.alumnos = alumnos;
+    }
+
+    public void setCursos(Set<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    public void setMatriculas(Map<String, List<Curso>> matriculas) {
+        this.matriculas = matriculas;
+    }
+
+    // matricular
+    public boolean matricular(String idAlumno, Curso curso) {
+        // verificar que existe
+        Alumno alumno = null;
+        for (Alumno a : alumnos) {
+            if (a.getId().equals(idAlumno)) {
+                alumno = a;
+                break;
+            }
+        }
+        // si no existe
+        if (alumno == null || !cursos.contains(curso)) {
+            return false;
+        }
+        // obtener la lista de cursos
+        if (!matriculas.containsKey(idAlumno)) {
+            matriculas.put(idAlumno, new ArrayList<>());
+        }
+        List<Curso> cursosAlumno = matriculas.get(idAlumno);
+        // añadir si no matriculadp
+        if (!cursosAlumno.contains(curso)) {
+            cursosAlumno.add(curso);
+            return true;
+        }
+        return false; // ya matriculado
+    }
+
+    // desmatricular
+    public boolean desmatricular(String idAlumno, Curso curso) {
+        // verificar que existe
+        Alumno alumno = null;
+        for (Alumno a : alumnos) {
+            if (a.getId().equals(idAlumno)) {
+                alumno = a;
+                break;
+            }
+        }
+        // si no existe
+        if (alumno == null || !cursos.contains(curso)) {
+            return false;
+        }
+        // obtener la lista de cursos
+        if (!matriculas.containsKey(idAlumno)) {
+            matriculas.put(idAlumno, new ArrayList<>());
+        }
+        List<Curso> cursosAlumno = matriculas.get(idAlumno);
+        // añadir si no matriculadp
+        if (!cursosAlumno.contains(curso)) {
+            cursosAlumno.remove(curso);
+            return true;
+        }
+        return false; // ya matriculado
+    }
+
+    // ver cursos matriculados
+    public List<Curso> verCursos(String idAlumno) {
+        // obtener la lista de cursos
+        if (!matriculas.containsKey(idAlumno)) {
+            matriculas.put(idAlumno, new ArrayList<>());
+            List<Curso> cursosAlumno = matriculas.get(idAlumno);
+            return cursosAlumno;
+        } else {
+            return null;
+        }
+
+    }
+
+    // lista alumnos en un curso
+    public List<String> verAlumnos(Curso curso) {
+        List<String> idsAlumnos = new ArrayList<>();
+
+        // recorrer el Map de matriculas
+        for (String idAlumno : matriculas.keySet()) {
+            List<Curso> cursosAlumno = matriculas.get(idAlumno);
+
+            if (cursosAlumno.contains(curso)) {
+                idsAlumnos.add(idAlumno);
+            }
+        }
+
+        return idsAlumnos;
+    }
+
+}
