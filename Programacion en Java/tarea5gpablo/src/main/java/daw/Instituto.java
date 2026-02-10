@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Instituto {
     private String nombre;
@@ -112,26 +113,48 @@ public class Instituto {
 
     // ver cursos matriculados
     public List<Curso> verCursosMatriculados(String idAlumno) {
-        
+
         matriculas.putIfAbsent(idAlumno, new ArrayList<>());
 
         return matriculas.get(idAlumno);
     }
 
     // lista alumnos en un curso
-    public List<String> verAlumnosMatriculados(Curso curso) {
-        List<String> idsAlumnos = new ArrayList<>();
+    public List<Alumno> verAlumnosMatriculados(Curso curso) {
+    List<Alumno> listaAlumnos = new ArrayList<>();
 
-        // recorrer el Map de matriculas
-        for (String idAlumno : matriculas.keySet()) {
-            List<Curso> cursosAlumno = matriculas.get(idAlumno);
+    for (String idAlumno : matriculas.keySet()) {
+        List<Curso> cursosAlumno = matriculas.get(idAlumno);
 
-            if (cursosAlumno.contains(curso)) {
-                idsAlumnos.add(idAlumno);
+        if (cursosAlumno.contains(curso)) {
+            
+            // buscar Alumno en el set
+            for (Alumno a : alumnos) {
+                if (a.getId().equals(idAlumno)) {
+                    listaAlumnos.add(a);
+                    break;
+                }
             }
         }
+    }
 
-        return idsAlumnos;
+    return listaAlumnos;
+}
+
+
+    // total horas
+
+    public Map<String, Integer> totalHorasPorAlumno() {
+        Map<String, Integer> totalHoras = new TreeMap<>();
+
+        for (Alumno a : alumnos) {
+            int suma = 0;
+            for (Curso c : verCursosMatriculados(a.getId())) {
+                suma += c.getHoras();
+            }
+            totalHoras.put(a.getId(), suma);
+        }
+        return totalHoras;
     }
 
 }

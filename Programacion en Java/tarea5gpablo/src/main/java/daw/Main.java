@@ -1,8 +1,6 @@
 package daw;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,16 +9,15 @@ public class Main {
 
         // listas
 
-        HashSet<Alumno> setAlumnos = new HashSet<>();
-        List<Alumno> listaAlumnos = new ArrayList<>(setAlumnos);
+        List<Alumno> listaAlumnos = new ArrayList<>();
+        listaAlumnos.add(new Alumno("1", "Pablo", "1234A"));
+        listaAlumnos.add(new Alumno("2", "Rosi", "2345B"));
+        listaAlumnos.add(new Alumno("3", "Marious", "3456C"));
 
-        listaAlumnos.add(new Alumno("333", "Pablo", "1234"));
-
-        HashSet<Curso> setCursos = new HashSet<>();
-        List<Curso> listaCursos = new ArrayList<>(setCursos);
-
-        listaCursos.add(new Curso("45", "Programacion", 50));
-        listaCursos.add(new Curso("345", "Mates", 25));
+        List<Curso> listaCursos = new ArrayList<>();
+        listaCursos.add(new Curso("101", "Programacion", 50));
+        listaCursos.add(new Curso("102", "Mates", 25));
+        listaCursos.add(new Curso("103", "Fisica", 30));
 
         // objeto instituto
 
@@ -28,11 +25,10 @@ public class Main {
 
         // matricula alumnos
 
-        Map<String,List<Curso>> listaMatricula = new HashMap<>();
-
-        listaMatricula.put("333", listaCursos);
-
-        instituto.setMatriculas(listaMatricula);
+        instituto.matricular("1", listaCursos.get(0)); // Pablo - Programacion
+        instituto.matricular("1", listaCursos.get(1)); // Pablo - Mates
+        instituto.matricular("2", listaCursos.get(1)); // Ana - Mates
+        instituto.matricular("3", listaCursos.get(2)); // Luis - Fisica
 
         // imprimir alumnos y cursos
 
@@ -48,23 +44,42 @@ public class Main {
                     + "\nHoras: " + curso.getHoras());
         }
 
-        
         // imprimir cursos matriculados de un alumno
 
         System.out.println("----------------------------");
 
-        List<Curso> listaCurso2 = instituto.verCursosMatriculados("333");
-        for (Curso curso : listaCurso2) {
-            System.out.println("curso: " + curso);
+        System.out.println("\nCursos matriculados por alumno:");
+        for (Alumno a : listaAlumnos) {
+            System.out.println(a.getNombre() + ": " + instituto.verCursosMatriculados(a.getId()));
         }
 
-        // imprimir alumnos  matriculados a curso
+        // imprimir alumnos matriculados a curso
 
         System.out.println("----------------------------");
 
-        List<String> listaAumosId = instituto.verAlumnosMatriculados("45");
-        for (Alumno alumno : listaAlumnos2) {
-            System.out.println("Alumno: " + alumno);
+        System.out.println("\nAlumnos matriculados por curso:");
+        for (Curso c : listaCursos) {
+            System.out.println(c.getNombre() + ": " + instituto.verAlumnosMatriculados(c));
+        }
+
+        // desmatricular
+        instituto.desmatricular("1", listaCursos.get(1)); // Pablo - Mates
+
+        System.out.println("\nDespués de desmatricular:");
+        for (Alumno a : listaAlumnos) {
+            System.out.println(a.getNombre() + ": " + instituto.verCursosMatriculados(a.getId()));
+        }
+
+        for (Curso c : listaCursos) {
+            System.out.println(c.getNombre() + ": " + instituto.verAlumnosMatriculados(c));
+        }
+
+        // total de horas por alumno
+        System.out.println("\nTotal de horas por alumno:");
+
+        Map<String, Integer> horasTotales = instituto.totalHorasPorAlumno();
+        for (Map.Entry<String, Integer> entry : horasTotales.entrySet()) {
+            System.out.println("id: " + entry.getKey() + " ---> Nº HORAS: " + entry.getValue());
         }
 
     }
