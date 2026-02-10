@@ -1,6 +1,8 @@
 package daw;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,11 +13,15 @@ public class Instituto {
     private Set<Curso> cursos;
     private Map<String, List<Curso>> matriculas;
 
-    public Instituto(String nombre, Set<Alumno> alumnos, Set<Curso> cursos, Map<Integer, List<Curso>> matriculas) {
+    public Instituto(String nombre, List<Alumno> alumnos, List<Curso> cursosPermitidos) {
         this.nombre = nombre;
-        this.alumnos = alumnos;
-        this.cursos = cursos;
-        this.matriculas = null;
+
+        // convertir listas a sets
+        this.alumnos = new HashSet<>(alumnos);
+        this.cursos = new HashSet<>(cursosPermitidos);
+
+        // matricula vacia
+        this.matriculas = new HashMap<>();
     }
 
     public String getNombre() {
@@ -105,20 +111,15 @@ public class Instituto {
     }
 
     // ver cursos matriculados
-    public List<Curso> verCursos(String idAlumno) {
-        // obtener la lista de cursos
-        if (!matriculas.containsKey(idAlumno)) {
-            matriculas.put(idAlumno, new ArrayList<>());
-            List<Curso> cursosAlumno = matriculas.get(idAlumno);
-            return cursosAlumno;
-        } else {
-            return null;
-        }
+    public List<Curso> verCursosMatriculados(String idAlumno) {
+        
+        matriculas.putIfAbsent(idAlumno, new ArrayList<>());
 
+        return matriculas.get(idAlumno);
     }
 
     // lista alumnos en un curso
-    public List<String> verAlumnos(Curso curso) {
+    public List<String> verAlumnosMatriculados(Curso curso) {
         List<String> idsAlumnos = new ArrayList<>();
 
         // recorrer el Map de matriculas
