@@ -46,7 +46,7 @@ public class Main {
 
         // imprimir cursos matriculados de un alumno
 
-        System.out.println("----------------------------");
+        System.out.println("º\n----------------------------");
 
         System.out.println("\nCursos matriculados por alumno:");
         for (Alumno a : listaAlumnos) {
@@ -55,7 +55,7 @@ public class Main {
 
         // imprimir alumnos matriculados a curso
 
-        System.out.println("----------------------------");
+        System.out.println("\n----------------------------");
 
         System.out.println("\nAlumnos matriculados por curso:");
         for (Curso c : listaCursos) {
@@ -63,6 +63,9 @@ public class Main {
         }
 
         // desmatricular
+
+        System.out.println("\n----------------------------");
+
         instituto.desmatricular("1", listaCursos.get(1)); // Pablo - Mates
 
         System.out.println("\nDespués de desmatricular:");
@@ -75,12 +78,16 @@ public class Main {
         }
 
         // total de horas por alumno
+
+        System.out.println("\n----------------------------");
+
         System.out.println("\nTotal de horas por alumno:");
 
         Map<String, Integer> horasTotales = instituto.totalHorasPorAlumno();
         for (Map.Entry<String, Integer> entry : horasTotales.entrySet()) {
             System.out.println("id: " + entry.getKey() + " ---> Nº HORAS: " + entry.getValue());
         }
+        System.out.println("\n");
 
     }
 }
