@@ -1,17 +1,27 @@
 package ejerciciosUT6.Ej1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Casa {
 
     private Puerta puerta;
-    private Ventana ventana;
-    private Calefactor calefactor;
-    private String nombre;
+    private List<Ventana> ventanas;
+    private List<Calefactor> calefactores;
 
-    public Casa(Puerta puerta, Ventana ventana, Calefactor calefactor, String nombre) {
-        this.puerta = puerta;
-        this.ventana = ventana;
-        this.calefactor = calefactor;
-        this.nombre = nombre;
+    public Casa(Ventana v, Puerta p){
+        this.puerta = p;
+        this.ventanas = new ArrayList<>();
+        ventanas.add(v);
+        this.calefactores = new ArrayList<>();
+    }
+    
+    public Casa(Ventana v, Puerta p, Calefactor c){
+        this.puerta = p;
+        this.ventanas = new ArrayList<>();
+        ventanas.add(v);
+        this.calefactores = new ArrayList<>();
+        calefactores.add(c);
     }
 
     public Puerta getPuerta() {
@@ -22,35 +32,26 @@ public class Casa {
         this.puerta = puerta;
     }
 
-    public Ventana getVentana() {
-        return ventana;
+    public List<Ventana> getVentanas() {
+        return ventanas;
     }
 
-    public void setVentana(Ventana ventana) {
-        this.ventana = ventana;
+    public void setVentanas(List<Ventana> ventanas) {
+        this.ventanas = ventanas;
     }
 
-    public Calefactor getCalefactor() {
-        return calefactor;
+    public List<Calefactor> getCalefactores() {
+        return calefactores;
     }
 
-    public void setCalefactor(Calefactor calefactor) {
-        this.calefactor = calefactor;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setCalefactores(List<Calefactor> calefactores) {
+        this.calefactores = calefactores;
     }
 
     @Override
     public String toString() {
-        return "Casa [puerta=" + puerta + ", ventana=" + ventana + ", calefactor="
-                + calefactor + ", nombre=" + nombre
-                + "]";
+        return "Casa [puerta=" + puerta + ", ventanas=" + ventanas + ", calefactores=" + calefactores + "]";
     }
+    
 
 }

@@ -2,43 +2,25 @@ package ejerciciosUT6.Ej1;
 
 public class Puerta {
 
-     private boolean abierta;
-     private String material;
+    private boolean estado;
 
-    public Puerta(String material) {
-        this.abierta = false;
-        this.material = material;
-    }
-    
-    public boolean isAbierta() {
-        return abierta;
+    public Puerta(){
+        this.estado = true;
     }
 
-    public void setAbierta(boolean abierta) {
-        this.abierta = abierta;
+    public boolean isEstado() {
+        return estado;
     }
 
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    public void abrir() {
-        abierta = true;
-    }
-
-    public void cerrar() {
-        abierta = false;
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
 
     @Override
     public String toString() {
-        return "Puerta [abierta=" + abierta + ", material=" + material + "]";
+        return "Puerta [estado=" + estado + "]";
     }
-    
 
+    
 
 }

@@ -2,20 +2,12 @@ package ejerciciosUT6.Ej1;
 
 public class Persiana {
 
-    private boolean subida;
     private String material;
+    private boolean estado; // true está subida
 
     public Persiana(String material) {
-        this.subida = false;
         this.material = material;
-    }
-
-    public boolean isSubida() {
-        return subida;
-    }
-
-    public void setSubida(boolean subida) {
-        this.subida = subida;
+        this.estado = false;
     }
 
     public String getMaterial() {
@@ -26,16 +18,19 @@ public class Persiana {
         this.material = material;
     }
 
-    public void subir() {
-        subida = true;
-    }
-
-    public void bajar() {
-        subida = false;
-    }
+   
 
     @Override
     public String toString() {
-        return "Persiana [subida=" + subida + ", material=" + material + "]";
+        return "Persiana [material=" + material + ", estado=" + estado + "]";
     }
+
+    public void subir(){
+        this.estado = true;
+    }
+
+    public void bajar(){
+        this.estado = false;
+    }
+
 }

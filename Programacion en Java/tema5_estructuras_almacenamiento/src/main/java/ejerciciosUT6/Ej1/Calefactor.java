@@ -1,47 +1,29 @@
 package ejerciciosUT6.Ej1;
 
 public class Calefactor {
+    private Integer tmp;
+    private boolean estado;
 
-    // Atributo obligatorio
-    private Integer temperatura;
-    private boolean encendido;
-
-    public Calefactor(Integer temperatura) {
-        this.temperatura = temperatura;
-        this.encendido = false;
+    public Calefactor(Integer tmp, boolean estado) {
+        this.tmp = tmp;
+        this.estado = estado;
     }
-
-    public Integer getTemperatura() {
-        return temperatura;
+    public Integer getTmp() {
+        return tmp;
     }
-
-    public void setTemperatura(Integer temperatura) {
-        this.temperatura = temperatura;
+    public void setTmp(Integer tmp) {
+        this.tmp = tmp;
     }
-
-    public boolean isEncendido() {
-        return encendido;
+    public boolean isEstado() {
+        return estado;
     }
-
-    public void setEncendido(boolean encendido) {
-        this.encendido = encendido;
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
-
-    public void encender() {
-        encendido = true;
-    }
-
-    public void apagar() {
-        encendido = false;
-    }
-
-    public void fijarTemperatura(Integer valor) {
-        this.temperatura = valor;
-    }
-
     @Override
     public String toString() {
-        return "Calefactor [temperatura=" + temperatura + ", encendido=" + encendido + "]";
+        return "Calefactor [tmp=" + tmp + ", estado=" + estado + "]";
     }
 
+    
 }

@@ -2,46 +2,26 @@ package ejerciciosUT6.Ej1;
 
 public class Ventana {
 
-    private boolean abierta;
     private Persiana persiana;
-    private double tamaño; 
 
-    public Ventana(Persiana persiana, double tamaño) {
-        this.abierta = false;
-        this.persiana = persiana;
-        this.tamaño = tamaño;
-    }
-
-    public boolean isAbierta() {
-        return abierta;
+    // Composición fuerte . Si el objeto ventana
+    // desaparece también lo hace su persiana asociada
+    public Ventana(String material){
+        this.persiana = new Persiana(material);
     }
 
     public Persiana getPersiana() {
         return persiana;
     }
 
-    public double getTamaño() {
-        return tamaño;
-    }
-    
-    public void setAbierta(boolean abierta) {
-        this.abierta = abierta;
-    }
-
     public void setPersiana(Persiana persiana) {
         this.persiana = persiana;
     }
 
-    public void setTamaño(double tamaño) {
-        this.tamaño = tamaño;
+    @Override
+    public String toString() {
+        return "Ventana [persiana=" + persiana + "]";
     }
 
-    public void abrir() {
-        abierta = true;
-    }
-
-    public void cerrar() {
-        abierta = false;
-    }
-
+    
 }
