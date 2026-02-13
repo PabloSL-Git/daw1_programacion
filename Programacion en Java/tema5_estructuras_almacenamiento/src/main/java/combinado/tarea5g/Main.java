@@ -1,4 +1,4 @@
-package daw;
+package combinado.tarea5g;
 
 import java.util.ArrayList;
 import java.util.List;

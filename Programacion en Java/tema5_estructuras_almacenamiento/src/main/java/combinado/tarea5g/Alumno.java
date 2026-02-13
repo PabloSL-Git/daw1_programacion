@@ -1,15 +1,15 @@
-package daw;
+package combinado.tarea5g;
 
-class Curso {
-    
+public class Alumno {
+
     private final String id;
     private String nombre;
-    private int horas;
-    
-    public Curso(String id, String nombre, int horas) {
+    private String nif;
+
+    public Alumno(String id, String nombre, String nif) {
         this.id = id;
         this.nombre = nombre;
-        this.horas = horas;
+        this.nif = nif;
     }
 
     public String getId() {
@@ -20,16 +20,16 @@ class Curso {
         return nombre;
     }
 
-    public int getHoras() {
-        return horas;
+    public String getNif() {
+        return nif;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setHoras(int horas) {
-        this.horas = horas;
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
     @Override
@@ -48,7 +48,7 @@ class Curso {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Curso other = (Curso) obj;
+        Alumno other = (Alumno) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -56,7 +56,4 @@ class Curso {
             return false;
         return true;
     }
-
-    
-
 }
