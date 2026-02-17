@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clasificación de temperatura</title>
+</head>
+
+<body>
+
+    <h1>Clasificar temperatura</h1>
+
+    <button onclick="clasificar()">Clasificar</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function clasificar() {
+            let temperatura = parseFloat(prompt("Introduce la temperatura en grados Celsius:"));
+            let mensaje;
+
+            if (temperatura < 0) {
+                mensaje = "Congelado";
+            } else if (temperatura <= 25) {
+                mensaje = "Frío/Templado";
+            } else {
+                mensaje = "Caliente";
+            }
+
+            document.getElementById("resultado").innerHTML = mensaje;
+        }
+    </script>
+
+</body>
+
+</html>

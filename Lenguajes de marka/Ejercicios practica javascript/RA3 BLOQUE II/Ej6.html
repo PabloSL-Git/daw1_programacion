@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora básica</title>
+</head>
+
+<body>
+
+    <h1>Calculadora</h1>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            let num1 = parseFloat(prompt("Introduce el primer número:"));
+            let num2 = parseFloat(prompt("Introduce el segundo número:"));
+            let operacion = prompt("Introduce la operación (+, -, *, /):");
+            let resultado;
+
+            if (operacion === "+") {
+                resultado = num1 + num2;
+            } else if (operacion === "-") {
+                resultado = num1 - num2;
+            } else if (operacion === "*") {
+                resultado = num1 * num2;
+            } else if (operacion === "/") {
+                resultado = num1 / num2;
+            }
+
+            document.getElementById("resultado").innerHTML = "Resultado: " + resultado;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Año bisiesto</title>
+</head>
+
+<body>
+
+    <h1>Comprobar año bisiesto</h1>
+
+    <button onclick="verificarBisiesto()">Comprobar</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function verificarBisiesto() {
+            let año = parseInt(prompt("Introduce un año:"));
+            let esBisiesto = false;
+
+            if ((año % 4 === 0 && año % 100 !== 0) || (año % 400 === 0)) {
+                esBisiesto = true;
+            }
+
+            if (esBisiesto) {
+                document.getElementById("resultado").innerHTML = "Es un año bisiesto";
+            } else {
+                document.getElementById("resultado").innerHTML = "No es un año bisiesto";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

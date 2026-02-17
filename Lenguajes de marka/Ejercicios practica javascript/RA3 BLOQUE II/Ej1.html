@@ -3,10 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Contraseña correcta</title>
 </head>
 
 <body>
+
+    <h1>Verificar contraseña</h1>
+
+    <button onclick="verificar()">Ingresar contraseña</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function verificar() {
+            let contraseñaSecreta = "1234";
+            let contraseña = prompt("Introduce la contraseña:");
+
+            if (contraseña === contraseñaSecreta) {
+                document.getElementById("resultado").innerHTML = "Acceso concedido";
+            }
+        }
+    </script>
 
 </body>
 

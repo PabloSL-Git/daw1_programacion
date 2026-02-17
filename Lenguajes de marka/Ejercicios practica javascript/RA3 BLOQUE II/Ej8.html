@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+
+<body>
+
+    <h1>Login</h1>
+
+    <button onclick="login()">Iniciar sesión</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function login() {
+            let usuarioCorrecto = "admin";
+            let contraseñaCorrecta = "12345";
+
+            let usuario = prompt("Introduce el usuario:");
+            let contraseña = prompt("Introduce la contraseña:");
+
+            if (usuario === usuarioCorrecto && contraseña === contraseñaCorrecta) {
+                document.getElementById("resultado").innerHTML = "Login exitoso";
+            } else {
+                document.getElementById("resultado").innerHTML = "Usuario o contraseña incorrectos";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
