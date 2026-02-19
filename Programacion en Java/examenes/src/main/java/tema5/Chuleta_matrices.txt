@@ -1,0 +1,161 @@
+=========================================
+MATRICES (ARRAYS BIDIMENSIONALES) - JAVA
+=========================================
+
+1) DECLARACIÓN
+
+int[][] m;
+
+Con tamaño:
+int[][] m = new int[filas][columnas];
+
+Ejemplo:
+int[][] m = new int[3][4];  // 3 filas, 4 columnas
+
+
+2) INICIALIZACIÓN DIRECTA
+
+int[][] m = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+};
+
+
+3) TAMAÑO
+
+m.length        -> número de filas
+m[i].length     -> número de columnas
+
+IMPORTANTE:
+m.length NO son columnas
+
+
+4) RECORRER MATRIZ (DOBLE FOR)
+
+for(int i = 0; i < m.length; i++){          // filas
+    for(int j = 0; j < m[i].length; j++){   // columnas
+        System.out.print(m[i][j] + " ");
+    }
+    System.out.println();
+}
+
+
+5) SUMAR TODOS LOS ELEMENTOS
+
+int suma = 0;
+
+for(int i = 0; i < m.length; i++){
+    for(int j = 0; j < m[i].length; j++){
+        suma += m[i][j];
+    }
+}
+
+
+6) ENCONTRAR EL MAYOR
+
+int mayor = m[0][0];
+
+for(int i = 0; i < m.length; i++){
+    for(int j = 0; j < m[i].length; j++){
+        if(m[i][j] > mayor){
+            mayor = m[i][j];
+        }
+    }
+}
+
+
+7) SUMAR UNA FILA (ej fila 1)
+
+int sumaFila = 0;
+
+for(int j = 0; j < m[1].length; j++){
+    sumaFila += m[1][j];
+}
+
+
+8) SUMAR UNA COLUMNA (ej columna 2)
+
+int sumaCol = 0;
+
+for(int i = 0; i < m.length; i++){
+    sumaCol += m[i][2];
+}
+
+
+9) DIAGONAL PRINCIPAL (matriz cuadrada)
+
+Condición: i == j
+
+int sumaDiag = 0;
+
+for(int i = 0; i < m.length; i++){
+    sumaDiag += m[i][i];
+}
+
+
+10) DIAGONAL SECUNDARIA (matriz cuadrada)
+
+Condición: i + j == n - 1
+
+int sumaDiag2 = 0;
+int n = m.length;
+
+for(int i = 0; i < n; i++){
+    sumaDiag2 += m[i][n - 1 - i];
+}
+
+
+11) BUSCAR UN NÚMERO
+
+int buscar = 5;
+boolean encontrado = false;
+
+for(int i = 0; i < m.length; i++){
+    for(int j = 0; j < m[i].length; j++){
+        if(m[i][j] == buscar){
+            encontrado = true;
+        }
+    }
+}
+
+
+12) CONTAR CUÁNTAS VECES APARECE UN NÚMERO
+
+int contador = 0;
+
+for(int i = 0; i < m.length; i++){
+    for(int j = 0; j < m[i].length; j++){
+        if(m[i][j] == 3){
+            contador++;
+        }
+    }
+}
+
+
+13) INTERCAMBIAR FILAS
+
+int[] temp = m[0];
+m[0] = m[1];
+m[1] = temp;
+
+
+=============================
+ERRORES TÍPICOS DE EXAMEN
+=============================
+
+- Confundir m.length con columnas
+- No usar doble for
+- No inicializar mayor con m[0][0]
+- Salirse del límite del array
+- Olvidar que la diagonal solo existe en matrices cuadradas
+
+=============================
+REGLAS CLAVE
+=============================
+
+Filas     -> m.length
+Columnas  -> m[i].length
+Doble for obligatorio
+Diagonal principal -> i == j
+Diagonal secundaria -> i + j == n - 1
