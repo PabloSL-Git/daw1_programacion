@@ -1,0 +1,183 @@
+=============================
+CHULETA JAVA - EXAMEN
+Lista | Ordenación | Binaria
+Set | Map | Matrices
+=============================
+
+-----------------------------
+1) LIST
+-----------------------------
+import java.util.*;
+
+List<Integer> l = new ArrayList<>();
+l.add(5);
+l.get(0);
+l.size();
+l.remove(0);
+
+Recorrer:
+for(int i=0;i<l.size();i++){}
+for(int n : l){}
+
+-----------------------------
+2) ORDENACIÓN
+-----------------------------
+
+Ascendente:
+Collections.sort(l);
+l.sort(null);
+
+Descendente:
+l.sort(Collections.reverseOrder());
+
+Ordenar objetos:
+
+Comparable:
+class Persona implements Comparable<Persona>{
+    int edad;
+    public int compareTo(Persona p){
+        return this.edad - p.edad;
+    }
+}
+
+Comparator:
+l.sort((a,b) -> a.edad - b.edad);
+
+Por String:
+l.sort((a,b) -> a.nombre.compareTo(b.nombre));
+
+⚠ Para binarySearch debe estar ordenado.
+
+-----------------------------
+3) BÚSQUEDA BINARIA
+-----------------------------
+
+Collections.sort(l);
+int pos = Collections.binarySearch(l, valor);
+
+Si pos >= 0 → encontrado
+Si pos < 0 → no está
+
+-----------------------------
+4) SET
+-----------------------------
+
+No permite duplicados.
+
+HashSet (sin orden):
+Set<Integer> s = new HashSet<>();
+
+TreeSet (ordenado):
+Set<Integer> s = new TreeSet<>();
+
+Operaciones:
+s.add(x);
+s.remove(x);
+s.contains(x);
+
+Eliminar duplicados de lista:
+Set<Integer> s = new HashSet<>(lista);
+
+-----------------------------
+5) MAP
+-----------------------------
+
+Clave → Valor
+
+HashMap:
+Map<String,Integer> m = new HashMap<>();
+
+m.put("Ana",20);
+m.get("Ana");
+m.containsKey("Ana");
+m.remove("Ana");
+
+Recorrer:
+for(Map.Entry<String,Integer> e : m.entrySet()){
+    e.getKey();
+    e.getValue();
+}
+
+Contar repeticiones:
+m.put(x, m.getOrDefault(x,0)+1);
+
+-----------------------------
+6) MATRICES
+-----------------------------
+
+Declarar:
+int[][] m = new int[filas][cols];
+
+Inicializar:
+int[][] m = {
+    {1,2,3},
+    {4,5,6}
+};
+
+Recorrer:
+for(int i=0;i<m.length;i++){
+    for(int j=0;j<m[i].length;j++){
+        System.out.print(m[i][j]);
+    }
+}
+
+Filas = m.length
+Columnas = m[i].length
+
+-----------------------------
+COSAS TÍPICAS DE EXAMEN
+-----------------------------
+
+✔ Ordenar lista objetos
+✔ Buscar con binarySearch
+✔ Quitar duplicados con Set
+✔ Contar con Map
+✔ Sumar fila/columna matriz
+✔ Encontrar mayor/menor matriz
+✔ Recorrer con for-each
+
+-----------------------------
+RECORDATORIOS IMPORTANTES
+-----------------------------
+
+• binarySearch → lista ORDENADA
+• TreeSet ordena automáticamente
+• HashSet y HashMap NO mantienen orden
+• Comparable = orden natural
+• Comparator = orden personalizado
+
+
+COMPARACIÓN
+
+Comparable → orden natural
+class X implements Comparable<X>{
+    public int compareTo(X o){
+        return Integer.compare(this.valor, o.valor);
+    }
+}
+
+Comparator → orden externo
+lista.sort((a,b) -> Integer.compare(a.x, b.x));
+
+Si devuelve:
+<0 → va antes
+0 → iguales
+>0 → va después
+
+--------------------------------
+
+BINARY SEARCH
+
+⚠ LISTA ORDENADA
+
+Collections.sort(lista);
+int pos = Collections.binarySearch(lista, x);
+
+pos >= 0 → encontrado
+pos < 0 → no está
+
+Si no está:
+devuelve -(posInsercion) - 1
+
+Con objetos:
+Collections.binarySearch(lista, obj, comparador);

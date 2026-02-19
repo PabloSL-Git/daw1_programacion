@@ -1,0 +1,157 @@
+=================================
+MÉTODOS MÁS USADOS - JAVA
+List | Set | Map | Collections
+=================================
+
+=====================
+1) LIST (ArrayList)
+=====================
+
+Crear:
+List<Integer> l = new ArrayList<>();
+
+Añadir:
+l.add(x);
+l.add(pos, x);
+
+Obtener:
+l.get(i);
+
+Modificar:
+l.set(i, x);
+
+Eliminar:
+l.remove(i);        // por índice
+l.remove(obj);      // por valor
+
+Tamaño:
+l.size();
+
+Comprobar:
+l.contains(x);
+l.isEmpty();
+
+Índice:
+l.indexOf(x);
+
+Limpiar:
+l.clear();
+
+Recorrer:
+for(int i=0;i<l.size();i++){}
+for(Integer n : l){}
+
+=====================
+2) SET (HashSet / TreeSet)
+=====================
+
+Crear:
+Set<Integer> s = new HashSet<>();
+Set<Integer> s = new TreeSet<>(); // ordenado
+
+Añadir:
+s.add(x);
+
+Eliminar:
+s.remove(x);
+
+Comprobar:
+s.contains(x);
+
+Tamaño:
+s.size();
+
+Vacío:
+s.isEmpty();
+
+Limpiar:
+s.clear();
+
+Recorrer:
+for(Integer n : s){}
+
+⚠ No permite duplicados
+⚠ No tiene get(i)
+
+=====================
+3) MAP (HashMap)
+=====================
+
+Crear:
+Map<String,Integer> m = new HashMap<>();
+
+Añadir / Modificar:
+m.put(clave, valor);
+
+Obtener:
+m.get(clave);
+
+Eliminar:
+m.remove(clave);
+
+Comprobar:
+m.containsKey(clave);
+m.containsValue(valor);
+
+Tamaño:
+m.size();
+
+Vacío:
+m.isEmpty();
+
+Limpiar:
+m.clear();
+
+Recorrer claves:
+for(String k : m.keySet()){}
+
+Recorrer valores:
+for(Integer v : m.values()){}
+
+Recorrer clave-valor:
+for(Map.Entry<String,Integer> e : m.entrySet()){
+    e.getKey();
+    e.getValue();
+}
+
+Contar repeticiones:
+m.put(x, m.getOrDefault(x,0)+1);
+
+=====================
+4) COLLECTIONS (Muy usado)
+=====================
+
+Ordenar:
+Collections.sort(lista);
+
+Orden inverso:
+Collections.sort(lista, Collections.reverseOrder());
+
+Buscar (lista ordenada):
+Collections.binarySearch(lista, x);
+
+Máximo:
+Collections.max(lista);
+
+Mínimo:
+Collections.min(lista);
+
+Frecuencia:
+Collections.frequency(lista, x);
+
+=====================
+5) MATRICES
+=====================
+
+Declarar:
+int[][] m = new int[f][c];
+
+Tamaño:
+m.length        // filas
+m[i].length     // columnas
+
+Recorrer:
+for(int i=0;i<m.length;i++){
+    for(int j=0;j<m[i].length;j++){
+    }
+}

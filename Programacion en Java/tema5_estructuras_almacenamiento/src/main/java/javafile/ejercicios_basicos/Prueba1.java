@@ -5,8 +5,9 @@ to change this license
 this template
  */
 package javafile.ejercicios_basicos;
+
 import java.util.ArrayList;
-    
+
 /**
  *
  * @author usuario
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 public class Prueba1 {
 
     public static void main(String[] args) {
-        
-         // Crear lista vacía
-        
+
+        // Crear lista vacía
+
         ArrayList<Integer> numeros = new ArrayList<>();
 
         // Añadir elementos
