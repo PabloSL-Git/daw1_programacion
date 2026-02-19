@@ -1,0 +1,149 @@
+====================================
+COMPARABLE - COMPARATOR - BINARY SEARCH
+====================================
+
+-------------------------------------------------
+1) COMPARABLE (ORDEN NATURAL)
+-------------------------------------------------
+
+Se usa cuando la clase tiene un orden fijo.
+
+class Persona implements Comparable<Persona> {
+
+    String nombre;
+    int edad;
+
+    public Persona(String nombre, int edad){
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+
+    @Override
+    public int compareTo(Persona p){
+        return Integer.compare(this.edad, p.edad);
+    }
+}
+
+Ordenar:
+Collections.sort(listaPersonas);
+
+Buscar:
+Collections.binarySearch(listaPersonas, personaBuscada);
+
+
+Regla compareTo:
+< 0  -> this va antes
+= 0  -> iguales
+> 0  -> this va después
+
+
+-------------------------------------------------
+2) COMPARATOR (ORDEN PERSONALIZADO)
+-------------------------------------------------
+
+Se usa cuando:
+- No puedes modificar la clase
+- Quieres varios criterios de ordenación
+
+---------------------------------
+Ordenar por edad
+---------------------------------
+
+Comparator<Persona> compEdad =
+    (a,b) -> Integer.compare(a.edad, b.edad);
+
+Collections.sort(listaPersonas, compEdad);
+
+Buscar:
+Collections.binarySearch(listaPersonas, personaBuscada, compEdad);
+
+
+---------------------------------
+Ordenar por nombre
+---------------------------------
+
+Comparator<Persona> compNombre =
+    (a,b) -> a.nombre.compareTo(b.nombre);
+
+Collections.sort(listaPersonas, compNombre);
+
+Buscar:
+Collections.binarySearch(listaPersonas, personaBuscada, compNombre);
+
+
+---------------------------------
+Orden descendente
+---------------------------------
+
+Comparator<Persona> compDesc =
+    (a,b) -> Integer.compare(b.edad, a.edad);
+
+Collections.sort(listaPersonas, compDesc);
+
+Buscar:
+Collections.binarySearch(listaPersonas, personaBuscada, compDesc);
+
+
+---------------------------------
+Orden por varios criterios
+---------------------------------
+
+Edad y si empatan -> nombre
+
+Comparator<Persona> compMultiple =
+    (a,b) -> {
+        int res = Integer.compare(a.edad, b.edad);
+        if(res == 0){
+            return a.nombre.compareTo(b.nombre);
+        }
+        return res;
+    };
+
+Collections.sort(listaPersonas, compMultiple);
+
+Buscar:
+Collections.binarySearch(listaPersonas, personaBuscada, compMultiple);
+
+
+-------------------------------------------------
+3) BINARY SEARCH REGLAS IMPORTANTES
+-------------------------------------------------
+
+1) La lista DEBE estar ordenada.
+2) Debes usar el MISMO criterio para ordenar y buscar.
+3) Devuelve índice si lo encuentra.
+4) Devuelve número negativo si no lo encuentra.
+
+Ejemplo simple:
+
+Collections.sort(lista);
+int pos = Collections.binarySearch(lista, valor);
+
+Si pos >= 0 -> encontrado
+Si pos < 0  -> no está
+
+
+Si no está:
+devuelve -(puntoInsercion) - 1
+
+
+-------------------------------------------------
+RESUMEN EXAMEN
+-------------------------------------------------
+
+Comparable -> orden natural
+Comparator -> orden personalizado
+
+Tipos simples:
+Collections.sort(lista);
+Collections.binarySearch(lista, x);
+
+Objetos con Comparable:
+Collections.sort(lista);
+Collections.binarySearch(lista, obj);
+
+Objetos con Comparator:
+Collections.sort(lista, comp);
+Collections.binarySearch(lista, obj, comp);
+
+SIEMPRE mismo criterio para ordenar y buscar.

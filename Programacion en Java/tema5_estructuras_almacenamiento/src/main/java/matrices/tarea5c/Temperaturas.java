@@ -55,7 +55,7 @@ public class Temperaturas {
         System.out.println("Localidad: " + localidad + " - Año: " + año);
         for (int i = 0; i < 12; i++) {
             System.out.print("Mes " + (i + 1) + ": ");
-            for (int j = 0; j < diasMes[i]; j++) {
+            for (int j = 0; j < dia sMes[i]; j++) {
                 System.out.print(matrizTemperatura[i][j] + " ");
             }
             System.out.println();

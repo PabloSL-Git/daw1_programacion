@@ -1,0 +1,169 @@
+==========================================
+MÉTODOS MÁS USADOS - JAVA
+List | Set | Map | Collections | Matrices
+==========================================
+
+=====================
+1) LIST (ArrayList)
+=====================
+
+List<String> lista = new ArrayList<>();
+
+add(elemento):
+lista.add("Ana");
+add(pos, elemento):
+lista.add(1, "Pedro");
+
+get(indice):
+String n = lista.get(0);
+
+set(indice, elemento):
+lista.set(0, "Carlos");
+
+remove(indice):
+lista.remove(0);
+remove(objeto):
+lista.remove("Luis");
+
+contains(elemento):
+boolean existe = lista.contains("Ana");
+
+size():
+int tam = lista.size();
+
+indexOf(elemento):
+int pos = lista.indexOf("Ana");
+
+isEmpty():
+boolean vacia = lista.isEmpty();
+
+clear():
+lista.clear();
+
+Recorrer:
+for(int i=0;i<lista.size();i++){}
+for(String s : lista){}
+
+
+=====================
+2) SET (HashSet / TreeSet)
+=====================
+
+Set<Integer> set = new HashSet<>();
+Set<Integer> setOrdenado = new TreeSet<>();
+
+add(elemento):
+set.add(5);
+remove(elemento):
+set.remove(5);
+
+contains(elemento):
+boolean tiene = set.contains(5);
+
+size():
+int tam = set.size();
+
+isEmpty():
+boolean vacio = set.isEmpty();
+
+clear():
+set.clear();
+
+Recorrer:
+for(Integer n : set){}
+
+
+=====================
+3) MAP (HashMap)
+=====================
+
+Map<String,Integer> mapa = new HashMap<>();
+
+put(clave, valor):
+mapa.put("Ana", 20);
+get(clave):
+int edad = mapa.get("Ana");
+
+getOrDefault(clave, valorPorDefecto):
+int edad = mapa.getOrDefault("Pedro", 0);
+
+remove(clave):
+mapa.remove("Luis");
+
+containsKey(clave):
+boolean existe = mapa.containsKey("Ana");
+
+containsValue(valor):
+boolean existe = mapa.containsValue(20);
+
+size():
+int tam = mapa.size();
+
+keySet():
+Set<String> claves = mapa.keySet();
+
+values():
+Collection<Integer> valores = mapa.values();
+
+entrySet():
+for(Map.Entry<String,Integer> e : mapa.entrySet()){
+    e.getKey();
+    e.getValue();
+}
+
+clear():
+mapa.clear();
+
+Contar repeticiones:
+mapa.put(x, mapa.getOrDefault(x,0)+1);
+
+
+=====================
+4) COLLECTIONS
+=====================
+
+sort(lista):
+Collections.sort(lista);
+
+reverseOrder():
+Collections.sort(lista, Collections.reverseOrder());
+
+binarySearch(lista, x):
+int pos = Collections.binarySearch(lista, "Ana");
+
+max(lista):
+String mayor = Collections.max(lista);
+
+min(lista):
+String menor = Collections.min(lista);
+
+frequency(lista, x):
+int veces = Collections.frequency(lista, "Ana");
+
+
+=====================
+5) MATRICES (Arrays 2D)
+=====================
+
+int[][] m = {
+    {1,2,3},
+    {4,5,6}
+};
+
+Acceder:
+int v = m[0][1];
+
+Modificar:
+m[1][2] = 10;
+
+Filas y columnas:
+int filas = m.length;
+int cols = m[0].length;
+
+Recorrer:
+for(int i=0;i<m.length;i++){
+    for(int j=0;j<m[i].length;j++){
+        System.out.print(m[i][j]+" ");
+    }
+    System.out.println();
+}
