@@ -1,0 +1,224 @@
+==============================
+CONECTA 4 – MATRICES JAVA
+==============================
+
+TABLERO:
+- 6 filas
+- 7 columnas
+- char[][] tablero
+- 'X' jugador 1
+- 'O' jugador 2
+- ' ' vacío
+
+---------------------------------
+ATRIBUTOS CLASE JUEGO
+---------------------------------
+
+private char[][] tablero;
+private int filas = 6;
+private int columnas = 7;
+private int fichasParaGanar = 4;
+private char jugadorActual = 'X';
+
+---------------------------------
+CONSTRUCTOR
+---------------------------------
+
+tablero = new char[filas][columnas];
+inicializarTablero();
+
+---------------------------------
+INICIALIZAR TABLERO
+---------------------------------
+
+private void inicializarTablero() {
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            tablero[i][j] = ' ';
+        }
+    }
+}
+
+---------------------------------
+COLOCAR FICHA
+(Recorrer desde abajo)
+---------------------------------
+
+public boolean colocarFicha(int columna) {
+
+    if (columna < 0 || columna >= columnas) {
+        return false;
+    }
+
+    for (int fila = filas - 1; fila >= 0; fila--) {
+        if (tablero[fila][columna] == ' ') {
+            tablero[fila][columna] = jugadorActual;
+            return true;
+        }
+    }
+
+    return false; // columna llena
+}
+
+---------------------------------
+CAMBIAR TURNO
+---------------------------------
+
+public void cambiarTurno() {
+    if (jugadorActual == 'X') {
+        jugadorActual = 'O';
+    } else {
+        jugadorActual = 'X';
+    }
+}
+
+---------------------------------
+COMPROBAR VICTORIA
+---------------------------------
+
+public boolean hayVictoria() {
+
+    // HORIZONTAL
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j <= columnas - fichasParaGanar; j++) {
+
+            boolean gana = true;
+
+            for (int k = 0; k < fichasParaGanar; k++) {
+                if (tablero[i][j + k] != jugadorActual) {
+                    gana = false;
+                    break;
+                }
+            }
+
+            if (gana) return true;
+        }
+    }
+
+    // VERTICAL
+    for (int i = 0; i <= filas - fichasParaGanar; i++) {
+        for (int j = 0; j < columnas; j++) {
+
+            boolean gana = true;
+
+            for (int k = 0; k < fichasParaGanar; k++) {
+                if (tablero[i + k][j] != jugadorActual) {
+                    gana = false;
+                    break;
+                }
+            }
+
+            if (gana) return true;
+        }
+    }
+
+    // DIAGONAL DESCENDENTE ↘
+    for (int i = 0; i <= filas - fichasParaGanar; i++) {
+        for (int j = 0; j <= columnas - fichasParaGanar; j++) {
+
+            boolean gana = true;
+
+            for (int k = 0; k < fichasParaGanar; k++) {
+                if (tablero[i + k][j + k] != jugadorActual) {
+                    gana = false;
+                    break;
+                }
+            }
+
+            if (gana) return true;
+        }
+    }
+
+    // DIAGONAL ASCENDENTE ↗
+    for (int i = fichasParaGanar - 1; i < filas; i++) {
+        for (int j = 0; j <= columnas - fichasParaGanar; j++) {
+
+            boolean gana = true;
+
+            for (int k = 0; k < fichasParaGanar; k++) {
+                if (tablero[i - k][j + k] != jugadorActual) {
+                    gana = false;
+                    break;
+                }
+            }
+
+            if (gana) return true;
+        }
+    }
+
+    return false;
+}
+
+---------------------------------
+COMPROBAR EMPATE
+---------------------------------
+
+public boolean tableroLleno() {
+    for (int j = 0; j < columnas; j++) {
+        if (tablero[0][j] == ' ') {
+            return false;
+        }
+    }
+    return true;
+}
+
+---------------------------------
+GETTERS NECESARIOS
+---------------------------------
+
+public char[][] getTablero() {
+    return tablero;
+}
+
+public char getJugadorActual() {
+    return jugadorActual;
+}
+
+---------------------------------
+BUCLE PRINCIPAL (MAIN)
+---------------------------------
+
+while (true) {
+
+    mostrarTablero(juego);
+
+    System.out.println("Turno jugador: " + juego.getJugadorActual());
+    int columna = sc.nextInt();
+
+    if (!juego.colocarFicha(columna)) {
+        System.out.println("Columna inválida o llena");
+        continue;
+    }
+
+    if (juego.hayVictoria()) {
+        mostrarTablero(juego);
+        System.out.println("GANA: " + juego.getJugadorActual());
+        break;
+    }
+
+    if (juego.tableroLleno()) {
+        mostrarTablero(juego);
+        System.out.println("EMPATE");
+        break;
+    }
+
+    juego.cambiarTurno();
+}
+
+---------------------------------
+MOSTRAR TABLERO (EN MAIN)
+---------------------------------
+
+public static void mostrarTablero(Juego juego) {
+
+    char[][] t = juego.getTablero();
+
+    for (int i = 0; i < t.length; i++) {
+        for (int j = 0; j < t[i].length; j++) {
+            System.out.print("|" + t[i][j]);
+        }
+        System.out.println("|");
+    }
+
+    System.out.println(" 0 1 2 3 4 5 6 ");
+}
