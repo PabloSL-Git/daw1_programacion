@@ -1,4 +1,4 @@
-package javafile.ejercicio_planetas;
+package ejercicio_planetas;
 
 import java.util.List;
 import java.util.ArrayList;
