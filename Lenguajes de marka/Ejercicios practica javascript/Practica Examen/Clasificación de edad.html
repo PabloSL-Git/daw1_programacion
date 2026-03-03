@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+
+<head>
+    <meta charset="utf-8">
+    <title>Clasificación de edad</title>
+</head>
+
+<body>
+    <h1 style="text-align: center">Clasificación de edad</h1>
+
+    <h2 id="resultado" style="text-align: center;">Calcular</h2>
+
+    <script>
+        // Solicitar la edad al usuario
+        let edad = parseInt(prompt("Introduce tu edad:"));
+
+        if (edad < 13) {
+            clasificacion = "Niño";
+        } else if (edad >= 13 && edad <= 17) {
+            clasificacion = "Adolescente";
+        } else if (edad >= 18 && edad <= 64) {
+            clasificacion = "Adulto";
+        } else if (edad >= 65) {
+            clasificacion = "Adulto mayor";
+        } else {
+            clasificacion = "Edad no válida";
+        }
+
+        // Mostrar en consola
+        console.log(clasificacion);
+
+        // Mostrar en el h2 de la página
+        document.getElementById("resultado").textContent = clasificacion;
+    </script>
+
+</body>
+
+</html>

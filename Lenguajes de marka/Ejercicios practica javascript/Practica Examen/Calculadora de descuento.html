@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="utf-8">
+<title>Calculadora de descuento por tipo de cliente</title>
+</head>
+<body>
+<h1 style="text-align: center">Calculadora de descuento por tipo de cliente</h1>
+
+<h2 id="resultado" style="text-align: center;">Calculo</h2>
+
+<script>
+// Pedimos los datos
+let totalCompra = parseFloat(prompt("Introduce el total de la compra:"));
+let tipoCliente = prompt("Introduce el tipo de cliente (normal o vip):");
+
+// Aplicamos descuentos
+if (tipoCliente === "vip") {
+    totalCompra = totalCompra * 0.8; // 20% descuento
+} else if (tipoCliente === "normal" && totalCompra > 100) {
+    totalCompra = totalCompra * 0.9; // 10% descuento
+}
+
+// Mostramos resultados
+console.log("Total final: " + totalCompra);
+document.getElementById("resultado").textContent = totalCompra;
+</script>
+
+</body>
+</html>
