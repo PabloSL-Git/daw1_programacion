@@ -1,0 +1,48 @@
+CHULETA RÁPIDA JS (EXAMEN)
+
+1️⃣ Comparaciones
+
+=   asignar
+==  comparar valor
+=== comparar valor y tipo (usar este)
+!== distinto estricto
+
+2️⃣ prompt() devuelve texto
+
+Number(prompt())
+parseInt()
+parseFloat()
+
+3️⃣ Comprobar número
+
+isNaN(valor)
+
+4️⃣ Operadores
+
+>  <  >=  <=
+&& (Y)
+|| (O)
+!  (NO)
+
+5️⃣ Par / Impar
+
+n % 2 === 0  → par
+n % 2 !== 0  → impar
+
+6️⃣ Decimales
+
+numero.toFixed(2)
+
+7️⃣ Texto en minúsculas
+
+texto.toLowerCase()
+
+8️⃣ Estructura básica
+
+if (condicion) {
+
+} else if (condicion) {
+
+} else {
+
+}
