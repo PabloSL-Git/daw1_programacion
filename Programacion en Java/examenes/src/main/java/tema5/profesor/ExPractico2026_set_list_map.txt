@@ -1,0 +1,101 @@
+﻿IES MAR DE ALBORÁN – ESTEPONA – 19 febrero 2026
+Evaluación Estructuras de Datos – Programación – 1º DAW
+
+
+Crea un nuevo proyecto Maven, llamado ext5+tunombre, con un paquete llamado alboran. 
+
+
+EJ1.- Crea la clase Pasajero, con atributos encapsulados: id (final), NIF (final), nombre y email. 
+Incluye constructores por defecto y parametrizado, toString, equals, hashcode y orden natural por id. El email debe contener exactamente un carácter ‘@’ y mínimo un carácter ‘.’ en al menos dos posiciones posteriores a la ‘@’. 
+
+
+EJ2.- Crea la clase Vuelo, con atributos encapsulados: código de vuelo (final), ciudad origen, ciudad destino, duración en minutos y un conjunto de pasajeros únicos (final). 
+Solo existe un constructor parametrizado que no recibe la lista de pasajeros porque inicialmente los vuelos se crean con la lista de pasajeros vacía. Las ciudades de origen y destino deben ser diferentes y la duración mayor que 45 minutos. La clase debe proporcionar métodos para añadir y borrar pasajeros al vuelo. Incluye equals, hashcode y orden natural por código de vuelo. 
+
+
+EJ3.- En una clase Programa, con el método main, crea una lista de cinco vuelos con los datos que tú quieras. Añade pasajeros a los vuelos con datos inventados. Imprime la lista de vuelos usando un foreach.
+
+
+En distintos métodos de clase, dentro de la clase Programa,  pasando la lista de vuelos, hay que obtener la siguiente información:
+* Un conjunto de vuelos únicos.
+* Devolver una estructura de datos donde para cada ciudad de destino se indique el número de pasajeros que vuelan a ese destino, de entre todos los vuelos de la lista.
+* Devolver la misma información que el apartado anterior pero garantizando que las ciudades contenidas en la estructura de datos están ordenadas alfabéticamente.
+* Generar una estructura de datos para asociar el código de vuelo a un conjunto de  pasajeros de ese vuelo.
+* Borrar todos los vuelos que viajan a una ciudad de destino, que se pasa como parámetro, usando iteradores.
+* Ordenar la lista de vuelos según su orden natural.
+* Ordenar la lista de vuelos por ciudad de origen.
+* Realizar búsqueda binaria de vuelos según su id, devolviendo la posición en la lista en la que se encuentra o -1 si no está.
+
+
+En el método main, prueba cada método de los anteriores, imprimiendo por consola la información necesaria para la depuración.
+
+
+Sube el proyecto en formato ZIP. Asegúrate de que el archivo contiene los archivos correctos y se puede descargar y abrir correctamente.
+________________
+RÚBRICA DE CORRECCIÓN               Alumno/a: 
+* En la clase Vuelo, el conjunto de pasajeros es un Set                                                2,5
+* Existen los métodos añadir y borrar pasajeros al vuelo                                        3
+* Las clases Pasajero y Vuelo  incluyen equals y hashcode por id                                3
+* Los métodos toString están implementados en Vuelo y Pasajero                                1,5
+	4c. Se han definido propiedades y métodos.
+	* El constructor de Pasajero recibe los parámetros apropiados(1,5), inicializa correctamente los atributos(1) manteniendo las restricciones del email (2,5)                                                                        5
+* El constructor de Vuelo recibe los parámetros apropiados(1,5), inicializa correctamente los atributos (1) manteniendo las restricciones de duración y ciudades (2,5)                                                                5
+	4e. Se han definido constructores
+	* La clase Pasajero tiene los atributos private (2), incluye getters (0,5) y los setters mantienen las restricciones (1,5)        4
+* La clase Vuelo tiene los atributos private (2,5), incluye getters (0,5) y los setters mantienen las restricciones (3)        6
+	4f. Se han implementado mecanismos para controlar la visibilidad de miembros en la clase
+	4b. Se han definido clases (media de 4c, 4e y 4f)
+	* En la clase Programa, el método obtiene un conjunto de vuelos únicos correctamente                2,5
+* En la clase Programa, el método obtiene el map que asocia ciudad y número de pasajeros        2,5
+* En la clase Programa, el método obtiene el map anterior ordenado alfabéticamente                2,5
+* En la clase Programa, el método obtiene el map con los códigos y el set de pasajeros asociados        2,5
+	6b. Se han reconocido las librerías de clases relacionadas con tipos de datos avanzados.
+6 c. Se han reconocido las características y ventajas de cada una de las colecciones
+de datos disponibles.
+	* Crea la lista de vuelos con los pasajeros                                                        2,5
+* Imprime usando foreach                                                                        1,5
+* Ordena la lista por id                                                                        2
+* Ordena la lista por ciudad                                                                        2
+* Realiza la búsqueda binaria                                                                2
+	6d. Se han usado listas para almacenar y procesar la información
+	* Borra correctamente los vuelos por ciudad usando iteradores                                        10
+	6e. Se han usado iteradores para realizar recorridas sobre estructuras de datos.
+	* La clase Pasajero implementa Comparable                                                        2,5
+* La clase Vuelo implementa Comparable                                                        2,5
+* El método compareTo de Pasajero es correcto usando el id                                        2,5
+* El método compareTo de Vuelo es correcto usando el código de vuelo                                2,5
+	6h. Se han identificado y evaluado los escenarios de uso de interfaces.
+	
+
+
+
+Create a new Maven project, called ext5+yourname, with a package called alboran.
+
+
+EJ1.- Create the Passenger class, with encapsulated attributes: id (final), NIF (final), name, and email.
+Include default and parameterized constructors, toString, equals, hashcode, and natural ordering by id. The email must contain exactly one '@' character and at least one '.' character in at least two positions after the '@'.
+
+
+EJ2.- Create the Flight class, with encapsulated attributes: flight code (final), origin city, destination city, duration in minutes, and a set of unique passengers (final).
+There is only one parameterized constructor that does not receive the passenger list because flights are initially created with an empty passenger list. The origin and destination cities must be different, and the duration must be greater than 45 minutes. The class must provide methods to add and remove passengers from the flight. Include equals, hashcode, and natural ordering by flight code.
+
+
+EJ3.- In a Program class, using the main method, create a list of five flights with any data you choose. Add passengers to the flights using invented data. Print the flight list.
+
+
+In different class methods within the Program class, given the flight list, obtain the following information:
+* A set of unique flights.
+* Return a data structure where, for each destination city, the number of passengers flying to that destination is indicated, from all the flights in the list.
+* Return the same information as in the previous section, but ensuring that the cities contained in the data structure are sorted alphabetically.
+* Generate a data structure to associate the flight code with a set of passengers on that flight.
+* Delete all flights traveling to a destination city, which is passed as a parameter.
+* Sort the flight list according to its natural order.
+* Sort the flight list by origin city. Perform binary search of flights according to their ID, returning the position in the list where it is found or -1 if it is not.
+
+
+In the main method, test each of the previous methods, printing the necessary debugging information to the console.
+
+
+
+
+Upload the project in ZIP format. Make sure the file contains the correct files and can be downloaded and opened correctly.
