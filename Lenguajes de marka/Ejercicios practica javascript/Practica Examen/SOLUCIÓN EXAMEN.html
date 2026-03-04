@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXAMEN RA3</title>
+</head>
+<body>
+<h1 id="resultado">EXAMEN RA3</h1>
+<script>
+/* Se pide que crees una función que calcule el precio de una tarta para la pastelería Honoré de Estepona. La función tiene los siguientes parámetros:
+Cálculo base: El cliente paga 35 EUR por kilo.
+Incremento de un +10% por ingredientes eco.
+Incremento de un +10% por tarta vegana.
+Si el cliente elige customización temática: +25 EUR.
+Entrega:
+Recogida en tienda: 0 EUR
+Domicilio en Estepona: 10 EUR
+Radio 15 km desde Estepona: 20 EUR
+Se necesita también que calcules el precio de una tarta de 1,5 kilos que sea vegana y eco sin customización entregada en Estepona y lo saques por consola y en el campo resultado.
+*/
+// Escribe aquí tu código
+function calcula(peso,eco,vegana,entrega){
+let total=0;
+
+total += peso*35;
+console.log(total)
+total += eco*total*0.1+vegana*total*0.1;
+console.log(total)
+//entrega vale 0 tienda - 1 estepona -2 fuera estepona
+let cuantoentrega=0
+if (entrega==1) total+=10;
+if (entrega==2) total+=20;
+return total;
+}
+
+let t = calcula(1.5,1,1,1)
+console.log(t)
+document.getElementById("resultado").innerHTML=t
+
+
+
+</script>
+</body>
+</html>

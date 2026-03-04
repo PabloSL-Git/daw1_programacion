@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang= "es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content= "with=device-width, initial-scale=1.0">
+  <title>EXAMEN RA3</title>
+</head>
+<body>
+
+  <h1 id="resultado">EXAMEN RA3</h1>
+  
+  
+  <script>
+  
+  let kilos = parseFloat(promt("Dame los kilos"));
+  let eco = promt("¿Quiere que sea eco? Di si o no");
+  let vegano = promt("¿Quiere que sea vegano? Di si o no");
+  let tematico = promt("¿Quiere que sea tematico? Di si o no");
+  let entrega = promt("Elige una forma de entrega (tienda, domicilio o radio");
+  
+  kilos = 1.5;
+  vegano = si;
+  eco = si;
+  entrega = domicilio;
+  
+  let precio = kilos * 35;
+  if (eco === si){
+    precio = precio + (precio * 0.1);
+  }
+  if (vegano === si){
+    precio = precio + (precio * 0.1);
+  }
+  if (tematico === si){
+    precio = precio + 25;
+  }
+  if (entrega === domicilio){
+    precio = precio + 10;
+  } else if (entrega === radio){
+    precio = precio + 20;
+  }
+
+console.log(precio);
+document.getElementById("resultado").textContent = precio;
+  </script>
+
+</body>
+</html>
