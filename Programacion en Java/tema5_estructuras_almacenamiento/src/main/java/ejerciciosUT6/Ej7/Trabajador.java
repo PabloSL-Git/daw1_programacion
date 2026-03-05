@@ -1,4 +1,4 @@
-package claseabstracta;
+package ejerciciosUT6.Ej7;
 
 // Clase abstracta
 // Es una clase plantilla (no voy a hacer new Trabajador)

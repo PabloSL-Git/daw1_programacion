@@ -1,4 +1,4 @@
-package claseabstracta;
+package ejerciciosUT6.Ej7;
 
 public class Camarero extends Trabajador{
 

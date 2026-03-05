@@ -1,4 +1,4 @@
-package claseabstracta;
+package ejerciciosUT6.Ej7;
 
 import java.util.ArrayList;
 import java.util.List;
