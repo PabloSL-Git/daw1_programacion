@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabecera Adidas - Ejercicio</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        /* barra superior */
+        .top-bar {
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        /* cabecera */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* menu */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* buscador */
+        .search input {
+            padding: 6px;
+        }
+
+        header {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        nav ul {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        ADIDAS
+    </div>
+
+    <header>
+
+        <div class="logo">
+            <img src="Fotos/logo.jpg" alt="Logo Adidas" width="120">
+        </div>
+
+        <nav>
+            <ul>
+                <li><a>Zapatillas</a></li>
+                <li><a>Hombre</a></li>
+                <li><a>Mujer</a></li>
+                <li><a>Niño</a></li>
+                <li><a>Novedades</a></li>
+                <li><a>Deportes</a></li>
+                <li><a>Promoción</a></li>
+            </ul>
+        </nav>
+
+        <div class="search">
+            <input type="text" placeholder="Buscar">
+        </div>
+
+    </header>
+
+</body>
+
+</html>
