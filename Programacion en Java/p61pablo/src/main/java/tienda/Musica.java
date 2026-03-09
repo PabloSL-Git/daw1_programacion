@@ -1,7 +1,8 @@
-package herencias;
+package tienda;
 
-public class Musica {
-    String grupo;
+public final class Musica {
+
+    private String grupo;
 
     public Musica(String grupo) {
         this.grupo = grupo;

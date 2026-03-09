@@ -1,10 +1,11 @@
-package herencias;
+package tienda;
 
-public class Ropa {
+public abstract class Ropa extends Producto {
 
-    String marca;
+    protected String marca;
 
-    public Ropa(String marca) {
+    public Ropa(String codigo, double precio, double iva, String descripcion, String marca) {
+        super(codigo, precio, iva, descripcion);
         this.marca = marca;
     }
 

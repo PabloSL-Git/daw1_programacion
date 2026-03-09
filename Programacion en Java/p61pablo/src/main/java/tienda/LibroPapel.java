@@ -1,8 +1,8 @@
-package herencias;
+package tienda;
 
-public class LibroPapel {
+public final class LibroPapel {
 
-    int numPaginas;
+    private int numPaginas;
 
     public LibroPapel(int numPaginas) {
         this.numPaginas = numPaginas;

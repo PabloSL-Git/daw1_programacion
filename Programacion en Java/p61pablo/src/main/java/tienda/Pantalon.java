@@ -1,8 +1,8 @@
-package herencias;
+package tienda;
 
-public class Pantalon {
+public final class Pantalon {
 
-    double talla;
+    private double talla;
 
     public Pantalon(double talla) {
         this.talla = talla;
