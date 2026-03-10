@@ -4,6 +4,9 @@ public abstract class Ropa extends Producto {
 
     protected String marca;
 
+        public Ropa() {
+    }
+
     public Ropa(String codigo, double precio, double iva, String descripcion, String marca) {
         super(codigo, precio, iva, descripcion);
         this.marca = marca;
@@ -19,7 +22,6 @@ public abstract class Ropa extends Producto {
 
     @Override
     public String toString() {
-        return "Ropa [marca=" + marca + "]";
+        return super.toString() + " marca=" + marca;
     }
-
 }
