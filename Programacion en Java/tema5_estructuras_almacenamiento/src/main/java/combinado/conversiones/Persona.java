@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package map;
+package combinado.conversiones;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -85,7 +85,7 @@ public class Persona implements Comparable<Persona>{
         if (!Objects.equals(this.nif, other.nif)) {
             return false;
         }
-        
+       
         return true;
     }
 

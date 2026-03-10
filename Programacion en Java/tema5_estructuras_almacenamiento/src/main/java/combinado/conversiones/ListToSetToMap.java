@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package conversiones;
+package combinado.conversiones;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ListToSetToMap {
         
         // Obtención de un set a partir de la lista. Si hay elementos duplicados
         // se añade solo uno
-        Set<Persona> setPersona = new HashSet(juntaDirectiva);
+        Set<Persona> setPersona = new HashSet<>(juntaDirectiva);
         System.out.println("---------- Set a partir de la lista -----------");
         setPersona.forEach(System.out::println);
         

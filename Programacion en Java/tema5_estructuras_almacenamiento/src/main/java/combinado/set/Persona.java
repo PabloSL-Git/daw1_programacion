@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package conversiones;
+
+package combinado.set;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -85,7 +81,6 @@ public class Persona implements Comparable<Persona>{
         if (!Objects.equals(this.nif, other.nif)) {
             return false;
         }
-       
         return true;
     }
 
@@ -93,7 +88,5 @@ public class Persona implements Comparable<Persona>{
     public int compareTo(Persona o) {
         return this.nif.compareToIgnoreCase(o.nif);
     }
-    
-    
     
 }
