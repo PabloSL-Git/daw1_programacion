@@ -1,10 +1,9 @@
 package herencias.tarea6b;
 
-public abstract class Empleado extends Persona{
+public abstract class Empleado extends Persona {
 
     private String numeroSeguridadSocial;
     private double salarioBase;
-    private Academia academia;
 
     public Empleado(String nombre, String apellidos, String nif, String numeroSeguridadSocial, double salarioBase) {
         super(nombre, apellidos, nif);
@@ -12,7 +11,7 @@ public abstract class Empleado extends Persona{
         this.salarioBase = salarioBase;
     }
 
-    public Empleado(){
+    public Empleado() {
 
     }
 
@@ -33,7 +32,5 @@ public abstract class Empleado extends Persona{
     }
 
     // calcular irpf
-
-    
 
 }
