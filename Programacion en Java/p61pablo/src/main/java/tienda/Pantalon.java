@@ -1,6 +1,6 @@
 package tienda;
 
-public final class Pantalon extends Ropa implements SeEnvia {
+public final class Pantalon extends Ropa{
 
     private String talla;
 
@@ -18,13 +18,6 @@ public final class Pantalon extends Ropa implements SeEnvia {
 
     public void setTalla(String talla) {
         this.talla = talla;
-    }
-
-    @Override
-    public void enviar(String direccion) {
-
-        System.out.println("Enviando ropa: " + this + " a " + direccion);
-
     }
 
     @Override

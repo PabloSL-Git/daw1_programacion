@@ -1,6 +1,6 @@
 package tienda;
 
-public abstract class Ropa extends Producto {
+public abstract class Ropa extends Producto implements SeEnvia {
 
     protected String marca;
 
@@ -18,6 +18,13 @@ public abstract class Ropa extends Producto {
 
     public void setMarca(String marca) {
         this.marca = marca;
+    }
+
+        @Override
+    public void enviar(String direccion) {
+
+        System.out.println("Enviando ropa: " + this + " a " + direccion);
+
     }
 
     @Override
