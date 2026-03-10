@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>herencias</groupId>
-    <artifactId>p61pablo</artifactId>
+    <artifactId>tema6_avanzados_poo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
-    <name>p61pablo</name>
+    <name>tema6_avanzados_poo</name>
 </project>
