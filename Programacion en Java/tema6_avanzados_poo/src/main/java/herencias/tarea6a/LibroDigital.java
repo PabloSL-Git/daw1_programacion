@@ -1,4 +1,4 @@
-package herencias.tienda;
+package herencias.tarea6a;
 
 public final class LibroDigital extends Libro implements SeDescarga {
 

@@ -1,4 +1,4 @@
-package herencias.tienda;
+package herencias.tarea6a;
 
 public final class LibroPapel extends Libro implements SeEnvia {
 

@@ -1,4 +1,4 @@
-package herencias.tienda;
+package herencias.tarea6a;
 
 public abstract class Ropa extends Producto implements SeEnvia {
 
