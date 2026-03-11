@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Interino extends Profesor {
 
-    private LocalDate fechaInicion;
+    private LocalDate fechaInicio;
     private LocalDate fechaCese;
 
     public Interino() {
@@ -12,18 +12,18 @@ public class Interino extends Profesor {
     }
 
     public Interino(String nombre, String apellidos, String nif, String numeroSeguridadSocial, double salarioBase,
-            Especialidad especialidad, double complementoSalarial, LocalDate fechaInicion, LocalDate fechaCese) {
+            Especialidad especialidad, double complementoSalarial) {
         super(nombre, apellidos, nif, numeroSeguridadSocial, salarioBase, especialidad, complementoSalarial);
-        this.fechaInicion = fechaInicion;
-        this.fechaCese = fechaCese;
+         this.fechaInicio = LocalDate.now();                   
+        this.fechaCese = fechaInicio.plusMonths(6);           
     }
 
-    public LocalDate getFechaInicion() {
-        return fechaInicion;
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setFechaInicion(LocalDate fechaInicion) {
-        this.fechaInicion = fechaInicion;
+    public void setFechaInicio(LocalDate fechaInicion) {
+        this.fechaInicio = fechaInicion;
     }
 
     public LocalDate getFechaCese() {
@@ -36,12 +36,16 @@ public class Interino extends Profesor {
 
     @Override
     public String toString() {
-        return "Interino [nombre=" + nombre + ", apellidos=" + apellidos + ", fechaInicion=" + fechaInicion + ", nif="
+        return "Interino [nombre=" + nombre + ", apellidos=" + apellidos + ", fechaInicion=" + fechaInicio + ", nif="
                 + nif + ", fechaCese=" + fechaCese + ", getNumeroSeguridadSocial()=" + getNumeroSeguridadSocial()
                 + ", getEspecialidad()=" + getEspecialidad() + ", getSalarioBase()=" + getSalarioBase()
                 + ", getComplementoSalarial()=" + getComplementoSalarial() + "]";
     }
 
-    // calcular dias
+    public double calcularDiasTrabajados(){
+
+
+        return calculo;
+    }
 
 }

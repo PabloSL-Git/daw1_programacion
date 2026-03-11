@@ -1,19 +1,20 @@
 package herencias.tarea6b;
 
 import java.util.List;
+import java.util.Set;
 
 public class Academia {
 
     private String nombre;
     private List<Empleado> empleado;
-    private List<Alumno> alumno;
+    private Set<Alumno> alumno;
     private Direccion direccion;
 
     public Academia() {
 
     }
 
-    public Academia(String nombre, List<Empleado> empleado, List<Alumno> alumno, Direccion direccion) {
+    public Academia(String nombre, List<Empleado> empleado, Set<Alumno> alumno, Direccion direccion) {
         this.nombre = nombre;
         this.empleado = empleado;
         this.alumno = alumno;
@@ -36,11 +37,11 @@ public class Academia {
         this.empleado = empleado;
     }
 
-    public List<Alumno> getAlumno() {
+    public Set<Alumno> getAlumno() {
         return alumno;
     }
 
-    public void setAlumno(List<Alumno> alumno) {
+    public void setAlumno(Set<Alumno> alumno) {
         this.alumno = alumno;
     }
 

@@ -34,3 +34,4 @@ public abstract class Empleado extends Persona {
     // calcularIrpf
 
 }
+    
