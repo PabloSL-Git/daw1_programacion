@@ -31,6 +31,6 @@ public abstract class Empleado extends Persona {
         this.salarioBase = salarioBase;
     }
 
-    // calcular irpf
+    // calcularIrpf
 
 }

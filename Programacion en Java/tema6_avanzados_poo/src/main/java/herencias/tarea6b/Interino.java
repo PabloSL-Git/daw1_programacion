@@ -34,7 +34,13 @@ public class Interino extends Profesor {
         this.fechaCese = fechaCese;
     }
 
-    // to string
+    @Override
+    public String toString() {
+        return "Interino [nombre=" + nombre + ", apellidos=" + apellidos + ", fechaInicion=" + fechaInicion + ", nif="
+                + nif + ", fechaCese=" + fechaCese + ", getNumeroSeguridadSocial()=" + getNumeroSeguridadSocial()
+                + ", getEspecialidad()=" + getEspecialidad() + ", getSalarioBase()=" + getSalarioBase()
+                + ", getComplementoSalarial()=" + getComplementoSalarial() + "]";
+    }
 
     // calcular dias
 

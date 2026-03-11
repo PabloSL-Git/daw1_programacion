@@ -34,7 +34,11 @@ public class Alumno extends Persona {
         this.fechaBaja = fechaBaja;
     }
 
-    // to string
+    @Override
+    public String toString() {
+        return "Alumno [nombre=" + nombre + ", apellidos=" + apellidos + ", numeroExpediente=" + numeroExpediente
+                + ", nif=" + nif + ", fechaBaja=" + fechaBaja + "]";
+    }
 
     @Override
     public int hashCode() {

@@ -23,7 +23,13 @@ public final class Titular extends Profesor {
         this.fechaJubilacion = fechaJubilacion;
     }
 
-    // to string
+    @Override
+    public String toString() {
+        return "Titular [nombre=" + nombre + ", apellidos=" + apellidos + ", fechaJubilacion=" + fechaJubilacion
+                + ", nif=" + nif + ", getNumeroSeguridadSocial()=" + getNumeroSeguridadSocial() + ", getEspecialidad()="
+                + getEspecialidad() + ", getSalarioBase()=" + getSalarioBase() + ", getComplementoSalarial()="
+                + getComplementoSalarial() + "]";
+    }
 
     // pedirProrroga
 
