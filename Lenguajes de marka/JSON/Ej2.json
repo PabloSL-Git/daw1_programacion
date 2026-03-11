@@ -1,0 +1,19 @@
+{
+  "peliculas": [
+    {
+      "titulo": "Inception",
+      "director": "Christopher Nolan",
+      "año": 2010
+    },
+    {
+      "titulo": "Titanic",
+      "director": "James Cameron",
+      "año": 1997
+    },
+    {
+      "titulo": "Avatar",
+      "director": "James Cameron",
+      "año": 2009
+    }
+  ]
+}

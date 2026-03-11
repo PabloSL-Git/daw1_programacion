@@ -1,0 +1,9 @@
+{
+  "nombre": "The Last of Us",
+  "plataforma": "PlayStation",
+  "precio": 59.99,
+  "desarrollador": {
+    "nombre": "Naughty Dog",
+    "pais": "Estados Unidos"
+  }
+}

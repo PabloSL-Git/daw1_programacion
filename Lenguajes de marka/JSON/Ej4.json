@@ -1,0 +1,17 @@
+{
+  "instituto": "IES Tecnológico",
+  "cursos": [
+    {
+      "nombre": "DAW",
+      "alumnos": 25
+    },
+    {
+      "nombre": "DAM",
+      "alumnos": 30
+    }
+  ],
+  "rspuesta1": "IES Tecnológico",
+  "rspuesta2": "2 cursos",
+  "rspuesta3": "30 alumnos"
+}
+
