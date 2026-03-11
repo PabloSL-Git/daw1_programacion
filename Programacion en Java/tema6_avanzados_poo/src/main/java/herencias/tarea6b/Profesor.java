@@ -1,11 +1,13 @@
 package herencias.tarea6b;
 
-public class Profesor {
+public class Profesor extends Empleado {
 
-    private String especialidad; // enum
+    private Especialidad especialidad;
     private double complementoSalarial;
 
-    public Profesor(String especialidad, double complementoSalarial) {
+    public Profesor(String nombre, String apellidos, String nif, String numeroSeguridadSocial, double salarioBase,
+            Especialidad especialidad, double complementoSalarial) {
+        super(nombre, apellidos, nif, numeroSeguridadSocial, salarioBase);
         this.especialidad = especialidad;
         this.complementoSalarial = complementoSalarial;
     }
@@ -13,11 +15,11 @@ public class Profesor {
     public Profesor() {
     }
 
-    public String getEspecialidad() {
+    public Especialidad getEspecialidad() {
         return especialidad;
     }
 
-    public void setEspecialidad(String especialidad) {
+    public void setEspecialidad(Especialidad especialidad) {
         this.especialidad = especialidad;
     }
 

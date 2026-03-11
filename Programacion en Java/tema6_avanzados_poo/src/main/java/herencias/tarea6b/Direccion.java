@@ -10,6 +10,13 @@ public class Direccion {
     }
 
     public Direccion(String calleNumero, String cpostal, String poblacion) {
+
+        if (cpostal != null && cpostal.length() == 5) {
+            this.cpostal = cpostal;
+        } else {
+            this.cpostal = "00000";
+        }
+
         this.calleNumero = calleNumero;
         this.cpostal = cpostal;
         this.poblacion = poblacion;
