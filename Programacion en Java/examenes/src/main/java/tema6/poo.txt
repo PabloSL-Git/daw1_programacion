@@ -1,0 +1,142 @@
+==========================
+POO AVANZADA - RESUMEN JAVA
+==========================
+
+1. COLECCIONES
+---------------
+List: ordenada, permite duplicados
+List<Empleado> empleados = new ArrayList<>();
+empleados.add(new Empleado());
+
+Set: no permite duplicados (usa equals() y hashCode())
+Set<Alumno> alumnos = new HashSet<>();
+alumnos.add(new Alumno());
+
+Map: clave -> valor
+Map<String, Alumno> mapaAlumnos = new HashMap<>();
+mapaAlumnos.put(alumno.getNumeroExpediente(), alumno);
+
+TreeSet / TreeMap: ordena automáticamente usando Comparable o Comparator
+
+-----------------
+2. POLIMORFISMO
+-----------------
+Un objeto puede ser de su clase o de cualquier superclase/interfaz
+Persona p = new Alumno();
+p.toString(); // llama a Alumno si está sobreescrito
+
+List<Persona> lista = new ArrayList<>();
+lista.add(new Alumno());
+lista.add(new Empleado());
+
+-----------------
+3. HERENCIA
+-----------------
+Fuerte: subclase hereda todo (extends)
+class Alumno extends Persona { ... }
+
+Débil: composición (objeto dentro de otro)
+class Academia { private Direccion direccion; }
+
+abstract: clase o método que no se puede instanciar directamente
+public abstract class Empleado extends Persona { 
+    public abstract double calcularIRPF();
+}
+
+final: clase que no se puede extender
+public final class Titular extends Profesor { ... }
+
+-----------------
+4. INTERFACES
+-----------------
+Definen métodos que deben implementarse
+public interface SolicitarBaja {
+    boolean solicitarBaja(LocalDate fechaBaja);
+}
+
+class Alumno implements SolicitarBaja { ... }
+
+-----------------
+5. MODIFICADORES
+-----------------
+protected: visible en clase, subclases y paquete
+protected String nombre;
+
+private: solo accesible dentro de la clase
+private double salarioBase;
+
+public: accesible desde cualquier lugar
+
+-----------------
+6. ENUM
+-----------------
+Tipo de dato con constantes y métodos
+public enum Especialidad {
+    Secundaria("Secundaria", 0.25),
+    ProfesorTecnico("PT", 0.23);
+
+    private String nombre;
+    private double irpf;
+
+    Especialidad(String nombre, double irpf) {
+        this.nombre = nombre;
+        this.irpf = irpf;
+    }
+
+    public double getIrpf() { return irpf; }
+}
+
+-----------------
+7. METODOS ÚTILES
+-----------------
+hashCode() y equals() -> controlan duplicados en Set o Map
+@Override public boolean equals(Object obj) { ... }
+@Override public int hashCode() { ... }
+
+toString() -> representación de objeto
+@Override public String toString() { ... }
+
+Fechas (java.time)
+LocalDate hoy = LocalDate.now();
+ChronoUnit.DAYS.between(fechaInicio, fechaCese);
+
+abstract -> método sin implementar en clase base
+public abstract double calcularIRPF();
+
+-----------------
+8. EJEMPLOS PRACTICOS
+-----------------
+Crear y agregar elementos
+List<Empleado> listaEmpleados = new ArrayList<>();
+Set<Alumno> setAlumnos = new HashSet<>();
+Academia a = new Academia();
+a.contratarEmpleado(new Empleado() { ... });
+a.matricularAlumno(new Alumno());
+
+Polimorfismo con listas
+List<Persona> personas = new ArrayList<>();
+personas.add(new Alumno("Ana", "Pérez", "123", "EXP001"));
+personas.add(new Empleado() { ... });
+
+Uso de Enum
+Especialidad e = Especialidad.Secundaria;
+double irpf = e.getIrpf();
+
+Interface
+Alumno al = new Alumno();
+al.solicitarBaja(LocalDate.now());
+
+Clase abstracta + final
+Empleado emp; // abstracta, no instanciable directamente
+Titular t = new Titular(...); // final, no se puede heredar
+
+Composición
+class Academia { private Direccion direccion; }
+
+Fecha y prórroga
+Titular t = new Titular(...);
+t.pedirProrroga(6); // suma meses a fechaJubilacion
+
+-----------------
+FIN DEL RESUMEN
+-----------------

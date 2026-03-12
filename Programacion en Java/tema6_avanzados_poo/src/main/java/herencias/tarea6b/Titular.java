@@ -40,9 +40,6 @@ public final class Titular extends Profesor {
     // pide prorroga
 
     public boolean pedirProrroga(int meses) {
-        if (fechaJubilacion == null) {
-            return false;
-        }
         java.time.LocalDate limite = java.time.LocalDate.of(2030, 1, 1);
         java.time.LocalDate nueva = fechaJubilacion.plusMonths(meses);
         if (!nueva.isAfter(limite)) {

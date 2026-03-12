@@ -5,7 +5,7 @@ public class Direccion {
     private String calleNumero;
     private String cpostal;
     private String poblacion;
-    
+
     public Direccion() {
     }
 
@@ -47,7 +47,5 @@ public class Direccion {
     public void setPoblacion(String poblacion) {
         this.poblacion = poblacion;
     }
-
-    
 
 }
