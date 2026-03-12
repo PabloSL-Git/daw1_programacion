@@ -2,7 +2,7 @@ package herencias.tarea6b;
 
 import java.time.LocalDate;
 
-public class Alumno extends Persona {
+public class Alumno extends Persona implements SolicitarBaja {
 
     private String numeroExpediente;
     private LocalDate fechaBaja;
@@ -38,6 +38,17 @@ public class Alumno extends Persona {
     public String toString() {
         return "Alumno [nombre=" + nombre + ", apellidos=" + apellidos + ", numeroExpediente=" + numeroExpediente
                 + ", nif=" + nif + ", fechaBaja=" + fechaBaja + "]";
+    }
+
+    // solicita baja
+
+    @Override
+    public boolean solicitarBaja(java.time.LocalDate fechaBaja) {
+        if (fechaBaja == null) {
+            return false;
+        }
+        this.fechaBaja = fechaBaja;
+        return true;
     }
 
     @Override

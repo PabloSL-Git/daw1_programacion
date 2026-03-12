@@ -53,6 +53,27 @@ public class Academia {
         this.direccion = direccion;
     }
 
-    // contraempleado
-    // matriculaalumno
+    // Añade un empleado a la lista de la academia
+
+    public void contratarEmpleado(Empleado e) {
+        if (e == null) {
+            return;
+        }
+        if (empleado == null) {
+            empleado = new java.util.ArrayList<>();
+        }
+        empleado.add(e);
+    }
+
+    // Matricula a un alumno en el conjunto; el set evita duplicados según equals().
+
+    public void matricularAlumno(Alumno a) {
+        if (a == null) {
+            return;
+        }
+        if (alumno == null) {
+            alumno = new java.util.HashSet<>();
+        }
+        alumno.add(a);
+    }
 }

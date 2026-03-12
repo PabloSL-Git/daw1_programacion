@@ -2,7 +2,7 @@ package herencias.tarea6b;
 
 import java.time.LocalDate;
 
-public class Interino extends Profesor {
+public class Interino extends Profesor implements SolicitarBaja {
 
     private LocalDate fechaInicio;
     private LocalDate fechaCese;
@@ -14,8 +14,8 @@ public class Interino extends Profesor {
     public Interino(String nombre, String apellidos, String nif, String numeroSeguridadSocial, double salarioBase,
             Especialidad especialidad, double complementoSalarial) {
         super(nombre, apellidos, nif, numeroSeguridadSocial, salarioBase, especialidad, complementoSalarial);
-         this.fechaInicio = LocalDate.now();                   
-        this.fechaCese = fechaInicio.plusMonths(6);           
+        this.fechaInicio = LocalDate.now();
+        this.fechaCese = fechaInicio.plusMonths(6);
     }
 
     public LocalDate getFechaInicio() {
@@ -42,10 +42,19 @@ public class Interino extends Profesor {
                 + ", getComplementoSalarial()=" + getComplementoSalarial() + "]";
     }
 
-    public double calcularDiasTrabajados(){
+    // calcula dias transcurridos
 
+    public long calcularDiasTrabajados() {
+        return java.time.temporal.ChronoUnit.DAYS.between(fechaInicio, fechaCese);
+    }
 
-        return calculo;
+    @Override
+    public boolean solicitarBaja(java.time.LocalDate fechaBaja) {
+        if (fechaBaja == null) {
+            return false;
+        }
+        fechaCese = fechaBaja;
+        return true;
     }
 
 }

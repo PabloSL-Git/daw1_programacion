@@ -31,4 +31,10 @@ public class Profesor extends Empleado {
         this.complementoSalarial = complementoSalarial;
     }
 
+    // calcula el irpf
+    public double calcularIRPF() {
+        double base = getSalarioBase();
+        return base * getEspecialidad().getIrpf();
+    }
+
 }

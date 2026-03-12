@@ -16,10 +16,16 @@ public class Direccion {
         } else {
             this.cpostal = "00000";
         }
-
         this.calleNumero = calleNumero;
-        this.cpostal = cpostal;
         this.poblacion = poblacion;
+    }
+
+    public void setCpostal(String cpostal) {
+        if (cpostal != null && cpostal.length() == 5) {
+            this.cpostal = cpostal;
+        } else {
+            this.cpostal = "00000";
+        }
     }
 
     public String getCalleNumero() {
@@ -32,10 +38,6 @@ public class Direccion {
 
     public String getCpostal() {
         return cpostal;
-    }
-
-    public void setCpostal(String cpostal) {
-        this.cpostal = cpostal;
     }
 
     public String getPoblacion() {
