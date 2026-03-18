@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora PVP</title>
+</head>
+
+<body>
+
+    <h1>Pasteleria Honore</h1>
+    <p>Calculadora de PVP de tartas personalizadas</p>
+    <p>35 EUR/kg base</p>
+
+    <form id="cakeForm">
+
+        <label for="kilos">Peso de la tarta (kg)</label>
+        <input type="number" id="kilos" min="0.5" step="0.5" value="1" required>
+
+        <h3>Ingredientes (suplemento por kg)</h3>
+
+        <input type="checkbox" class="ingredient" id="chocolate" data-extra="4">
+        <label for="chocolate">Chocolate (+4 EUR/kg)</label><br>
+
+        <input type="checkbox" class="ingredient" id="frutosRojos" data-extra="5">
+        <label for="frutosRojos">Frutos rojos (+5 EUR/kg)</label><br>
+
+        <input type="checkbox" class="ingredient" id="frutosSecos" data-extra="6">
+        <label for="frutosSecos">Frutos secos (+6 EUR/kg)</label><br>
+
+        <input type="checkbox" class="ingredient" id="cremaPastelera" data-extra="3">
+        <label for="cremaPastelera">Crema pastelera (+3 EUR/kg)</label><br>
+
+        <h3>Opciones</h3>
+
+        <input type="checkbox" id="ingredientesEco">
+        <label for="ingredientesEco">Ingredientes eco (+10%)</label><br>
+
+        <input type="checkbox" id="vegana">
+        <label for="vegana">Tarta vegana (+10%)</label><br>
+
+        <input type="checkbox" id="customizacion">
+        <label for="customizacion">Customizacion tematica (+25 EUR)</label><br>
+
+        <h3>Entrega</h3>
+
+        <select id="entrega">
+            <option value="0">Recogida en tienda (0 EUR)</option>
+            <option value="10">Domicilio en Estepona (10 EUR)</option>
+            <option value="20">Domicilio radio 15 km (20 EUR)</option>
+        </select>
+
+        <br><br>
+
+        <button type="button" onclick="calcular()">Calcular PVP</button>
+        <button type="button" id="resetBtn">Limpiar</button>
+
+    </form>
+
+    <hr>
+
+    <h2>Desglose</h2>
+
+    <p>Base: <span id="baseOut">35.00 EUR</span></p>
+    <p>Ingredientes: <span id="ingredientesOut">0.00 EUR</span></p>
+    <p>Incremento eco: <span id="ecoOut">0.00 EUR</span></p>
+    <p>Incremento vegana: <span id="veganaOut">0.00 EUR</span></p>
+    <p>Customizacion: <span id="customOut">0.00 EUR</span></p>
+    <p>Entrega: <span id="entregaOut">0.00 EUR</span></p>
+
+    <h3>PVP final: <span id="totalOut">35.00 EUR</span></h3>
+
+</body>
+ <script>
+        function calcular() {
+
+            // precio base
+
+            const PRECIO_KILO = 35;
+
+            // ingredientes
+
+            const CHOCO = 4;
+            const ROJOS = 5;
+            const SECOS = 6;
+            const CREMA = 3;
+
+            // custom
+
+            const CUSTOM = 25;
+            const ECO = 1.10;
+            const VEG = 1.10;
+
+            // envio
+
+            const DOMICILIO = 10;
+            const RADIO = 20;
+
+            let kilosPrecio = PRECIO_KILO;
+            let kilos = parseFloat(document.getElementById("kilos").value);
+
+            if (document.getElementById("chocolate").checked){
+                kilosPrecio = kilosPrecio + CHOCO
+            }
+            if (document.getElementById("frutosRojos").checked){
+                kilosPrecio = kilosPrecio + ROJOS
+            }
+            if (document.getElementById("frutosSecos").checked){
+                kilosPrecio = kilosPrecio + SECOS
+            }
+            if (document.getElementById("cremaPastelera").checked){
+                kilosPrecio = kilosPrecio + CREMA
+            }
+
+            console.log(kilosPrecio)
+        }
+    </script>
+</body>
+
+</html>
