@@ -1,0 +1,34 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Ana",
+      "email": "ana@email.com"
+    },
+    {
+      "id": 2,
+      "nombre": "Luis",
+      "email": "luis@email.com"
+    }
+  ],
+  "productos": [
+    {
+      "id": 101,
+      "nombre": "Camiseta",
+      "precio": 19.99
+    },
+    {
+      "id": 102,
+      "nombre": "Zapatillas",
+      "precio": 59.99
+    }
+  ],
+  "pedidos": [
+    {
+      "id": 1001,
+      "usuario_id": 1,
+      "productos": [101, 102],
+      "total": 79.98
+    }
+  ]
+}
