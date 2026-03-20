@@ -1,0 +1,190 @@
+==========================
+POO AVANZADA - RESUMEN JAVA
+==========================
+
+-----------------
+1. HERENCIA
+-----------------
+Permite que una clase (subclase) herede atributos y métodos de otra (superclase)
+
+extends: indica herencia
+class Alumno extends Persona { }
+
+Uso:
+- Reutilizar código
+- Crear especializaciones
+- Aplicar polimorfismo
+
+Tipos:
+Fuerte: herencia directa con extends
+Débil: composición (una clase tiene otra como atributo)
+
+Sobreescritura:
+Permite redefinir métodos de la superclase
+@Override
+public String toString() { ... }
+
+Uso de super:
+Acceder a constructor o métodos de la clase padre
+super(nombre);
+
+Ejemplo
+class Persona {
+    String nombre;
+
+    public Persona(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String saludar() {
+        return "Hola";
+    }
+}
+
+class Alumno extends Persona {
+    String expediente;
+
+    public Alumno(String nombre, String expediente) {
+        super(nombre);
+        this.expediente = expediente;
+    }
+
+    @Override
+    public String saludar() {
+        return "Soy alumno";
+    }
+}
+
+-----------------
+2. EQUALS()
+-----------------
+Método que compara si dos objetos son iguales en contenido (no en memoria)
+
+Por defecto compara referencias (==), por eso se sobreescribe
+
+Uso:
+- Comparar objetos correctamente
+- Evitar duplicados en Set
+- Claves lógicas en Map
+
+Reglas:
+- Reflexivo: obj.equals(obj) → true
+- Simétrico
+- Transitivo
+- Consistente
+
+Estructura típica:
+1. Comparar referencias
+2. Comprobar null
+3. Comparar clases
+4. Comparar atributos
+
+Ejemplo
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+
+    Alumno a = (Alumno) obj;
+    return expediente.equals(a.expediente);
+}
+
+Uso práctico
+Set<Alumno> alumnos = new HashSet<>();
+alumnos.add(new Alumno("Ana", "EXP1"));
+alumnos.add(new Alumno("Ana", "EXP1")); // no se duplica si equals está bien
+
+-----------------
+3. HASHCODE()
+-----------------
+Devuelve un número entero que representa al objeto
+
+Se usa junto con equals()
+
+Uso:
+- Ubicación rápida en HashSet / HashMap
+- Mejora rendimiento de búsqueda
+
+Regla fundamental:
+Si dos objetos son iguales (equals = true) → mismo hashCode
+
+Estructura:
+- Basado en los mismos atributos que equals
+
+Ejemplo
+@Override
+public int hashCode() {
+    return expediente.hashCode();
+}
+
+Ejemplo combinado
+@Override
+public boolean equals(Object obj) { ... }
+
+@Override
+public int hashCode() {
+    return expediente.hashCode();
+}
+
+Uso en Map
+Map<String, Alumno> mapa = new HashMap<>();
+mapa.put("EXP1", new Alumno("Ana", "EXP1"));
+
+-----------------
+4. BUSQUEDA BINARIA
+-----------------
+Algoritmo de búsqueda eficiente en listas ORDENADAS
+
+Funcionamiento:
+- Divide la lista en mitades
+- Compara el elemento central
+- Repite hasta encontrar o descartar
+
+Complejidad:
+O(log n) → muy rápida
+
+Requisito:
+La lista debe estar ordenada
+
+Uso en Java:
+Collections.binarySearch(lista, elemento)
+
+Resultados:
+- >= 0 → posición encontrada
+- < 0 → no encontrado
+
+Ejemplo
+List<Integer> lista = new ArrayList<>();
+lista.add(5);
+lista.add(2);
+lista.add(8);
+
+Collections.sort(lista); // obligatorio
+
+int pos = Collections.binarySearch(lista, 5);
+
+if (pos >= 0) {
+    System.out.println("Encontrado en posición " + pos);
+} else {
+    System.out.println("No encontrado");
+}
+
+Ejemplo con objetos
+class Alumno implements Comparable<Alumno> {
+    String expediente;
+
+    @Override
+    public int compareTo(Alumno a) {
+        return this.expediente.compareTo(a.expediente);
+    }
+}
+
+List<Alumno> lista = new ArrayList<>();
+Collections.sort(lista);
+
+Collections.binarySearch(lista, new Alumno("EXP1"));
+
+-----------------
+FIN DEL RESUMEN
+-----------------
