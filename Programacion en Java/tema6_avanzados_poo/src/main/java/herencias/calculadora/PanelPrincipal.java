@@ -11,75 +11,74 @@ import javax.swing.JTextArea;
 
 public class PanelPrincipal extends JPanel implements ActionListener {
 
-	private PanelBotones botonera;
+	private PanelBotones panelBotones;
 	private JTextArea areaTexto;
 
 	private double num1 = 0;
 	private double num2 = 0;
-	private int tipoOperacion = -1; // 1:+ 2:- 3:* 4:/
+	private int tipoOperacion = 0; // 1 +, 2 -, 3 *, 4 /
 
 	public PanelPrincipal() {
 		initComponents();
 	}
 
 	private void initComponents() {
+		panelBotones = new PanelBotones();
 
-		botonera = new PanelBotones();
-
-		areaTexto = new JTextArea(2, 20);
+		areaTexto = new JTextArea(6, 60);
 		areaTexto.setEditable(false);
 		areaTexto.setBackground(Color.white);
 
 		this.setLayout(new BorderLayout());
 		this.add(areaTexto, BorderLayout.NORTH);
-		this.add(botonera, BorderLayout.SOUTH);
+		this.add(panelBotones, BorderLayout.SOUTH);
 
 		// Añadir listeners a los botones
-		for (JButton boton : botonera.getgrupoBotones()) {
+		for (JButton boton : panelBotones.getgrupoBotones()) {
 			boton.addActionListener(this);
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		String texto = ((JButton) e.getSource()).getText();
 
 		// Si es numero
 		if (texto.matches("[0-9]")) {
-			areaTexto.append(texto);
+
+			// Guardamos directamente num1 o num2 segun si hay operador
+
+			if (tipoOperacion == 0) {
+				num1 = Double.parseDouble(texto);
+			} else {
+				num2 = Double.parseDouble(texto);
+			}
+
+			areaTexto.append(texto); // mostramos en pantalla
 		}
 
-		// Operaciones
-		else if (texto.equals("+")) {
-			num1 = Double.parseDouble(areaTexto.getText());
-			tipoOperacion = 1;
-			areaTexto.setText("");
+		// Si es operador
+		if (texto.equals("+") || texto.equals("-") || texto.equals("*") || texto.equals("/")) {
+			switch (texto) {
+				case "+":
+					tipoOperacion = 1;
+					break;
+				case "-":
+					tipoOperacion = 2;
+					break;
+				case "*":
+					tipoOperacion = 3;
+					break;
+				case "/":
+					tipoOperacion = 4;
+					break;
+			}
+			areaTexto.append(texto); // mostrar operador junto al primer numero
 		}
 
-		else if (texto.equals("-")) {
-			num1 = Double.parseDouble(areaTexto.getText());
-			tipoOperacion = 2;
-			areaTexto.setText("");
-		}
-
-		else if (texto.equals("*")) {
-			num1 = Double.parseDouble(areaTexto.getText());
-			tipoOperacion = 3;
-			areaTexto.setText("");
-		}
-
-		else if (texto.equals("/")) {
-			num1 = Double.parseDouble(areaTexto.getText());
-			tipoOperacion = 4;
-			areaTexto.setText("");
-		}
-
-		// Resultado
-		else if (texto.equals("=")) {
-			num2 = Double.parseDouble(areaTexto.getText());
+		// Si es igual, calcula y muestra
+		if (texto.equals("=")) {
 			double resultado = 0;
-
 			switch (tipoOperacion) {
 				case 1:
 					resultado = num1 + num2;
@@ -91,11 +90,22 @@ public class PanelPrincipal extends JPanel implements ActionListener {
 					resultado = num1 * num2;
 					break;
 				case 4:
-					resultado = num1 / num2;
+					if (num2 != 0) {
+						resultado = num1 / num2;
+					} else {
+						areaTexto.setText("Error: división por 0");
+						return;
+					}
 					break;
 			}
 
-			areaTexto.setText(String.valueOf(resultado));
+			areaTexto.setText(String.valueOf(resultado)); // mostrar resultado
+
+			// reinicia proximo
+
+			num1 = resultado;
+			num2 = 0;
+			tipoOperacion = 0;
 		}
 
 		// Limpiar
@@ -103,7 +113,7 @@ public class PanelPrincipal extends JPanel implements ActionListener {
 			areaTexto.setText("");
 			num1 = 0;
 			num2 = 0;
-			tipoOperacion = -1;
+			tipoOperacion = 0;
 		}
 	}
 }
