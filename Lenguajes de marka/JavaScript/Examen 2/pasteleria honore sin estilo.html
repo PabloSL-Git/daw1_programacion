@@ -71,50 +71,94 @@
     <h3>PVP final: <span id="totalOut">35.00 EUR</span></h3>
 
 </body>
- <script>
-        function calcular() {
+<script>
+    function calcular() {
 
-            // precio base
+        // precio base
 
-            const PRECIO_KILO = 35;
+        const PRECIO_KILO = 35;
 
-            // ingredientes
+        // ingredientes
 
-            const CHOCO = 4;
-            const ROJOS = 5;
-            const SECOS = 6;
-            const CREMA = 3;
+        const CHOCO = 4;
+        const ROJOS = 5;
+        const SECOS = 6;
+        const CREMA = 3;
 
-            // custom
+        // custom
 
-            const CUSTOM = 25;
-            const ECO = 1.10;
-            const VEG = 1.10;
+        const CUSTOM = 25;
+        const ECO = 1.10;
+        const VEG = 1.10;
 
-            // envio
+        // envio
 
-            const DOMICILIO = 10;
-            const RADIO = 20;
+        const DOMICILIO = 10;
+        const RADIO = 20;
 
-            let kilosPrecio = PRECIO_KILO;
-            let kilos = parseFloat(document.getElementById("kilos").value);
+        let kilosPrecio = PRECIO_KILO;
+        let kilos = parseFloat(document.getElementById("kilos").value);
 
-            if (document.getElementById("chocolate").checked){
-                kilosPrecio = kilosPrecio + CHOCO
-            }
-            if (document.getElementById("frutosRojos").checked){
-                kilosPrecio = kilosPrecio + ROJOS
-            }
-            if (document.getElementById("frutosSecos").checked){
-                kilosPrecio = kilosPrecio + SECOS
-            }
-            if (document.getElementById("cremaPastelera").checked){
-                kilosPrecio = kilosPrecio + CREMA
-            }
-
-            console.log(kilosPrecio)
+        if (document.getElementById("chocolate").checked) {
+            kilosPrecio += CHOCO;
         }
-    </script>
+        if (document.getElementById("frutosRojos").checked) {
+            kilosPrecio += ROJOS
+        }
+        if (document.getElementById("frutosSecos").checked) {
+            kilosPrecio += SECOS
+        }
+        if (document.getElementById("cremaPastelera").checked) {
+            kilosPrecio += CREMA
+        }
+
+        // base total
+        let base = PRECIO_KILO * kilos;
+
+        // ingredientes total
+        let ingredientes = (kilosPrecio - PRECIO_KILO) * kilos;
+
+        // total
+        let total = base + ingredientes;
+
+        // eco
+        if (document.getElementById("ingredientesEco").checked) {
+            eco = total * 0.10;
+            total += eco;
+        }
+
+        // veg
+        if (document.getElementById("vegana").checked) {
+            vegana = total * 0.10;
+            total += vegana;
+        }
+
+        // custom
+        if (document.getElementById("customizacion").checked) {
+            custom = CUSTOM;
+            total += custom;
+        }
+
+        // entrega
+        let entrega = parseFloat(document.getElementById("entrega").value);
+
+        // final
+        let final = total + entrega;
+
+        // MOSTRAR RESULTADOS
+        document.getElementById("baseOut").innerText = base.toFixed(2) + " EUR";
+        document.getElementById("ingredientesOut").innerText = ingredientes.toFixed(2) + " EUR";
+        document.getElementById("ecoOut").innerText = eco.toFixed(2) + " EUR";
+        document.getElementById("veganaOut").innerText = vegana.toFixed(2) + " EUR";
+        document.getElementById("customOut").innerText = custom.toFixed(2) + " EUR";
+        document.getElementById("entregaOut").innerText = entrega.toFixed(2) + " EUR";
+        document.getElementById("totalOut").innerText = final.toFixed(2) + " EUR";
+    }
+
+
+    console.log(kilosPrecio)
+
+</script>
 </body>
 
 </html>
