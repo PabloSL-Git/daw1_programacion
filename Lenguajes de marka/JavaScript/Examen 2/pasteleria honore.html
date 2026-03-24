@@ -194,8 +194,66 @@
 
             const DOMICILIO = 10;
             const RADIO = 20;
-            console.log("HOAAAA");
+
+            let kilosPrecio = PRECIO_KILO;
+            let kilos = parseFloat(document.getElementById("kilos").value);
+
+            if (document.getElementById("chocolate").checked) {
+                kilosPrecio += CHOCO;
+            }
+            if (document.getElementById("frutosRojos").checked) {
+                kilosPrecio += ROJOS
+            }
+            if (document.getElementById("frutosSecos").checked) {
+                kilosPrecio += SECOS
+            }
+            if (document.getElementById("cremaPastelera").checked) {
+                kilosPrecio += CREMA
+            }
+
+            // base total
+            let base = PRECIO_KILO * kilos;
+
+            // ingredientes total
+            let ingredientes = (kilosPrecio - PRECIO_KILO) * kilos;
+
+            // total
+            let total = base + ingredientes;
+
+            // eco
+            if (document.getElementById("ingredientesEco").checked) {
+                eco = total * 0.10;
+                total += eco;
+            }
+
+            // veg
+            if (document.getElementById("vegana").checked) {
+                vegana = total * 0.10;
+                total += vegana;
+            }
+
+            // custom
+            if (document.getElementById("customizacion").checked) {
+                custom = CUSTOM;
+                total += custom;
+            }
+
+            // entrega
+            let entrega = parseFloat(document.getElementById("entrega").value);
+
+            // final
+            let final = total + entrega;
+
+            // MOSTRAR RESULTADOS
+            document.getElementById("baseOut").innerText = base.toFixed(2) + " EUR";
+            document.getElementById("ingredientesOut").innerText = ingredientes.toFixed(2) + " EUR";
+            document.getElementById("ecoOut").innerText = eco.toFixed(2) + " EUR";
+            document.getElementById("veganaOut").innerText = vegana.toFixed(2) + " EUR";
+            document.getElementById("customOut").innerText = custom.toFixed(2) + " EUR";
+            document.getElementById("entregaOut").innerText = entrega.toFixed(2) + " EUR";
+            document.getElementById("totalOut").innerText = final.toFixed(2) + " EUR";
         }
+
     </script>
 </body>
 
