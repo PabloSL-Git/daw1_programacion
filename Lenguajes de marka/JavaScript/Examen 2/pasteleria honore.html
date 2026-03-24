@@ -124,7 +124,7 @@
                             </select>
                         </div>
                         <div class="col-12 d-flex gap-2">
-                            <button class="btn btn-dark" onclick="calcular()">Calcular PVP</button>
+                            <button type="button" class="btn btn-dark" onclick="calcular()">Calcular PVP</button>
 
 
                             <button type="button" id="resetBtn" class="btn btn-outline-secondary">Limpiar</button>
@@ -219,6 +219,11 @@
 
             // total
             let total = base + ingredientes;
+
+
+            let eco = 0;
+            let vegana = 0;
+            let custom = 0;
 
             // eco
             if (document.getElementById("ingredientesEco").checked) {
