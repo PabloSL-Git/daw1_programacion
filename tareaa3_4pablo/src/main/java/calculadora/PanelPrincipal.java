@@ -1,4 +1,4 @@
-package herencias.calculadora;
+package calculadora;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

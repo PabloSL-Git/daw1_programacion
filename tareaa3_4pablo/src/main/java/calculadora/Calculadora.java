@@ -1,4 +1,4 @@
-package herencias.calculadora;
+package calculadora;
 
 import javax.swing.JFrame;
 

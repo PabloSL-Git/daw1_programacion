@@ -1,4 +1,4 @@
-package herencias.calculadora;
+package calculadora;
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
