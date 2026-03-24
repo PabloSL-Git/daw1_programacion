@@ -24,6 +24,7 @@ public class Panel extends JPanel {
     // Tamaño del panel. Constantes
     public static final int ANCHO_PANEL = 600;
     public static final int ALTO_PANEL = 200;
+    
 
     // Atributos del panel
     private JButton btnGenerar, btnCerrar;
