@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <style>
+        input:invalid {
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="Ejercicio5.html" method="post">
+        <input type="email" name="email" id="email" placeholder="Email"
+            pattern="/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/" title="Introduce un correo electrónico válido"
+            required autofocus aria-label="email">
+        <input type="password" name="clave" id="clave" placeholder="Contraseña" minlength="8"
+            title="Introduce una contraseña válida con al menos 8 caracteres que pueden ser letras minúsculas, letras mayúsculas y números"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" required aria-label="clave" autocomplete="current-password">
+        <span><a href="">Recuperar contraseña</a></span>
+        <button type="submit" name="botonIniciarSesión">Iniciar sesión</button>
+    </form>
+</body>
+
+</html>
