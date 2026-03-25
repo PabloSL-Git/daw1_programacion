@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<body>
+
+<button type="button" onclick="calcular()">Calcular</button>
+
+<input type="number" id="barrasPan" min="0" value="0">
+<input type="number" id="molletes" value="0">
+<input type="number" id="aceitunas" value="0">
+
+<input type="checkbox" id="bolsa">
+<input type="checkbox" id="delPueblo">
+
+<p id="subtotalPan"></p>
+<p id="subtotalMolletes"></p>
+<p id="subtotalAceitunas"></p>
+<p id="subtotalBolsa"></p>
+<p id="descuentoPueblo"></p>
+<p id="totalCompra"></p>
+
+<script>
+function calcular() {
+
+const precioPan = 0.80;
+const precioMolletes = 0.25;
+const precioAceitunas = 4.00;
+const precioBolsa = 0.15;
+const descuento = 2;
+
+let barrasPan = parseFloat(document.getElementById("barrasPan").value);
+let molletes = parseFloat(document.getElementById("molletes").value);
+let aceitunas = parseFloat(document.getElementById("aceitunas").value);
+
+let sumaPan = precioPan * barrasPan;
+let sumaMolletes = precioMolletes * molletes;
+let sumaAceitunas = precioAceitunas * aceitunas;
+
+let todoSumado = sumaPan + sumaMolletes + sumaAceitunas;
+
+let conBolsa = 0;
+if (document.getElementById("bolsa").checked) {
+  conBolsa = precioBolsa;
+}
+
+let conDescuento = 0;
+if (document.getElementById("delPueblo").checked && todoSumado > 20) {
+  conDescuento = descuento;
+}
+
+let final = todoSumado + conBolsa - conDescuento;
+
+document.getElementById("subtotalPan").innerText = sumaPan.toFixed(2) + " EUR";
+document.getElementById("subtotalMolletes").innerText = sumaMolletes.toFixed(2) + " EUR";
+document.getElementById("subtotalAceitunas").innerText = sumaAceitunas.toFixed(2) + " EUR";
+document.getElementById("subtotalBolsa").innerText = conBolsa.toFixed(2) + " EUR";
+document.getElementById("descuentoPueblo").innerText = conDescuento.toFixed(2) + " EUR";
+document.getElementById("totalCompra").innerText = final.toFixed(2) + " EUR";
+
+}
+</script>
+
+</body>
+</html>
