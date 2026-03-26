@@ -1,7 +1,7 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-package daw;
+package tema6;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,15 +36,6 @@ public class Resort {
 
         System.out.println("aaaaaaa");
         // 2
-        
-    public Map gastoPorCliente(Hotel) {
-        Map<String, Integer> m = new HashMap<>();
 
-        for (Map.Entry<String, Integer> e : m.entrySet()) {
-            e.getKey();
-            e.getValue();
-        }
     }
-
-}
 }
