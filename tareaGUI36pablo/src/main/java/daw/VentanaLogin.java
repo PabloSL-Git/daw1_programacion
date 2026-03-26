@@ -22,7 +22,7 @@ public class VentanaLogin extends javax.swing.JFrame {
 
         usuarios = new java.util.HashSet<>();
 
-        usuarios.add(new Usuario("admin", "1234"));
+        usuarios.add(new Usuario("administrador", "1234"));
         usuarios.add(new Usuario("pablo", "3333"));
     }
 
@@ -49,7 +49,7 @@ public class VentanaLogin extends javax.swing.JFrame {
 
         jLabel2.setText("Contraseña");
 
-        jPasswordField1.setText("txtcontraseña");
+        jPasswordField1.setText("contraseña");
         jPasswordField1.addActionListener(this::jPasswordField1ActionPerformed);
 
         jButton1.setText("Login");
@@ -61,7 +61,8 @@ public class VentanaLogin extends javax.swing.JFrame {
         jButton3.setText("Salir");
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
-        jTextField1.setText("txtusuario");
+        jTextField1.setText("Inserte usuario");
+        jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,7 +82,7 @@ public class VentanaLogin extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,8 +117,8 @@ public class VentanaLogin extends javax.swing.JFrame {
         String pass = new String(jPasswordField1.getPassword());
 
         // comprobar si existe
-        for (Usuario usr : usuarios) {
-            if (usr.getUsuario().equals(user) && usr.getContrasenia().equals(pass)) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUsuario().equals(user) && usuario.getContrasenia().equals(pass)) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Login correcto");
                 return;
             }
@@ -138,6 +139,10 @@ public class VentanaLogin extends javax.swing.JFrame {
         //this → referencia a la ventana principal
         //true → hace que el diálogo sea modal (bloquea la ventana principal mientras está abierto)
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
