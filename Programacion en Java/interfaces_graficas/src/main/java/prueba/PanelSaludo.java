@@ -34,7 +34,7 @@ public class PanelSaludo extends JPanel {
 	private JButton boton;
 	private JTextArea texto;
 
-	public void Saludo(){
+	public PanelSaludo(){
     		initComponents();
 	}
 
