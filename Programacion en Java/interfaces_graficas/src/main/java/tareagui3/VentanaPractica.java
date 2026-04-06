@@ -1,4 +1,4 @@
-package daw;
+package tareagui3;
 
 import java.awt.*;
 import java.awt.event.*;
