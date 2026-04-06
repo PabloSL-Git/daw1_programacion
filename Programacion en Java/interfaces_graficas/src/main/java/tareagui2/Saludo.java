@@ -1,4 +1,4 @@
-package tareas;
+package tareagui2;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -38,8 +38,8 @@ public class Saludo extends JPanel implements ActionListener {
 
     private void initComponents() {
 
-        botonSaludar = new JButton("Saludar");
-        botonDespedir = new JButton("Despedir");
+        botonSaludar = new JButton("Nombre");
+        botonDespedir = new JButton("Apellidos");
 
         texto = new JTextArea(1, 25);
 
@@ -65,9 +65,11 @@ public class Saludo extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
 
         if (ae.getSource() == botonSaludar) {
-            texto.setText("Hola amigos!!");
+            texto.setText("Pablo");
+            texto.setBackground(Color.WHITE);
         } else if (ae.getSource() == botonDespedir) {
-            texto.setText("Adios amigos!!");
+            texto.setText("Santamaria Loredo");
+            texto.setBackground(Color.GREEN);
         }
     }
 
