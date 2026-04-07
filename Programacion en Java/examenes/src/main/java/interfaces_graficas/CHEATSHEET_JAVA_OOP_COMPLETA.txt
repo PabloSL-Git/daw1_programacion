@@ -1,0 +1,5034 @@
+================================================================================
+                    📚 CHEATSHEET JAVA - PROGRAMACIÓN ORIENTADA A OBJETOS
+                              GUÍA COMPLETA PARA EXAMEN
+================================================================================
+
+ÍNDICE:
+1. FUNDAMENTOS DE POO
+2. CLASES Y OBJETOS
+3. ENCAPSULAMIENTO
+4. HERENCIA
+5. POLIMORFISMO
+6. CLASES ABSTRACTAS
+7. INTERFACES
+8. CLASES Y MÉTODOS FINAL
+9. EQUALS() Y HASHCODE()
+10. CONVERSIONES DE TIPO (CASTING)
+11. COLLECTIONS FRAMEWORK
+12. COMPARATOR Y LAMBDAS
+13. GENÉRICOS
+14. MÉTODOS DEFAULT Y STATIC EN INTERFACES
+15. BUENAS PRÁCTICAS Y ERRORES COMUNES
+16. JAVA SWING - INTERFACES GRÁFICAS (GUI)
+17. SETUP COMPLETO DE INTERFAZ GRÁFICA (GUI)
+
+================================================================================
+                         1. FUNDAMENTOS DE POO
+================================================================================
+
+--------------------------------------------------------------------------------
+LOS 4 PILARES DE LA POO:
+--------------------------------------------------------------------------------
+
+┌──────────────────┬──────────────────────────────────────────────────────────┐
+│ PILAR            │ DESCRIPCIÓN                                              │
+├──────────────────┼──────────────────────────────────────────────────────────┤
+│ ENCAPSULAMIENTO  │ Ocultar detalles internos, exponer solo lo necesario    │
+│ HERENCIA         │ Reutilizar código mediante jerarquía de clases          │
+│ POLIMORFISMO     │ Un mismo comportamiento con diferentes implementaciones │
+│ ABSTRACCIÓN      │ Modelar conceptos esenciales, ignorando detalles        │
+└──────────────────┴──────────────────────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+CONCEPTOS CLAVE:
+--------------------------------------------------------------------------------
+
+• CLASE: Plantilla o molde para crear objetos. Define atributos y métodos.
+• OBJETO: Instancia concreta de una clase. Tiene estado y comportamiento.
+• ATRIBUTO: Variable que define el estado de un objeto (campo, propiedad).
+• MÉTODO: Función que define el comportamiento de un objeto.
+• CONSTRUCTOR: Método especial para inicializar objetos.
+• INSTANCIA: Proceso de crear un objeto a partir de una clase.
+
+--------------------------------------------------------------------------------
+CICLO DE VIDA DE UN OBJETO:
+--------------------------------------------------------------------------------
+
+1. DECLARACIÓN: NombreClase referencia;        (solo la referencia, sin objeto)
+2. INSTANCIACIÓN: new NombreClase();           (crea el objeto en memoria heap)
+3. INICIALIZACIÓN: Constructor asigna valores  (da estado inicial al objeto)
+
+// Ejemplo completo:
+Persona p;                  // Declaración (p es null)
+p = new Persona("Juan");    // Instanciación + Inicialización
+Persona p2 = new Persona(); // Todo en una línea
+
+================================================================================
+                        2. CLASES Y OBJETOS
+================================================================================
+
+--------------------------------------------------------------------------------
+ESTRUCTURA DE UNA CLASE:
+--------------------------------------------------------------------------------
+
+[modificadores] class NombreClase [extends SuperClase] [implements Interfaz1, Interfaz2] {
+    
+    // ATRIBUTOS (variables de instancia)
+    [modificadores] tipo nombreAtributo;
+    
+    // CONSTRUCTORES
+    [modificadores] NombreClase(parámetros) {
+        // inicialización
+    }
+    
+    // MÉTODOS
+    [modificadores] tipoRetorno nombreMétodo(parámetros) {
+        // cuerpo
+    }
+    
+    // BLOQUES DE INICIALIZACIÓN
+    static { /* código estático */ }     // Se ejecuta al cargar la clase
+    { /* código de instancia */ }        // Se ejecuta antes de cada constructor
+}
+
+--------------------------------------------------------------------------------
+MODIFICADORES DE ACCESO:
+--------------------------------------------------------------------------------
+
+┌───────────────┬─────────────┬─────────────┬─────────────┬──────────────────┐
+│ MODIFICADOR   │ MISMA CLASE │ MISMO PAQ.  │ SUBCLASE    │ TODOS            │
+├───────────────┼─────────────┼─────────────┼─────────────┼──────────────────┤
+│ public        │     ✅      │     ✅      │     ✅      │       ✅         │
+│ protected     │     ✅      │     ✅      │     ✅      │       ❌         │
+│ (default)     │     ✅      │     ✅      │     ❌      │       ❌         │
+│ private       │     ✅      │     ❌      │     ❌      │       ❌         │
+└───────────────┴─────────────┴─────────────┴─────────────┴──────────────────┘
+
+• public: Accesible desde cualquier lugar
+• protected: Accesible en mismo paquete y subclases (en cualquier paquete)
+• default (sin modificador): Accesible solo en mismo paquete
+• private: Accesible solo dentro de la misma clase
+
+--------------------------------------------------------------------------------
+MODIFICADORES DE CLASE:
+--------------------------------------------------------------------------------
+
+• public: La clase es visible desde otros paquetes
+• default: Solo visible dentro de su paquete
+• final: No puede tener subclases (no se puede heredar)
+• abstract: No se puede instanciar, puede tener métodos abstractos
+• strictfp: Usa precisión fija en operaciones de punto flotante
+
+--------------------------------------------------------------------------------
+MODIFICADORES DE ATRIBUTOS Y MÉTODOS:
+--------------------------------------------------------------------------------
+
+• static: Pertenece a la clase, no a instancias individuales
+• final: Constante (atributos) o no sobrescribible (métodos)
+• abstract: Solo en métodos de clases abstractas (sin implementación)
+• synchronized: Control de acceso en entornos multihilo
+• volatile: Visible para todos los hilos
+• transient: No se serializa
+
+--------------------------------------------------------------------------------
+CONSTRUCTORES:
+--------------------------------------------------------------------------------
+
+// Constructor por defecto (si no definimos ninguno, Java lo crea)
+public Persona() {
+    // Inicialización por defecto
+}
+
+// Constructor con parámetros
+public Persona(String nombre, int edad) {
+    this.nombre = nombre;  // 'this' refiere al atributo del objeto
+    this.edad = edad;
+}
+
+// Constructor de copia
+public Persona(Persona otra) {
+    this.nombre = otra.nombre;
+    this.edad = otra.edad;
+}
+
+// Sobrecarga de constructores
+public Persona(String nombre) {
+    this(nombre, 0);  // Llama al constructor con 2 parámetros
+}
+
+// LLAMADA ENTRE CONSTRUCTORES CON this()
+public class Empleado extends Persona {
+    private double salario;
+    
+    public Empleado(String nombre, int edad, double salario) {
+        super(nombre, edad);  // PRIMERO: llamar a constructor padre
+        this.salario = salario;
+    }
+    
+    public Empleado(String nombre) {
+        this(nombre, 0, 1000.0);  // Llama al constructor de arriba
+    }
+}
+
+⚠️ REGLAS DE CONSTRUCTORES:
+1. Si no definimos constructor, Java crea uno por defecto sin parámetros
+2. Si definimos ALGÚN constructor, Java NO crea el por defecto
+3. super() debe ser la PRIMERA instrucción del constructor hijo
+4. this() para llamar a otro constructor de la MISMA clase (también primero)
+5. super() y this() NO pueden usarse en el mismo constructor
+
+--------------------------------------------------------------------------------
+MÉTODOS ESTÁTICOS VS DE INSTANCIA:
+--------------------------------------------------------------------------------
+
+public class Contador {
+    private static int total = 0;    // Variable de clase (compartida)
+    private int valor;               // Variable de instancia
+    
+    public Contador() {
+        total++;                     // Incrementa el total de instancias
+        this.valor = 0;
+    }
+    
+    // Método estático: pertenece a la CLASE
+    public static int getTotal() {
+        return total;
+        // NO puede acceder a 'valor' ni a this
+    }
+    
+    // Método de instancia: pertenece al OBJETO
+    public void incrementar() {
+        this.valor++;
+        total++;  // SÍ puede acceder a variables estáticas
+    }
+}
+
+// Uso:
+Contador c1 = new Contador();
+Contador c2 = new Contador();
+
+System.out.println(Contador.getTotal());  // 2 (llamada desde la clase)
+System.out.println(c1.getTotal());        // 2 (también válido, pero no recomendado)
+
+--------------------------------------------------------------------------------
+BLOQUES DE INICIALIZACIÓN:
+--------------------------------------------------------------------------------
+
+public class Ejemplo {
+    private static int contador;
+    private int valor;
+    
+    // Bloque estático: se ejecuta UNA VEZ al cargar la clase
+    static {
+        contador = 0;
+        System.out.println("Clase cargada");
+    }
+    
+    // Bloque de instancia: se ejecuta ANTES de cada constructor
+    {
+        valor = 10;
+        System.out.println("Objeto creado");
+    }
+    
+    public Ejemplo() {
+        System.out.println("Constructor ejecutado");
+    }
+}
+
+// Orden de ejecución:
+// 1. Bloque estático (una vez)
+// 2. Bloque de instancia (por cada new)
+// 3. Constructor
+
+================================================================================
+                        3. ENCAPSULAMIENTO
+================================================================================
+
+--------------------------------------------------------------------------------
+CONCEPTO:
+--------------------------------------------------------------------------------
+Principio de ocultar los detalles internos de una clase y exponer solo
+lo necesario mediante una interfaz controlada.
+
+BENEFICIOS:
+• Protección de datos (no se pueden modificar directamente)
+• Validación de datos (control en setters)
+• Flexibilidad para cambiar implementación interna
+• Mantenimiento más fácil
+
+--------------------------------------------------------------------------------
+IMPLEMENTACIÓN CON GETTERS Y SETTERS:
+--------------------------------------------------------------------------------
+
+public class CuentaBancaria {
+    
+    // Atributos PRIVADOS (no accesibles desde fuera)
+    private String numeroCuenta;
+    private double saldo;
+    private String titular;
+    
+    // Constructor
+    public CuentaBancaria(String numeroCuenta, String titular) {
+        this.numeroCuenta = numeroCuenta;
+        this.titular = titular;
+        this.saldo = 0.0;
+    }
+    
+    // GETTER: permite LEER el valor
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+    
+    public double getSaldo() {
+        return saldo;
+    }
+    
+    public String getTitular() {
+        return titular;
+    }
+    
+    // SETTER: permite MODIFICAR el valor (con validación)
+    public void setTitular(String titular) {
+        if (titular != null && !titular.isEmpty()) {
+            this.titular = titular;
+        }
+    }
+    
+    // No proporcionamos setSaldo() ni setNumeroCuenta() para protegerlos
+    
+    // Método de negocio (abstracción del detalle interno)
+    public void depositar(double cantidad) {
+        if (cantidad > 0) {
+            this.saldo += cantidad;
+        }
+    }
+    
+    public boolean retirar(double cantidad) {
+        if (cantidad > 0 && cantidad <= saldo) {
+            this.saldo -= cantidad;
+            return true;
+        }
+        return false;
+    }
+}
+
+--------------------------------------------------------------------------------
+NOMENCLATURA JAVABEANS:
+--------------------------------------------------------------------------------
+
+// Atributo: private tipo nombreAtributo;
+private String nombre;
+private boolean activo;
+private List<String> elementos;
+
+// Getter: public tipo getNombreAtributo()
+public String getNombre() { return nombre; }
+
+// Para boolean: public boolean isNombreAtributo()
+public boolean isActivo() { return activo; }
+
+// Setter: public void setNombreAtributo(tipo valor)
+public void setNombre(String nombre) { this.nombre = nombre; }
+
+// Para colecciones: getter y setter específicos
+public List<String> getElementos() { return elementos; }
+public void setElementos(List<String> elementos) { this.elementos = elementos; }
+
+================================================================================
+                          4. HERENCIA
+================================================================================
+
+--------------------------------------------------------------------------------
+CONCEPTO:
+--------------------------------------------------------------------------------
+Mecanismo que permite crear nuevas clases basadas en clases existentes,
+heredando sus atributos y métodos.
+
+TERMINOLOGÍA:
+• Superclase (clase padre): Clase de la que se hereda
+• Subclase (clase hija): Clase que hereda
+• extends: Palabra clave para heredar de una clase
+• super: Referencia a la superclase
+
+--------------------------------------------------------------------------------
+SINTAXIS BÁSICA:
+--------------------------------------------------------------------------------
+
+// Superclase
+public class Vehiculo {
+    protected String marca;
+    protected int año;
+    
+    public Vehiculo(String marca, int año) {
+        this.marca = marca;
+        this.año = año;
+    }
+    
+    public void arrancar() {
+        System.out.println("Vehículo arrancando...");
+    }
+    
+    public void mostrarInfo() {
+        System.out.println("Marca: " + marca + ", Año: " + año);
+    }
+}
+
+// Subclase
+public class Coche extends Vehiculo {
+    private int numeroPuertas;
+    
+    public Coche(String marca, int año, int numeroPuertas) {
+        super(marca, año);  // LLAMADA OBLIGATORIA al constructor padre
+        this.numeroPuertas = numeroPuertas;
+    }
+    
+    // Método específico de la subclase
+    public void tocarClaxon() {
+        System.out.println("¡Pii pi!");
+    }
+    
+    // Sobrescritura de método
+    @Override
+    public void mostrarInfo() {
+        super.mostrarInfo();  // Llama al método del padre
+        System.out.println("Puertas: " + numeroPuertas);
+    }
+}
+
+--------------------------------------------------------------------------------
+REGLAS DE HERENCIA:
+--------------------------------------------------------------------------------
+
+1. Java solo permite HERENCIA SIMPLE de clases (una sola superclase)
+
+   // ❌ INCORRECTO - Herencia múltiple NO permitida
+   public class A extends B, C { }
+   
+   // ✅ CORRECTO - Una sola superclase
+   public class A extends B { }
+
+2. Si no se especifica extends, la clase hereda de java.lang.Object
+
+   public class Persona { }
+   // Equivale a: public class Persona extends Object { }
+
+3. Todo en Java es un Object (excepto tipos primitivos)
+
+   Object obj = new String("Hola");
+   Object obj2 = new Integer(5);
+   Object obj3 = new MiClase();
+
+4. Los constructores NO se heredan
+
+   public class Padre {
+       public Padre(int x) { }
+   }
+   
+   public class Hijo extends Padre {
+       // Debe llamar explícitamente a super(int)
+       public Hijo() {
+           super(0);  // Obligatorio
+       }
+   }
+
+5. Los métodos private NO se heredan (no son accesibles)
+
+6. Los métodos final NO pueden sobrescribirse
+
+--------------------------------------------------------------------------------
+PALABRA CLAVE super:
+--------------------------------------------------------------------------------
+
+public class Empleado extends Persona {
+    private double salario;
+    
+    public Empleado(String nombre, int edad, double salario) {
+        super(nombre, edad);     // Llamar al constructor padre
+        this.salario = salario;
+    }
+    
+    @Override
+    public void mostrar() {
+        super.mostrar();         // Llamar al método padre
+        System.out.println("Salario: " + salario);
+    }
+    
+    @Override
+    public String getDescripcion() {
+        return super.getDescripcion() + " - Empleado";  // Usar implementación padre
+    }
+}
+
+--------------------------------------------------------------------------------
+SOBRESCRITURA DE MÉTODOS (@Override):
+--------------------------------------------------------------------------------
+
+REGLAS:
+1. Misma firma (nombre + parámetros)
+2. Mismo tipo de retorno o covariante (subtipo)
+3. No puede ser más restrictivo en acceso
+4. No puede lanzar excepciones checked más amplias
+5. Solo métodos heredados (no static, no final, no private)
+
+public class Animal {
+    public void hacerSonido() {
+        System.out.println("Sonido genérico");
+    }
+    
+    protected String obtenerTipo() {
+        return "Animal";
+    }
+    
+    public Number getPeso() {
+        return 0;
+    }
+}
+
+public class Perro extends Animal {
+    
+    @Override
+    public void hacerSonido() {           // ✅ Correcto
+        System.out.println("Guau guau");
+    }
+    
+    @Override
+    public String obtenerTipo() {         // ✅ Más accesible (public > protected)
+        return "Perro";
+    }
+    
+    // ❌ INCORRECTO: más restrictivo
+    // @Override
+    // private String obtenerTipo() { return "Perro"; }
+    
+    @Override
+    public Integer getPeso() {            // ✅ Covariante (Integer es subtipo de Number)
+        return 15;
+    }
+}
+
+--------------------------------------------------------------------------------
+OCULTACIÓN DE MÉTODOS ESTÁTICOS:
+--------------------------------------------------------------------------------
+Los métodos estáticos NO se sobrescriben, se OCULTAN.
+
+public class Padre {
+    public static void metodoEstatico() {
+        System.out.println("Padre");
+    }
+}
+
+public class Hijo extends Padre {
+    // Esto es OCULTACIÓN, no sobrescritura (no usar @Override)
+    public static void metodoEstatico() {
+        System.out.println("Hijo");
+    }
+}
+
+// El método llamado depende del TIPO DE REFERENCIA, no del objeto:
+Padre p = new Hijo();
+p.metodoEstatico();        // Imprime "Padre" (tipo de referencia)
+
+Hijo h = new Hijo();
+h.metodoEstatico();        // Imprime "Hijo"
+
+--------------------------------------------------------------------------------
+ORDEN DE INICIALIZACIÓN EN HERENCIA:
+--------------------------------------------------------------------------------
+
+public class Padre {
+    static { System.out.println("1. Static Padre"); }
+    { System.out.println("3. Instancia Padre"); }
+    public Padre() { System.out.println("4. Constructor Padre"); }
+}
+
+public class Hijo extends Padre {
+    static { System.out.println("2. Static Hijo"); }
+    { System.out.println("5. Instancia Hijo"); }
+    public Hijo() { System.out.println("6. Constructor Hijo"); }
+}
+
+// Al crear: new Hijo();
+// Orden de ejecución:
+// 1. Static Padre
+// 2. Static Hijo
+// 3. Instancia Padre
+// 4. Constructor Padre
+// 5. Instancia Hijo
+// 6. Constructor Hijo
+
+================================================================================
+                         5. POLIMORFISMO
+================================================================================
+
+--------------------------------------------------------------------------------
+CONCEPTO:
+--------------------------------------------------------------------------------
+Capacidad de un objeto de comportarse de múltiples formas.
+En Java, una variable de referencia de tipo superclase puede apuntar a
+objetos de cualquier subclase.
+
+TIPOS:
+1. Polimorfismo de compilación (sobrecarga)
+2. Polimorfismo de ejecución (sobrescritura)
+
+--------------------------------------------------------------------------------
+POLIMORFISMO CON HERENCIA:
+--------------------------------------------------------------------------------
+
+Animal miAnimal;
+
+miAnimal = new Perro();     // Referencia Animal, objeto Perro
+miAnimal.hacerSonido();     // Ejecuta Perro.hacerSonido()
+
+miAnimal = new Gato();      // Referencia Animal, objeto Gato
+miAnimal.hacerSonido();     // Ejecuta Gato.hacerSonido()
+
+miAnimal = new Pajaro();    // Referencia Animal, objeto Pajaro
+miAnimal.hacerSonido();     // Ejecuta Pajaro.hacerSonido()
+
+// Todos son Animal, pero cada uno se comporta diferente
+
+--------------------------------------------------------------------------------
+LIGADURA DINÁMICA (Dynamic Binding):
+--------------------------------------------------------------------------------
+Java determina en TIEMPO DE EJECUCIÓN qué método ejecutar, basándose en
+el tipo REAL del objeto, no en el tipo de la referencia.
+
+Animal[] animales = new Animal[3];
+animales[0] = new Perro();
+animales[1] = new Gato();
+animales[2] = new Pajaro();
+
+for (Animal a : animales) {
+    a.hacerSonido();  // Cada uno ejecuta SU versión del método
+}
+// Salida:
+// Guau guau
+// Miau
+// Pío pío
+
+--------------------------------------------------------------------------------
+UPCASTING Y DOWNCASTING:
+--------------------------------------------------------------------------------
+
+// UPCASTING: implícito, de subclase a superclase (SIEMPRE SEGURO)
+Perro perro = new Perro();
+Animal animal = perro;      // Upcasting automático
+
+// DOWNCASTING: explícito, de superclase a subclase (RIESGOSO)
+Animal animal = new Perro();
+Perro perro = (Perro) animal;  // Downcasting explícito
+
+// Downcasting puede causar ClassCastException
+Animal animal2 = new Gato();
+// Perro perro2 = (Perro) animal2;  // ERROR en ejecución
+
+// Patrón seguro con instanceof
+if (animal instanceof Perro) {
+    Perro p = (Perro) animal;
+    p.ladrar();  // Método específico de Perro
+}
+
+--------------------------------------------------------------------------------
+POLIMORFISMO CON INTERFACES:
+--------------------------------------------------------------------------------
+
+public interface Sonoro {
+    void hacerSonido();
+}
+
+public class Timbre implements Sonoro {
+    public void hacerSonido() { System.out.println("Ding dong"); }
+}
+
+public class Sirena implements Sonoro {
+    public void hacerSonido() { System.out.println("Niu niu"); }
+}
+
+// Uso polimórfico:
+Sonido[] sonidos = { new Timbre(), new Sirena() };
+for (Sonido s : sonidos) {
+    s.hacerSonido();
+}
+
+--------------------------------------------------------------------------------
+POLIMORFISMO CON CLASES ABSTRACTAS:
+--------------------------------------------------------------------------------
+
+public abstract class Figura {
+    public abstract double calcularArea();
+}
+
+public class Circulo extends Figura {
+    public double calcularArea() { return Math.PI * radio * radio; }
+}
+
+public class Rectangulo extends Figura {
+    public double calcularArea() { return ancho * alto; }
+}
+
+// Uso:
+Figura f1 = new Circulo(5);
+Figura f2 = new Rectangulo(4, 6);
+
+System.out.println(f1.calcularArea());  // Área del círculo
+System.out.println(f2.calcularArea());  // Área del rectángulo
+
+--------------------------------------------------------------------------------
+VARIABLES Y POLIMORFISMO:
+--------------------------------------------------------------------------------
+⚠️ IMPORTANTE: Las variables (atributos) NO son polimórficas, solo los métodos.
+
+public class Padre {
+    public String nombre = "Padre";
+    public void mostrar() { System.out.println(nombre); }
+}
+
+public class Hijo extends Padre {
+    public String nombre = "Hijo";  // Ocultación, NO sobrescritura
+    @Override
+    public void mostrar() { System.out.println(nombre); }
+}
+
+Padre p = new Hijo();
+System.out.println(p.nombre);    // "Padre" (variable de Padre)
+p.mostrar();                      // "Hijo" (método de Hijo)
+
+================================================================================
+                        6. CLASES ABSTRACTAS
+================================================================================
+
+--------------------------------------------------------------------------------
+CONCEPTO:
+--------------------------------------------------------------------------------
+Clase que no puede ser instanciada directamente. Está diseñada para ser
+heredada y puede contener métodos sin implementación (abstractos).
+
+CARACTERÍSTICAS:
+• Se declara con abstract
+• Puede tener métodos abstractos (sin cuerpo) y concretos (con cuerpo)
+• Puede tener constructores (llamados desde subclases)
+• Puede tener atributos de cualquier tipo
+• Puede implementar interfaces sin implementar todos sus métodos
+• Una subclase debe implementar TODOS los métodos abstractos (o ser abstracta)
+
+--------------------------------------------------------------------------------
+SINTAXIS:
+--------------------------------------------------------------------------------
+
+public abstract class Figura {
+    
+    // Atributos normales
+    private String color;
+    protected double area;
+    public static int contador = 0;
+    
+    // Constructor
+    public Figura(String color) {
+        this.color = color;
+        contador++;
+    }
+    
+    // Método abstracto: SIN cuerpo, DEBE ser implementado por subclases
+    public abstract double calcularArea();
+    
+    // Método abstracto con parámetros
+    public abstract void escalar(double factor);
+    
+    // Método concreto: CON cuerpo, heredado por subclases
+    public String getColor() {
+        return color;
+    }
+    
+    // Método que usa método abstracto
+    public void mostrarArea() {
+        System.out.println("Área: " + calcularArea());
+    }
+}
+
+--------------------------------------------------------------------------------
+CLASE CONCRETA QUE HEREDA DE ABSTRACTA:
+--------------------------------------------------------------------------------
+
+public class Circulo extends Figura {
+    private double radio;
+    
+    public Circulo(String color, double radio) {
+        super(color);  // Llamar al constructor de Figura
+        this.radio = radio;
+    }
+    
+    // OBLIGATORIO implementar métodos abstractos
+    @Override
+    public double calcularArea() {
+        return Math.PI * radio * radio;
+    }
+    
+    @Override
+    public void escalar(double factor) {
+        radio *= factor;
+    }
+}
+
+--------------------------------------------------------------------------------
+CADENA DE CLASES ABSTRACTAS:
+--------------------------------------------------------------------------------
+
+public abstract class Figura {
+    public abstract double calcularArea();
+}
+
+public abstract class Poligono extends Figura {
+    protected int numeroLados;
+    
+    public int getNumeroLados() {
+        return numeroLados;
+    }
+    
+    // No implementa calcularArea(), sigue siendo abstracto
+    // Podría añadir más métodos abstractos
+    public abstract double calcularPerimetro();
+}
+
+public class Rectangulo extends Poligono {
+    // DEBE implementar TODOS los métodos abstractos heredados
+    @Override
+    public double calcularArea() { return ancho * alto; }
+    
+    @Override
+    public double calcularPerimetro() { return 2 * (ancho + alto); }
+}
+
+--------------------------------------------------------------------------------
+⚠️ REGLAS IMPORTANTES:
+--------------------------------------------------------------------------------
+
+1. Si una clase tiene AL MENOS UN método abstracto → la clase DEBE ser abstracta
+
+   // ❌ ERROR de compilación
+   public class MiClase {
+       public abstract void metodo();
+   }
+   
+   // ✅ Correcto
+   public abstract class MiClase {
+       public abstract void metodo();
+   }
+
+2. No se puede instanciar una clase abstracta
+
+   // ❌ ERROR
+   Figura f = new Figura("rojo");
+
+3. Una subclase concreta DEBE implementar TODOS los métodos abstractos
+
+4. Una subclase abstracta puede NO implementar algunos métodos abstractos
+
+5. Los métodos abstractos NO pueden ser:
+   - private (no se heredarían)
+   - static (no se pueden sobrescribir)
+   - final (no se pueden sobrescribir)
+
+6. Los constructores de clases abstractas se llaman vía super() desde subclases
+
+================================================================================
+                          7. INTERFACES
+================================================================================
+
+--------------------------------------------------------------------------------
+CONCEPTO:
+--------------------------------------------------------------------------------
+Contrato que define un conjunto de métodos que una clase debe implementar.
+Define QUÉ hace una clase, no CÓMO lo hace.
+
+CARACTERÍSTICAS:
+• Se declara con interface
+• Todos los métodos son public por defecto
+• Todos los métodos son abstract por defecto (antes de Java 8)
+• Desde Java 8: puede tener métodos default y static con implementación
+• Todos los atributos son public static final (constantes)
+• Una clase puede implementar MÚLTIPLES interfaces
+• Una interfaz puede extender MÚLTIPLES interfaces
+
+--------------------------------------------------------------------------------
+SINTAXIS BÁSICA:
+--------------------------------------------------------------------------------
+
+public interface Dibujable {
+    
+    // Constantes (public static final por defecto)
+    int MAX_ANCHO = 800;
+    int MAX_ALTO = 600;
+    
+    // Métodos abstractos (public abstract por defecto)
+    void dibujar();
+    void borrar();
+    
+    // Desde Java 8: Método default (con implementación)
+    default void dibujarConBorde() {
+        System.out.println("---");
+        dibujar();
+        System.out.println("---");
+    }
+    
+    // Desde Java 8: Método static
+    static void limpiarPantalla() {
+        System.out.println("Pantalla limpiada");
+    }
+}
+
+--------------------------------------------------------------------------------
+IMPLEMENTACIÓN DE INTERFACES:
+--------------------------------------------------------------------------------
+
+public class Circulo implements Dibujable {
+    
+    @Override
+    public void dibujar() {
+        System.out.println("Dibujando círculo");
+    }
+    
+    @Override
+    public void borrar() {
+        System.out.println("Borrando círculo");
+    }
+    
+    // dibujarConBorde() se hereda con su implementación default
+}
+
+// Uso:
+Circulo c = new Circulo();
+c.dibujar();            // Método implementado
+c.dibujarConBorde();    // Método default heredado
+Dibujable.limpiarPantalla();  // Método estático de la interfaz
+
+--------------------------------------------------------------------------------
+IMPLEMENTACIÓN MÚLTIPLE:
+--------------------------------------------------------------------------------
+
+public interface Dibujable {
+    void dibujar();
+}
+
+public interface Movible {
+    void mover(int x, int y);
+}
+
+public interface Colorable {
+    void setColor(String color);
+    String getColor();
+}
+
+// Una clase implementa múltiples interfaces
+public class Rectangulo implements Dibujable, Movible, Colorable {
+    
+    private String color;
+    private int x, y;
+    
+    @Override
+    public void dibujar() {
+        System.out.println("Dibujando rectángulo");
+    }
+    
+    @Override
+    public void mover(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    @Override
+    public void setColor(String color) {
+        this.color = color;
+    }
+    
+    @Override
+    public String getColor() {
+        return color;
+    }
+}
+
+--------------------------------------------------------------------------------
+HERENCIA ENTRE INTERFACES:
+--------------------------------------------------------------------------------
+
+public interface Volador {
+    void volar();
+}
+
+public interface Nadador {
+    void nadar();
+}
+
+// Una interfaz puede extender múltiples interfaces
+public interface Pato extends Volador, Nadador {
+    void cuacar();
+}
+
+// Clase que implementa Pato debe implementar TODOS los métodos heredados
+public class PatoReal implements Pato {
+    
+    @Override
+    public void volar() { System.out.println("Volando"); }
+    
+    @Override
+    public void nadar() { System.out.println("Nadando"); }
+    
+    @Override
+    public void cuacar() { System.out.println("Cuac cuac"); }
+}
+
+--------------------------------------------------------------------------------
+MÉTODOS DEFAULT (Java 8+):
+--------------------------------------------------------------------------------
+Permiten añadir funcionalidad a interfaces sin romper implementaciones existentes.
+
+public interface Vehiculo {
+    
+    void arrancar();
+    
+    default void tocarClaxon() {
+        System.out.println("Bip bip");
+    }
+    
+    default void mostrarInfo() {
+        System.out.println("Soy un vehículo");
+    }
+}
+
+public class Coche implements Vehiculo {
+    @Override
+    public void arrancar() {
+        System.out.println("Arrancando coche");
+    }
+    // tocarClaxon() y mostrarInfo() se heredan con implementación default
+}
+
+// Una clase PUEDE sobrescribir métodos default:
+public class CocheElectrico implements Vehiculo {
+    
+    @Override
+    public void arrancar() {
+        System.out.println("Activando modo eléctrico");
+    }
+    
+    @Override
+    public void mostrarInfo() {
+        System.out.println("Soy un coche eléctrico");
+    }
+}
+
+--------------------------------------------------------------------------------
+CONFLICTO DE MÉTODOS DEFAULT:
+--------------------------------------------------------------------------------
+Si una clase implementa dos interfaces con el mismo método default:
+
+public interface A {
+    default void saludar() { System.out.println("Hola desde A"); }
+}
+
+public interface B {
+    default void saludar() { System.out.println("Hola desde B"); }
+}
+
+// La clase DEBE resolver el conflicto
+public class MiClase implements A, B {
+    
+    @Override
+    public void saludar() {
+        // Opción 1: Implementación propia
+        System.out.println("Hola desde MiClase");
+        
+        // Opción 2: Usar implementación de A
+        A.super.saludar();
+        
+        // Opción 3: Usar implementación de B
+        B.super.saludar();
+    }
+}
+
+--------------------------------------------------------------------------------
+MÉTODOS ESTÁTICOS EN INTERFACES (Java 8+):
+--------------------------------------------------------------------------------
+
+public interface Utilidades {
+    
+    static int sumar(int a, int b) {
+        return a + b;
+    }
+    
+    static int multiplicar(int a, int b) {
+        return a * b;
+    }
+}
+
+// Los métodos estáticos NO se heredan a las clases implementadoras
+int resultado = Utilidades.sumar(5, 3);  // Llamada desde la interfaz
+
+public class MiUtil implements Utilidades {}
+// MiUtil.sumar(1, 2);  // ❌ ERROR: no es accesible
+
+--------------------------------------------------------------------------------
+⚠️ CLASE ABSTRACTA vs INTERFAZ:
+--------------------------------------------------------------------------------
+
+┌─────────────────────┬────────────────────────┬────────────────────────┐
+│ CARACTERÍSTICA      │ CLASE ABSTRACTA        │ INTERFAZ               │
+├─────────────────────┼────────────────────────┼────────────────────────┤
+│ Instanciable        │ NO                     │ NO                     │
+│ Métodos abstractos  │ Sí (opcionales)        │ Sí (por defecto)       │
+│ Métodos concretos   │ Sí                     │ Sí (default/static)    │
+│ Atributos           │ Cualquier tipo         │ Solo constantes        │
+│ Constructores       │ Sí                     │ No                     │
+│ Herencia múltiple   │ No (una sola clase)    │ Sí (múltiples interf.) │
+│ Palabra clave       │ extends                │ implements             │
+│ Variables instancia │ Sí                     │ No                     │
+│ Visibilidad métodos │ Cualquiera             │ public por defecto     │
+└─────────────────────┴────────────────────────┴────────────────────────┘
+
+¿CUÁNDO USAR CADA UNA?
+
+• CLASE ABSTRACTA:
+  - Hay código común a compartir entre subclases
+  - Se necesitan variables de instancia no constantes
+  - Se necesita control de acceso (protected, private)
+  - Es una relación "ES-UN" fuerte
+
+• INTERFAZ:
+  - Definir capacidades que pueden tener clases de diferentes jerarquías
+  - Se necesita herencia múltiple de tipo
+  - Se quiere especificar comportamiento sin implementación
+  - Es una relación "PUEDE" o "TIENE CAPACIDAD DE"
+
+================================================================================
+                     8. CLASES Y MÉTODOS FINAL
+================================================================================
+
+--------------------------------------------------------------------------------
+CLASE FINAL:
+--------------------------------------------------------------------------------
+Clase que NO puede ser heredada. Ninguna clase puede extenderla.
+
+// Clase final
+public final class Matematicas {
+    
+    public static double PI = 3.14159;
+    
+    private Matematicas() { }  // Constructor privado: no instanciable
+    
+    public static int factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+}
+
+// ❌ ERROR: No se puede heredar de clase final
+// public class MisMatematicas extends Matematicas { }
+
+EJEMPLOS REALES:
+- java.lang.String
+- java.lang.Integer, java.lang.Double (wrappers)
+- java.lang.Math
+- java.lang.System
+
+USOS:
+- Seguridad: evitar que se modifique comportamiento heredando
+- Eficiencia: el compilador puede optimizar llamadas
+- Diseño: clases que representan conceptos "cerrados"
+
+--------------------------------------------------------------------------------
+MÉTODO FINAL:
+--------------------------------------------------------------------------------
+Método que NO puede ser sobrescrito por las subclases.
+
+public abstract class Figura {
+    private int id;
+    
+    // Método final: las subclases NO pueden cambiar la igualdad
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        return id == ((Figura) obj).id;
+    }
+    
+    @Override
+    public final int hashCode() {
+        return id;
+    }
+    
+    // Método abstracto: las subclases DEBEN implementarlo
+    public abstract double calcularArea();
+}
+
+public class Circulo extends Figura {
+    
+    @Override
+    public double calcularArea() { ... }  // ✅ Correcto
+    
+    // ❌ ERROR: No se puede sobrescribir método final
+    // @Override
+    // public boolean equals(Object obj) { ... }
+}
+
+--------------------------------------------------------------------------------
+ATRIBUTO FINAL:
+--------------------------------------------------------------------------------
+Atributo que solo puede asignarse UNA vez (constante).
+
+public class Ejemplo {
+    
+    // Constante de clase
+    public static final double PI = 3.14159;
+    
+    // Constante de instancia
+    private final int ID;
+    
+    // Constante con inicialización diferida
+    private final String nombre;
+    
+    public Ejemplo(int id, String nombre) {
+        this.ID = id;           // Asignación en constructor
+        this.nombre = nombre;   // Única asignación posible
+    }
+    
+    // ❌ ERROR: No se puede modificar un final
+    // public void cambiarId(int nuevo) { ID = nuevo; }
+}
+
+--------------------------------------------------------------------------------
+PARÁMETRO FINAL:
+--------------------------------------------------------------------------------
+Parámetro que no puede ser modificado dentro del método.
+
+public void procesar(final String dato) {
+    System.out.println(dato);
+    // dato = "otro";  // ❌ ERROR: parámetro final
+}
+
+--------------------------------------------------------------------------------
+VARIABLE LOCAL FINAL:
+--------------------------------------------------------------------------------
+Variable local que solo puede asignarse una vez.
+
+public void metodo() {
+    final int x = 10;
+    // x = 20;  // ❌ ERROR
+    
+    // Útil con lambdas y clases anónimas
+    final String mensaje = "Hola";
+    Runnable r = () -> System.out.println(mensaje);
+}
+
+--------------------------------------------------------------------------------
+⚠️ RESUMEN FINAL:
+--------------------------------------------------------------------------------
+
+┌───────────────────┬─────────────────────────────────────────────────────────┐
+│ ELEMENTO          │ EFECTO DE 'final'                                       │
+├───────────────────┼─────────────────────────────────────────────────────────┤
+│ Clase             │ No puede ser heredada                                   │
+│ Método            │ No puede ser sobrescrito                                │
+│ Atributo          │ Solo se asigna una vez (constante)                      │
+│ Parámetro         │ No se puede modificar dentro del método                 │
+│ Variable local    │ Solo se asigna una vez                                  │
+└───────────────────┴─────────────────────────────────────────────────────────┘
+
+================================================================================
+                       9. EQUALS() Y HASHCODE()
+================================================================================
+
+--------------------------------------------------------------------------------
+ORIGEN:
+--------------------------------------------------------------------------------
+Todos los objetos en Java heredan de java.lang.Object, que incluye:
+- equals(Object obj): Compara igualdad de objetos
+- hashCode(): Devuelve código hash del objeto
+- toString(): Representación en texto
+- getClass(): Devuelve la clase del objeto
+
+--------------------------------------------------------------------------------
+EQUALS() POR DEFECTO:
+--------------------------------------------------------------------------------
+La implementación por defecto compara REFERENCIAS (==):
+
+Object o1 = new Object();
+Object o2 = new Object();
+o1.equals(o2);  // false (objetos diferentes en memoria)
+
+String s1 = new String("hola");
+String s2 = new String("hola");
+s1.equals(s2);  // true (String sobrescribe equals para comparar contenido)
+
+--------------------------------------------------------------------------------
+CONTRATO DE EQUALS():
+--------------------------------------------------------------------------------
+Al sobrescribir equals(), se debe cumplir:
+
+1. REFLEXIVO: x.equals(x) siempre es true
+2. SIMÉTRICO: si x.equals(y), entonces y.equals(x)
+3. TRANSITIVO: si x.equals(y) y y.equals(z), entonces x.equals(z)
+4. CONSISTENTE: múltiples llamadas devuelven el mismo resultado
+5. NO NULL: x.equals(null) siempre es false
+
+--------------------------------------------------------------------------------
+IMPLEMENTACIÓN CORRECTA DE EQUALS():
+--------------------------------------------------------------------------------
+
+public class Persona {
+    private String dni;
+    private String nombre;
+    private int edad;
+    
+    @Override
+    public boolean equals(Object obj) {
+        // 1. ¿Es el mismo objeto? (referencia idéntica)
+        if (this == obj) return true;
+        
+        // 2. ¿Es null?
+        if (obj == null) return false;
+        
+        // 3. ¿Es de la misma clase?
+        // Opción A: getClass()
+        if (getClass() != obj.getClass()) return false;
+        
+        // Opción B: instanceof (permite subclases)
+        // if (!(obj instanceof Persona)) return false;
+        
+        // 4. Casting seguro
+        Persona other = (Persona) obj;
+        
+        // 5. Comparar atributos significativos
+        // Usar Objects.equals() para evitar NullPointerException
+        return edad == other.edad &&
+               Objects.equals(dni, other.dni) &&
+               Objects.equals(nombre, other.nombre);
+    }
+}
+
+// Comparación de tipos primitivos: usar ==
+// Comparación de objetos: usar Objects.equals() o .equals()
+
+--------------------------------------------------------------------------------
+CONTRATO DE HASHCODE():
+--------------------------------------------------------------------------------
+Al sobrescribir hashCode(), se debe cumplir:
+
+1. Si dos objetos son iguales según equals(), DEBEN tener el mismo hashCode()
+2. Si dos objetos tienen diferente hashCode(), DEBEN ser diferentes según equals()
+3. El hashCode debe ser consistente (mismo resultado si el objeto no cambia)
+
+⚠️ IMPORTANTE: equals() y hashCode() DEBEN sobrescribirse JUNTOS
+
+--------------------------------------------------------------------------------
+IMPLEMENTACIÓN CORRECTA DE HASHCODE():
+--------------------------------------------------------------------------------
+
+import java.util.Objects;
+
+public class Persona {
+    private String dni;
+    private String nombre;
+    private int edad;
+    
+    @Override
+    public int hashCode() {
+        // Opción 1: Objects.hash() (simple y correcta)
+        return Objects.hash(dni, nombre, edad);
+        
+        // Opción 2: Manual (más eficiente)
+        // int result = dni != null ? dni.hashCode() : 0;
+        // result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
+        // result = 31 * result + edad;
+        // return result;
+    }
+}
+
+--------------------------------------------------------------------------------
+¿POR QUÉ ES IMPORTANTE?
+--------------------------------------------------------------------------------
+Las colecciones basadas en hash (HashMap, HashSet, Hashtable) usan ambos métodos:
+
+Set<Persona> conjunto = new HashSet<>();
+Persona p1 = new Persona("12345678A", "Juan", 25);
+Persona p2 = new Persona("12345678A", "Juan", 30);  // Mismo DNI
+
+// Si solo sobrescribimos equals():
+conjunto.add(p1);
+conjunto.add(p2);  // Se añade porque hashCode() es diferente
+System.out.println(conjunto.size());  // 2 (¡incorrecto!)
+
+// Con equals() y hashCode() bien implementados:
+conjunto.add(p1);
+conjunto.add(p2);  // NO se añade (mismo hashCode, luego equals)
+System.out.println(conjunto.size());  // 1 (correcto)
+
+--------------------------------------------------------------------------------
+CÓMO FUNCIONA HASHSET:
+--------------------------------------------------------------------------------
+
+1. Al añadir un elemento:
+   a. Calcula hashCode() del objeto
+   b. Busca el "bucket" (cubeta) correspondiente
+   c. Si el bucket está vacío → añade el objeto
+   d. Si hay elementos → compara con equals()
+   e. Si equals() es false → añade (colisión manejada)
+   f. Si equals() es true → NO añade (duplicado)
+
+2. Dos objetos con mismo hashCode() PUEDEN ser diferentes (colisiones)
+3. Dos objetos iguales (equals) SIEMPRE tienen mismo hashCode()
+
+--------------------------------------------------------------------------------
+EQUALS() Y HASHCODE() FINALES:
+--------------------------------------------------------------------------------
+Si se declaran final, las subclases no pueden cambiar el criterio de igualdad.
+
+public abstract class Figura {
+    private int id;
+    
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        return id == ((Figura) obj).id;
+    }
+    
+    @Override
+    public final int hashCode() {
+        return Integer.hashCode(id);
+    }
+}
+
+// Ventaja: consistencia garantizada en toda la jerarquía
+// Desventaja: las subclases no pueden añadir atributos a la comparación
+
+================================================================================
+                    10. CONVERSIONES DE TIPO (CASTING)
+================================================================================
+
+--------------------------------------------------------------------------------
+TIPOS DE CASTING:
+--------------------------------------------------------------------------------
+
+┌─────────────────┬───────────────────────────────────────────────────────────┐
+│ TIPO            │ DESCRIPCIÓN                                               │
+├─────────────────┼───────────────────────────────────────────────────────────┤
+│ Upcasting       │ De subclase a superclase. Implícito, siempre seguro      │
+│ Downcasting     │ De superclase a subclase. Explícito, arriesgado          │
+│ Boxing          │ De primitivo a wrapper (int → Integer). Implícito        │
+│ Unboxing        │ De wrapper a primitivo (Integer → int). Implícito        │
+│ Widening        │ De tipo menor a mayor (int → long). Implícito            │
+│ Narrowing       │ De tipo mayor a menor (long → int). Explícito            │
+└─────────────────┴───────────────────────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+UPCASTING (Implícito):
+--------------------------------------------------------------------------------
+Convertir una referencia de subclase a superclase. Es AUTOMÁTICO.
+
+Circulo circulo = new Circulo(5);
+
+// Upcasting automático
+Figura figura = circulo;        // Circulo → Figura
+Object objeto = circulo;        // Circulo → Object
+Object obj2 = figura;           // Figura → Object
+
+// Con interfaces
+Dibujable d = new Circulo();    // Circulo → Dibujable
+
+// En colecciones
+List<Figura> lista = new ArrayList<>();
+lista.add(new Circulo());       // Upcasting automático
+lista.add(new Rectangulo());    // Upcasting automático
+
+// El upcasting "ensancha" la vista del objeto
+// El objeto sigue siendo un Circulo, pero solo vemos lo de Figura
+
+--------------------------------------------------------------------------------
+DOWNCASTING (Explícito):
+--------------------------------------------------------------------------------
+Convertir una referencia de superclase a subclase. Requiere CAST EXPLÍCITO.
+
+Figura figura = new Circulo(5);
+
+// Downcasting explícito con paréntesis
+Circulo circulo = (Circulo) figura;  // ✅ Correcto: figura es realmente Circulo
+
+// Downcasting incorrecto - ERROR en ejecución
+Rectangulo rect = (Rectangulo) figura;  // ❌ ClassCastException
+
+--------------------------------------------------------------------------------
+INSTANCEOF - VERIFICACIÓN SEGURA:
+--------------------------------------------------------------------------------
+Verifica el tipo real del objeto antes de hacer downcasting.
+
+Figura figura = new Circulo(5);
+
+// Verificar ANTES de convertir
+if (figura instanceof Circulo) {
+    Circulo c = (Circulo) figura;
+    System.out.println("Radio: " + c.getRadio());
+}
+
+if (figura instanceof Rectangulo) {
+    Rectangulo r = (Rectangulo) figura;
+} else {
+    System.out.println("No es un rectángulo");
+}
+
+// Con interfaces
+if (figura instanceof Dibujable) {
+    Dibujable d = (Dibujable) figura;
+    d.dibujar();
+}
+
+--------------------------------------------------------------------------------
+PATTERN MATCHING (Java 16+):
+--------------------------------------------------------------------------------
+Combina instanceof y casting en una sola operación.
+
+// ANTES de Java 16:
+if (figura instanceof Circulo) {
+    Circulo c = (Circulo) figura;
+    System.out.println(c.getRadio());
+}
+
+// Java 16+ (Pattern Matching for instanceof):
+if (figura instanceof Circulo c) {
+    // 'c' ya está declarado y asignado automáticamente
+    System.out.println(c.getRadio());
+}
+
+// Con interfaces:
+if (figura instanceof Dibujable d) {
+    d.dibujar();
+}
+
+// Múltiples condiciones:
+if (figura instanceof Circulo c && c.getRadio() > 5) {
+    System.out.println("Círculo grande");
+}
+
+--------------------------------------------------------------------------------
+CASTING CON TIPOS PRIMITIVOS:
+--------------------------------------------------------------------------------
+
+// WIDENING (implícito): de menor a mayor capacidad
+int entero = 100;
+long largo = entero;       // int → long (implícito)
+double decimal = largo;    // long → double (implícito)
+
+// NARROWING (explícito): de mayor a menor capacidad (pérdida de datos)
+double d = 123.456;
+int i = (int) d;           // i = 123 (pierde decimales)
+
+long l = 1000000L;
+int j = (int) l;           // Cuidado con overflow
+
+// Operaciones con tipos mixtos
+int a = 5;
+double b = 2.0;
+double resultado = a / b;  // a se promueve a double automáticamente
+
+--------------------------------------------------------------------------------
+AUTOBOXING Y UNBOXING:
+--------------------------------------------------------------------------------
+
+// AUTOBOXING: primitivo → wrapper (implícito)
+int primitivo = 42;
+Integer wrapper = primitivo;      // int → Integer
+
+List<Integer> lista = new ArrayList<>();
+lista.add(10);                    // int → Integer (autoboxing)
+
+// UNBOXING: wrapper → primitivo (implícito)
+Integer wrapper = Integer.valueOf(42);
+int primitivo = wrapper;          // Integer → int
+
+int valor = lista.get(0);         // Integer → int (unboxing)
+
+// ⚠️ CUIDADO CON NULL:
+Integer nulo = null;
+int x = nulo;  // ❌ NullPointerException en unboxing
+
+--------------------------------------------------------------------------------
+TABLA DE TIPOS PRIMITIVOS Y WRAPPERS:
+--------------------------------------------------------------------------------
+
+┌─────────────┬────────────────┬─────────────────────────────────────┐
+│ PRIMITIVO   │ WRAPPER        │ RANGO / VALOR                       │
+├─────────────┼────────────────┼─────────────────────────────────────┤
+│ byte        │ Byte           │ -128 a 127                          │
+│ short       │ Short          │ -32,768 a 32,767                    │
+│ int         │ Integer        │ -2³¹ a 2³¹-1                        │
+│ long        │ Long           │ -2⁶³ a 2⁶³-1                        │
+│ float       │ Float          │ IEEE 754, precisión simple          │
+│ double      │ Double         │ IEEE 754, precisión doble           │
+│ char        │ Character      │ Unicode (0 a 65535)                 │
+│ boolean     │ Boolean        │ true / false                        │
+└─────────────┴────────────────┴─────────────────────────────────────┘
+
+================================================================================
+                      11. COLLECTIONS FRAMEWORK
+================================================================================
+
+--------------------------------------------------------------------------------
+JERARQUÍA PRINCIPAL:
+--------------------------------------------------------------------------------
+
+                         Iterable<T>
+                              │
+                        Collection<T>
+                       /       |       \
+                  Set<T>    List<T>   Queue<T>
+                    │         │         │
+                 HashSet   ArrayList  LinkedList
+                TreeSet    Vector      PriorityQueue
+              LinkedHashSet
+
+Map<K,V> (no hereda de Collection)
+    │
+  HashMap, TreeMap, LinkedHashMap, Hashtable
+
+--------------------------------------------------------------------------------
+LIST - LISTA ORDENADA, PERMITE DUPLICADOS:
+--------------------------------------------------------------------------------
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Vector;
+
+// CREAR
+List<String> lista = new ArrayList<>();     // Mejor para acceso aleatorio
+List<String> lista2 = new LinkedList<>();   // Mejor para inserciones/eliminaciones
+
+// AÑADIR
+lista.add("Uno");                    // Añade al final
+lista.add(0, "Cero");                // Añade en posición específica
+lista.addAll(otraLista);             // Añade todos los elementos
+
+// ACCEDER
+String elem = lista.get(0);          // Por índice
+int pos = lista.indexOf("Uno");      // Primera posición (-1 si no existe)
+int pos2 = lista.lastIndexOf("Uno"); // Última posición
+
+// MODIFICAR
+lista.set(0, "Nuevo");               // Reemplaza en posición
+
+// ELIMINAR
+lista.remove(0);                     // Por índice
+lista.remove("Uno");                 // Por valor (primera ocurrencia)
+lista.removeAll(otraLista);          // Elimina todos los de otraLista
+lista.retainAll(otraLista);          // Mantiene solo los de otraLista
+lista.clear();                       // Elimina todos
+
+// INFORMACIÓN
+int n = lista.size();
+boolean vacia = lista.isEmpty();
+boolean existe = lista.contains("Uno");
+
+// SUBLISTA
+List<String> sub = lista.subList(1, 4);  // Índices 1, 2, 3
+
+// CONVERTIR A ARRAY
+String[] array = lista.toArray(new String[0]);
+
+--------------------------------------------------------------------------------
+SET - CONJUNTO SIN DUPLICADOS:
+--------------------------------------------------------------------------------
+
+import java.util.Set;
+import java.util.HashSet;         // Sin orden garantizado, más rápido
+import java.util.TreeSet;         // Ordenado (necesita Comparable)
+import java.util.LinkedHashSet;   // Orden de inserción
+
+// CREAR
+Set<String> conjunto = new HashSet<>();
+Set<String> ordenado = new TreeSet<>();          // Orden natural
+Set<String> insercion = new LinkedHashSet<>();   // Orden de inserción
+
+// AÑADIR (devuelve false si ya existe)
+boolean nuevo = conjunto.add("Hola");    // true
+boolean repetido = conjunto.add("Hola"); // false (no se añade)
+
+// ELIMINAR
+conjunto.remove("Hola");
+conjunto.clear();
+
+// INFORMACIÓN
+int n = conjunto.size();
+boolean vacio = conjunto.isEmpty();
+boolean existe = conjunto.contains("Hola");
+
+// OPERACIONES DE CONJUNTOS
+Set<Integer> a = new HashSet<>(Arrays.asList(1, 2, 3, 4));
+Set<Integer> b = new HashSet<>(Arrays.asList(3, 4, 5, 6));
+
+a.addAll(b);        // Unión: {1, 2, 3, 4, 5, 6}
+a.retainAll(b);     // Intersección: {3, 4}
+a.removeAll(b);     // Diferencia: {1, 2}
+
+// ⚠️ Para usar objetos propios, implementar equals() y hashCode()
+
+--------------------------------------------------------------------------------
+MAP - DICCIONARIO CLAVE-VALOR:
+--------------------------------------------------------------------------------
+
+import java.util.Map;
+import java.util.HashMap;         // Sin orden, más rápido
+import java.util.TreeMap;         // Ordenado por clave
+import java.util.LinkedHashMap;   // Orden de inserción
+
+// CREAR
+Map<String, Integer> mapa = new HashMap<>();
+
+// AÑADIR / ACTUALIZAR
+mapa.put("Juan", 25);             // Añade nuevo
+mapa.put("María", 30);            // Añade nuevo
+mapa.put("Juan", 26);             // Actualiza (clave existente)
+
+putIfAbsent("Pedro", 40);         // Solo si no existe
+
+// OBTENER
+Integer edad = mapa.get("Juan");           // 26 (null si no existe)
+Integer edad2 = mapa.getOrDefault("Pepe", 0);  // 0 (valor por defecto)
+
+// VERIFICAR
+boolean tieneClave = mapa.containsKey("Juan");
+boolean tieneValor = mapa.containsValue(30);
+
+// ELIMINAR
+mapa.remove("Juan");                       // Por clave
+mapa.remove("María", 30);                  // Solo si coincide valor
+mapa.clear();
+
+// RECORRER
+// Por claves
+for (String clave : mapa.keySet()) {
+    System.out.println(clave);
+}
+
+// Por valores
+for (Integer valor : mapa.values()) {
+    System.out.println(valor);
+}
+
+// Por entradas (recomendado)
+for (Map.Entry<String, Integer> entry : mapa.entrySet()) {
+    System.out.println(entry.getKey() + " = " + entry.getValue());
+}
+
+// Con forEach
+mapa.forEach((k, v) -> System.out.println(k + " -> " + v));
+
+--------------------------------------------------------------------------------
+CONVERSIONES ENTRE COLECCIONES:
+--------------------------------------------------------------------------------
+
+// Array → List
+String[] array = {"a", "b", "c"};
+List<String> lista = Arrays.asList(array);           // Vista fija
+List<String> lista2 = new ArrayList<>(Arrays.asList(array));  // Modificable
+
+// List → Array
+List<String> lista = new ArrayList<>(Arrays.asList("a", "b"));
+String[] array = lista.toArray(new String[0]);
+
+// List → Set (elimina duplicados)
+List<Integer> lista = Arrays.asList(1, 2, 2, 3, 3);
+Set<Integer> set = new HashSet<>(lista);  // {1, 2, 3}
+
+// Set → List
+Set<String> set = new HashSet<>(Arrays.asList("a", "b"));
+List<String> lista = new ArrayList<>(set);
+
+// Map keys → Set
+Set<String> claves = mapa.keySet();
+
+// Map values → Collection
+Collection<Integer> valores = mapa.values();
+
+--------------------------------------------------------------------------------
+ORDENACIÓN DE LISTAS:
+--------------------------------------------------------------------------------
+
+List<Integer> numeros = new ArrayList<>(Arrays.asList(5, 2, 8, 1, 9));
+
+// Con Collections.sort()
+Collections.sort(numeros);  // Orden natural: [1, 2, 5, 8, 9]
+
+// Con List.sort()
+numeros.sort(null);  // Equivalente a Collections.sort(numeros)
+
+// Orden inverso
+Collections.sort(numeros, Collections.reverseOrder());
+
+// Con Comparator
+numeros.sort(Comparator.reverseOrder());
+
+// Con lista de objetos
+List<Persona> personas = new ArrayList<>();
+Collections.sort(personas);  // Necesita que Persona implemente Comparable
+
+// Con Comparator personalizado
+personas.sort(Comparator.comparing(Persona::getNombre));
+
+--------------------------------------------------------------------------------
+BÚSQUEDA BINARIA:
+--------------------------------------------------------------------------------
+
+// REQUISITO: La lista DEBE estar ordenada
+
+List<Integer> lista = new ArrayList<>(Arrays.asList(1, 3, 5, 7, 9));
+
+int pos = Collections.binarySearch(lista, 5);  // 2 (índice)
+int pos2 = Collections.binarySearch(lista, 4); // -3 (no existe)
+
+// Si no existe: posición = -(punto de inserción) - 1
+// 4 se insertaría en índice 2, así que devuelve -(2) - 1 = -3
+
+================================================================================
+                    12. COMPARATOR Y EXPRESIONES LAMBDA
+================================================================================
+
+--------------------------------------------------------------------------------
+COMPARABLE (ORDEN NATURAL):
+--------------------------------------------------------------------------------
+Interface que define el orden "natural" de una clase.
+
+public class Persona implements Comparable<Persona> {
+    private String nombre;
+    private int edad;
+    
+    // Constructor, getters...
+    
+    @Override
+    public int compareTo(Persona other) {
+        // Ordenar por edad
+        return Integer.compare(this.edad, other.edad);
+        
+        // Alternativa para String:
+        // return this.nombre.compareTo(other.nombre);
+    }
+}
+
+// USO:
+List<Persona> personas = new ArrayList<>();
+Collections.sort(personas);       // Usa compareTo
+// o
+personas.sort(null);              // Usa compareTo
+
+--------------------------------------------------------------------------------
+COMPARATOR (ORDEN PERSONALIZADO):
+--------------------------------------------------------------------------------
+Interface para definir órdenes alternativos. Más flexible.
+
+// IMPLEMENTACIÓN CON CLASE ANÓNIMA (tradicional)
+Comparator<Persona> porEdad = new Comparator<Persona>() {
+    @Override
+    public int compare(Persona p1, Persona p2) {
+        return Integer.compare(p1.getEdad(), p2.getEdad());
+    }
+};
+
+// CON EXPRESIÓN LAMBDA
+Comparator<Persona> porEdad = (p1, p2) -> Integer.compare(p1.getEdad(), p2.getEdad());
+
+// CON MÉTODO DE REFERENCIA (más conciso)
+Comparator<Persona> porEdad = Comparator.comparingInt(Persona::getEdad);
+
+// USO:
+Collections.sort(personas, porEdad);
+// o
+personas.sort(porEdad);
+
+--------------------------------------------------------------------------------
+EXPRESIONES LAMBDA:
+--------------------------------------------------------------------------------
+Funciones anónimas para escribir código más conciso.
+
+SINTAXIS:
+(parámetros) -> expresión
+(parámetros) -> { bloque de código }
+
+// Sin parámetros
+Runnable r = () -> System.out.println("Hola");
+
+// Un parámetro (paréntesis opcionales)
+Consumer<String> c1 = s -> System.out.println(s);
+Consumer<String> c2 = (s) -> System.out.println(s);
+
+// Múltiples parámetros
+Comparator<String> comp = (s1, s2) -> s1.compareTo(s2);
+
+// Con bloque de código
+Comparator<String> comp = (s1, s2) -> {
+    System.out.println("Comparando...");
+    return s1.compareTo(s2);
+};
+
+// Con tipos explícitos
+Comparator<String> comp = (String s1, String s2) -> s1.compareTo(s2);
+
+--------------------------------------------------------------------------------
+MÉTODOS DE REFERENCIA:
+--------------------------------------------------------------------------------
+Forma abreviada cuando la lambda solo llama a un método existente.
+
+// TIPO 1: Método estático
+// Lambda:    (a, b) -> Math.max(a, b)
+// Referencia: Math::max
+Comparator<Integer> comp = Math::max;
+
+// TIPO 2: Método de instancia de objeto particular
+// Lambda:    s -> System.out.println(s)
+// Referencia: System.out::println
+Consumer<String> imprimir = System.out::println;
+
+// TIPO 3: Método de instancia de objeto arbitrario
+// Lambda:    (s) -> s.toUpperCase()
+// Referencia: String::toUpperCase
+Function<String, String> mayusculas = String::toUpperCase;
+
+// TIPO 4: Referencia a constructor
+// Lambda:    () -> new ArrayList<>()
+// Referencia: ArrayList::new
+Supplier<List<String>> creador = ArrayList::new;
+
+--------------------------------------------------------------------------------
+COMPARATOR - MÉTODOS ÚTILES:
+--------------------------------------------------------------------------------
+
+// comparing(): ordenar por un atributo
+personas.sort(Comparator.comparing(Persona::getNombre));
+
+// comparingInt(), comparingDouble(): para primitivos (más eficiente)
+personas.sort(Comparator.comparingInt(Persona::getEdad));
+
+// reversed(): orden inverso
+personas.sort(Comparator.comparing(Persona::getNombre).reversed());
+
+// thenComparing(): ordenar por múltiples criterios
+personas.sort(
+    Comparator.comparing(Persona::getEdad)
+              .thenComparing(Persona::getNombre)
+);
+
+// nullsFirst() / nullsLast(): manejar valores null
+personas.sort(
+    Comparator.comparing(Persona::getNombre, 
+        Comparator.nullsFirst(String::compareTo))
+);
+
+// naturalOrder() / reverseOrder()
+list.sort(Comparator.naturalOrder());
+list.sort(Comparator.reverseOrder());
+
+--------------------------------------------------------------------------------
+EJEMPLO COMPLETO - ORDENACIÓN MÚLTIPLE:
+--------------------------------------------------------------------------------
+
+List<Empleado> empleados = Arrays.asList(
+    new Empleado("Juan", "Ventas", 3000),
+    new Empleado("Ana", "IT", 4000),
+    new Empleado("Pedro", "Ventas", 3500),
+    new Empleado("María", "IT", 4000)
+);
+
+// Ordenar por departamento, luego por salario (descendente), luego por nombre
+empleados.sort(
+    Comparator.comparing(Empleado::getDepartamento)
+              .thenComparing(Empleado::getSalario, Comparator.reverseOrder())
+              .thenComparing(Empleado::getNombre)
+);
+
+// Resultado:
+// Ana (IT, 4000)
+// María (IT, 4000)
+// Pedro (Ventas, 3500)
+// Juan (Ventas, 3000)
+
+--------------------------------------------------------------------------------
+INTERFACES FUNCIONALES PRINCIPALES:
+--------------------------------------------------------------------------------
+
+┌───────────────────┬────────────────────────┬─────────────────────────────┐
+│ Interface         │ Método                 │ Uso                         │
+├───────────────────┼────────────────────────┼─────────────────────────────┤
+│ Runnable          │ void run()             │ Ejecutar sin parámetros     │
+│ Supplier<T>       │ T get()                │ Proveer valor               │
+│ Consumer<T>       │ void accept(T)         │ Consumir valor              │
+│ BiConsumer<T,U>   │ void accept(T, U)      │ Consumir dos valores        │
+│ Function<T,R>     │ R apply(T)             │ Transformar                 │
+│ BiFunction<T,U,R> │ R apply(T, U)          │ Transformar dos valores     │
+│ Predicate<T>      │ boolean test(T)        │ Evaluar condición           │
+│ UnaryOperator<T>  │ T apply(T)             │ Transformar mismo tipo      │
+│ BinaryOperator<T> │ T apply(T, T)          │ Operar dos del mismo tipo   │
+│ Comparator<T>     │ int compare(T, T)      │ Comparar dos objetos        │
+└───────────────────┴────────────────────────┴─────────────────────────────┘
+
+================================================================================
+                          13. GENÉRICOS
+================================================================================
+
+--------------------------------------------------------------------------------
+CONCEPTO:
+--------------------------------------------------------------------------------
+Permiten escribir código que funciona con diferentes tipos, verificando
+los tipos en tiempo de compilación.
+
+VENTAJAS:
+• Reutilización de código
+• Seguridad de tipos (errores en compilación, no ejecución)
+• Eliminación de casts
+
+--------------------------------------------------------------------------------
+CLASES GENÉRICAS:
+--------------------------------------------------------------------------------
+
+// Definición de clase genérica
+public class Caja<T> {
+    private T contenido;
+    
+    public void poner(T contenido) {
+        this.contenido = contenido;
+    }
+    
+    public T obtener() {
+        return contenido;
+    }
+    
+    public boolean estaVacia() {
+        return contenido == null;
+    }
+}
+
+// USO:
+Caja<String> cajaTexto = new Caja<>();
+cajaTexto.poner("Hola");
+String texto = cajaTexto.obtener();  // No hace falta cast
+
+Caja<Integer> cajaNumero = new Caja<>();
+cajaNumero.poner(42);
+int numero = cajaNumero.obtener();
+
+// Múltiples parámetros de tipo
+public class Par<K, V> {
+    private K clave;
+    private V valor;
+    
+    public Par(K clave, V valor) {
+        this.clave = clave;
+        this.valor = valor;
+    }
+    
+    public K getClave() { return clave; }
+    public V getValor() { return valor; }
+}
+
+Par<String, Integer> persona = new Par<>("Juan", 25);
+
+--------------------------------------------------------------------------------
+MÉTODOS GENÉRICOS:
+--------------------------------------------------------------------------------
+
+public class Utilidades {
+    
+    // Método genérico estático
+    public static <T> void imprimir(T elemento) {
+        System.out.println(elemento);
+    }
+    
+    // Método genérico con retorno
+    public static <T> T obtenerPrimero(List<T> lista) {
+        if (lista.isEmpty()) return null;
+        return lista.get(0);
+    }
+    
+    // Método genérico con bounds
+    public static <T extends Number> double suma(List<T> lista) {
+        double total = 0;
+        for (T n : lista) {
+            total += n.doubleValue();
+        }
+        return total;
+    }
+}
+
+// USO:
+Utilidades.imprimir("Hola");
+Utilidades.<String>imprimir("Hola");  // Tipo explícito (opcional)
+
+List<Integer> nums = Arrays.asList(1, 2, 3);
+Integer primero = Utilidades.obtenerPrimero(nums);
+
+--------------------------------------------------------------------------------
+BOUNDED TYPE PARAMETERS (PARÁMETROS ACOTADOS):
+--------------------------------------------------------------------------------
+
+// UPPER BOUND: T debe ser subclase de Number
+public class Calculadora<T extends Number> {
+    public double doble(T valor) {
+        return valor.doubleValue() * 2;
+    }
+}
+
+Calculadora<Integer> c1 = new Calculadora<>();
+Calculadora<Double> c2 = new Calculadora<>();
+// Calculadora<String> c3 = new Calculadora<>();  // ❌ ERROR
+
+// MULTIPLE BOUNDS: T debe ser Number Y Comparable
+public static <T extends Number & Comparable<T>> T maximo(T a, T b) {
+    return a.compareTo(b) > 0 ? a : b;
+}
+
+// Clase primero, luego interfaces
+public static <T extends Number & Comparable<T> & Serializable> 
+    void procesar(T valor) { }
+
+--------------------------------------------------------------------------------
+WILDCARDS (COMODINES):
+--------------------------------------------------------------------------------
+
+// UNBOUNDED WILDCARD (?): cualquier tipo
+void imprimirLista(List<?> lista) {
+    for (Object elem : lista) {
+        System.out.println(elem);
+    }
+}
+
+// UPPER BOUNDED WILDCARD (? extends T): T y sus subclases
+double sumarNumeros(List<? extends Number> lista) {
+    double suma = 0;
+    for (Number n : lista) {
+        suma += n.doubleValue();
+    }
+    return suma;
+    // lista.add(5);  // ❌ No se puede escribir
+}
+
+List<Integer> enteros = Arrays.asList(1, 2, 3);
+List<Double> decimales = Arrays.asList(1.5, 2.5);
+sumarNumeros(enteros);   // ✅
+sumarNumeros(decimales); // ✅
+
+// LOWER BOUNDED WILDCARD (? super T): T y sus superclases
+void añadirEnteros(List<? super Integer> lista) {
+    lista.add(1);
+    lista.add(2);
+    // Integer x = lista.get(0);  // ❌ No se puede leer como Integer
+}
+
+List<Number> numeros = new ArrayList<>();
+List<Object> objetos = new ArrayList<>();
+añadirEnteros(numeros);  // ✅
+añadirEnteros(objetos);  // ✅
+
+// REGLA PECS: Producer Extends, Consumer Super
+// - Si necesitas LEER datos (producer): ? extends T
+// - Si necesitas ESCRIBIR datos (consumer): ? super T
+
+--------------------------------------------------------------------------------
+ERASURE (BORRADO DE TIPOS):
+--------------------------------------------------------------------------------
+Los genéricos existen solo en tiempo de compilación. En ejecución, se "borran".
+
+List<String> strings = new ArrayList<>();
+List<Integer> integers = new ArrayList<>();
+
+// En ejecución, ambos son simplemente ArrayList
+System.out.println(strings.getClass() == integers.getClass());  // true
+
+// No se puede crear arrays de genéricos
+// List<String>[] array = new ArrayList<String>[10];  // ❌ ERROR
+
+// Solución: usar List de List
+List<List<String>> listaDeListas = new ArrayList<>();
+
+================================================================================
+           14. MÉTODOS DEFAULT Y STATIC EN INTERFACES (JAVA 8+)
+================================================================================
+
+--------------------------------------------------------------------------------
+RESUMEN DE TIPOS DE MÉTODOS EN INTERFACES:
+--------------------------------------------------------------------------------
+
+public interface MiInterfaz {
+    
+    // MÉTODO ABSTRACTO (por defecto en interfaces)
+    void metodoAbstracto();
+    
+    // MÉTODO DEFAULT: con implementación, heredable
+    default void metodoDefault() {
+        System.out.println("Implementación por defecto");
+    }
+    
+    // MÉTODO STATIC: pertenece a la interfaz
+    static void metodoStatic() {
+        System.out.println("Método estático");
+    }
+    
+    // CONSTANTE
+    int VALOR = 100;
+}
+
+--------------------------------------------------------------------------------
+MÉTODOS DEFAULT:
+--------------------------------------------------------------------------------
+
+public interface Vehiculo {
+    
+    void arrancar();  // Abstracto
+    
+    default void apagar() {
+        System.out.println("Apagando vehículo...");
+    }
+    
+    default void mostrarInfo() {
+        System.out.println("Vehículo genérico");
+    }
+}
+
+public class Coche implements Vehiculo {
+    
+    @Override
+    public void arrancar() {
+        System.out.println("Arrancando coche");
+    }
+    
+    // apagar() y mostrarInfo() se heredan con implementación default
+}
+
+// Sobrescribir método default:
+public class Moto implements Vehiculo {
+    
+    @Override
+    public void arrancar() {
+        System.out.println("Arrancando moto");
+    }
+    
+    @Override
+    public void mostrarInfo() {
+        System.out.println("Moto");
+    }
+}
+
+--------------------------------------------------------------------------------
+HERENCIA DE MÉTODOS DEFAULT:
+--------------------------------------------------------------------------------
+
+public interface A {
+    default void saludar() {
+        System.out.println("Desde A");
+    }
+}
+
+public interface B extends A {
+    // Hereda el default de A
+    
+    // Puede sobrescribirlo:
+    @Override
+    default void saludar() {
+        System.out.println("Desde B");
+    }
+}
+
+public interface C {
+    default void saludar() {
+        System.out.println("Desde C");
+    }
+}
+
+// CONFLICTO: implementa dos interfaces con mismo método default
+public class MiClase implements B, C {
+    
+    @Override
+    public void saludar() {
+        // OBLIGATORIO resolver el conflicto
+        B.super.saludar();  // Usar implementación de B
+        // o
+        C.super.saludar();  // Usar implementación de C
+        // o
+        System.out.println("Propia implementación");
+    }
+}
+
+// Clase abstracta "gana" a interfaz
+public abstract class Base {
+    public void saludar() {
+        System.out.println("Desde clase abstracta");
+    }
+}
+
+public class Hija extends Base implements A {
+    // Usa la implementación de Base (la clase gana)
+}
+
+--------------------------------------------------------------------------------
+MÉTODOS ESTÁTICOS EN INTERFACES:
+--------------------------------------------------------------------------------
+
+public interface Utilidades {
+    
+    static int sumar(int a, int b) {
+        return a + b;
+    }
+    
+    static int multiplicar(int a, int b) {
+        return a * b;
+    }
+}
+
+// USO: se llama desde la interfaz
+int suma = Utilidades.sumar(5, 3);
+int producto = Utilidades.multiplicar(4, 2);
+
+// NO se heredan a las clases implementadoras
+public class MisUtilidades implements Utilidades {}
+
+MisUtilidades mu = new MisUtilidades();
+// mu.sumar(1, 2);  // ❌ ERROR: no es accesible
+
+================================================================================
+                  15. BUENAS PRÁCTICAS Y ERRORES COMUNES
+================================================================================
+
+--------------------------------------------------------------------------------
+BUENAS PRÁCTICAS:
+--------------------------------------------------------------------------------
+
+1. ENCAPSULAMIENTO
+   • Atributos SIEMPRE private
+   • Getters/setters solo cuando sea necesario
+   • Usar interfaces como tipos para variables
+
+2. HERENCIA
+   • Usar composición antes que herencia cuando sea posible
+   • Preferir interfaces a clases abstractas para definir comportamiento
+   • No abusar de la profundidad de jerarquía (máximo 3-4 niveles)
+
+3. EQUALS/HASHCODE
+   • Siempre implementar AMBOS juntos
+   • Usar los mismos atributos en ambos
+   • Usar Objects.equals() para evitar NullPointerException
+   • Usar Objects.hash() para generar hashCode
+
+4. INTERFACES
+   • Nombres de interfaces con adjetivos (Dibujable, Movible, Comparable)
+   • Una interfaz = una responsabilidad (principio de segregación)
+   • Preferir métodos default para funcionalidad opcional
+
+5. GENÉRICOS
+   • Usar genéricos en lugar de Object + casting
+   • Seguir la regla PECS para wildcards
+   • Documentar el tipo esperado
+
+6. CÓDIGO LIMPIO
+   • @Override siempre que se sobrescriba
+   • Nombres descriptivos
+   • Métodos cortos (una responsabilidad)
+   • Comentar solo lo necesario
+
+--------------------------------------------------------------------------------
+ERRORES COMUNES:
+--------------------------------------------------------------------------------
+
+❌ ERROR 1: No llamar a super() en constructor de subclase
+public class Hijo extends Padre {
+    public Hijo() {
+        // Falta super() si Padre no tiene constructor sin parámetros
+    }
+}
+
+❌ ERROR 2: Sobrescribir método static
+public class Padre {
+    public static void metodo() {}
+}
+public class Hijo extends Padre {
+    @Override  // ❌ No se puede sobrescribir métodos static
+    public static void metodo() {}
+}
+
+❌ ERROR 3: equals() sin hashCode() (o viceversa)
+public class Persona {
+    @Override
+    public boolean equals(Object obj) { ... }
+    // Falta hashCode()
+}
+
+❌ ERROR 4: Usar == para comparar objetos
+String s1 = new String("hola");
+String s2 = new String("hola");
+if (s1 == s2) { }  // ❌ Compara referencias, no contenido
+if (s1.equals(s2)) { }  // ✅ Correcto
+
+❌ ERROR 5: Downcasting sin verificar
+Animal a = new Gato();
+Perro p = (Perro) a;  // ❌ ClassCastException en ejecución
+
+if (a instanceof Perro) {
+    Perro p = (Perro) a;  // ✅ Correcto
+}
+
+❌ ERROR 6: Modificar lista mientras se recorre
+List<String> lista = new ArrayList<>(Arrays.asList("a", "b", "c"));
+for (String s : lista) {
+    lista.remove(s);  // ❌ ConcurrentModificationException
+}
+
+// Solución: usar Iterator
+Iterator<String> it = lista.iterator();
+while (it.hasNext()) {
+    if (it.next().equals("a")) {
+        it.remove();  // ✅ Correcto
+    }
+}
+
+❌ ERROR 7: No implementar Comparable para usar TreeSet/TreeMap
+public class Persona {
+    private String nombre;
+    // Sin implements Comparable<Persona>
+}
+Set<Persona> set = new TreeSet<>();  // ❌ ClassCastException
+
+❌ ERROR 8: Autoboxing con null
+Integer x = null;
+int y = x;  // ❌ NullPointerException
+
+Integer x = null;
+int y = x != null ? x : 0;  // ✅ Correcto
+
+❌ ERROR 9: Confundir overriding con overloading
+public class Padre {
+    public void metodo(int x) {}
+}
+public class Hijo extends Padre {
+    public void metodo(Integer x) {}  // OVERLOADING, no overriding
+    @Override  // ❌ ERROR de compilación
+    public void metodo(Integer x) {}
+}
+
+❌ ERROR 10: Llamar método abstracto desde constructor
+public abstract class Figura {
+    public Figura() {
+        calcularArea();  // ❌ Puede causar errores si la subclase
+    }                    //    no ha inicializado sus atributos
+    public abstract double calcularArea();
+}
+
+
+================================================================================
+                 16. JAVA SWING - INTERFACES GRÁFICAS (GUI)
+================================================================================
+
+--------------------------------------------------------------------------------
+¿QUÉ ES JAVA SWING?
+--------------------------------------------------------------------------------
+
+Java Swing es la biblioteca estándar de Java para crear interfaces gráficas de
+usuario (GUI - Graphical User Interface). Es el sucesor de AWT (Abstract Window
+Toolkit) y proporciona un conjunto rico de componentes visuales que permiten
+crear aplicaciones de escritorio con ventanas, botones, menús, campos de texto,
+tablas, árboles, y mucho más.
+
+¿POR QUÉ APRENDER SWING?
+─────────────────────────
+
+1. ES PARTE DEL JDK: No necesitas librerías externas, Swing viene incluido en
+   el Java Development Kit desde la versión 1.2 (1998). Esto significa que
+   cualquier ordenador con Java instalado puede ejecutar tus aplicaciones.
+
+2. PORTABILIDAD TOTAL: Una aplicación Swing funciona idénticamente en Windows,
+   macOS y Linux sin modificar ni una línea de código. "Write once, run anywhere".
+
+3. FUNDAMENTOS SÓLIDOS: Aunque existen frameworks más modernos como JavaFX,
+   aprender Swing te enseña los fundamentos de la programación GUI que aplican
+   a cualquier tecnología: eventos, layouts, componentes, listeners, etc.
+
+4. DEMANDA LABORAL: Muchas aplicaciones empresariales legacy usan Swing y
+   requieren mantenimiento. También es común en exámenes de programación.
+
+CARACTERÍSTICAS PRINCIPALES:
+────────────────────────────
+
+• COMPONENTES LIGEROS (LIGHTWEIGHT): Los componentes Swing se dibujan usando
+  código Java, no dependen de los componentes nativos del sistema operativo.
+  Esto significa que un JButton se ve igual en Windows, Mac y Linux.
+  
+  Ventaja: Consistencia visual en todas las plataformas.
+  Desventaja: No tienen exactamente el aspecto "nativo" del SO.
+  
+  Para solucionar esto, Swing permite usar "Look and Feel" que imita el estilo
+  del sistema operativo donde se ejecuta.
+
+• ARQUITECTURA MVC (Modelo-Vista-Controlador): Cada componente Swing está
+  diseñado siguiendo este patrón arquitectónico:
+  - Modelo: Los datos del componente (ej: texto en un JTextField)
+  - Vista: La representación visual (cómo se dibuja el componente)
+  - Controlador: Maneja la interacción con el usuario (eventos)
+  
+  Esta separación hace que el código sea más mantenible y flexible.
+
+• GESTIÓN DE EVENTOS CON LISTENERS: Swing usa el patrón Observer (observador)
+  para manejar eventos. Los componentes "emiten" eventos cuando algo ocurre
+  (un clic, una pulsación de tecla) y los listeners "escuchan" y reaccionan.
+
+• LOOK AND FEEL PERSONALIZABLE: Puedes cambiar completamente la apariencia de
+  tu aplicación con una sola línea de código usando UIManager.setLookAndFeel().
+
+--------------------------------------------------------------------------------
+JERARQUÍA DE CLASES EN SWING - ENTENDIENDO LA ESTRUCTURA
+--------------------------------------------------------------------------------
+
+Es importante entender la jerarquía de clases porque determina qué métodos
+están disponibles en cada componente y cómo se relacionan entre sí.
+
+                         java.lang.Object
+                                │
+                        java.awt.Component     ← Clase base para todo componente
+                                │              (tiene posición, tamaño, eventos)
+                                │
+                        java.awt.Container     ← Puede contener otros componentes
+                                │              (métodos add(), remove(), getComponents())
+                      ┌─────────┴─────────┐
+                      │                   │
+              java.awt.Window      javax.swing.JComponent
+                      │                   │
+            ┌─────────┴──────┐            │
+            │                │            │
+       java.awt.Frame   java.awt.Dialog   ├── JButton
+            │                │            ├── JLabel
+       javax.swing.JFrame   javax.swing.JDialog  ├── JTextField
+       (ventana principal)   (diálogo)    ├── JPanel
+                                          ├── JComboBox
+                                          └── etc.
+
+EXPLICACIÓN DE CADA NIVEL:
+───────────────────────────
+
+1. java.awt.Component: La clase base de todos los componentes AWT y Swing.
+   Proporciona:
+   - Posición y tamaño (setBounds, setLocation, setSize)
+   - Visibilidad (setVisible, isVisible)
+   - Estado habilitado/deshabilitado (setEnabled)
+   - Colores y fuentes (setForeground, setBackground, setFont)
+   - Gestión de eventos (addMouseListener, addKeyListener, etc.)
+
+2. java.awt.Container: Un componente que puede contener otros componentes.
+   Proporciona:
+   - add(Component c): Añade un componente al contenedor
+   - remove(Component c): Elimina un componente
+   - removeAll(): Elimina todos los componentes
+   - getComponents(): Obtiene array de componentes contenidos
+   - setLayout(LayoutManager): Establece cómo se organizan los componentes
+
+3. java.awt.Window: Una ventana sin bordes ni título (raramente se usa directo).
+   Es la base para Frame y Dialog.
+
+4. java.awt.Frame: Una ventana con título, bordes y botones de minimizar,
+   maximizar y cerrar. JFrame hereda de esta clase.
+
+5. javax.swing.JComponent: La clase base para TODOS los componentes Swing
+   excepto los contenedores de alto nivel (JFrame, JDialog, JApplet).
+   Proporciona:
+   - Tooltips (setToolTipText)
+   - Bordes (setBorder)
+   - Atajos de teclado (registerKeyboardAction)
+   - Doble buffer (para evitar parpadeo en animaciones)
+
+¿POR QUÉ ES IMPORTANTE ESTA JERARQUÍA?
+──────────────────────────────────────
+
+Porque gracias a la herencia, si aprendes los métodos de la clase padre,
+automáticamente los conoces para todas las clases hijas. Por ejemplo:
+
+// Estos métodos funcionan en CUALQUIER componente Swing:
+componente.setVisible(true);      // Heredado de Component
+componente.setEnabled(false);     // Heredado de Component
+componente.setBackground(Color.RED);  // Heredado de Component
+contenedor.add(otroComponente);   // Heredado de Container
+
+--------------------------------------------------------------------------------
+COMPONENTES PRINCIPALES DE SWING - GUÍA DETALLADA
+--------------------------------------------------------------------------------
+
+┌─────────────────────┬──────────────────────────────────────────────────────────┐
+│ COMPONENTE          │ DESCRIPCIÓN Y USO TÍPICO                                │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JFrame              │ Ventana principal de la aplicación. Contiene título,    │
+│                     │ bordes, botones de cerrar/minimizar/maximizar.          │
+│                     │ Solo puede haber UNO como ventana principal.            │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JPanel              │ Contenedor para organizar grupos de componentes.        │
+│                     │ No tiene visualización propia, solo agrupa.             │
+│                     │ Se usa como "lienzo" para pintar gráficos.              │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JButton             │ Botón que el usuario puede pulsar. Genera un evento     │
+│                     │ ActionListener cuando se hace clic.                     │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JLabel              │ Muestra texto o imagen que el usuario NO puede editar.  │
+│                     │ Se usa para etiquetas, títulos, instrucciones.          │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JTextField          │ Campo de texto de una sola línea. El usuario puede      │
+│                     │ escribir y editar. getText() obtiene el contenido.      │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JPasswordField      │ Como JTextField pero oculta los caracteres (útil para   │
+│                     │ contraseñas). getPassword() devuelve char[] por seguridad│
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JTextArea           │ Área de texto multilínea. Permite texto largo con       │
+│                     │ saltos de línea. Suele ir dentro de un JScrollPane.     │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JComboBox           │ Lista desplegable de opciones. El usuario selecciona    │
+│                     │ una de varias opciones predefinidas.                     │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JRadioButton        │ Botón de opción exclusiva. Se agrupa con ButtonGroup    │
+│                     │ para que solo uno pueda estar seleccionado.             │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JCheckBox           │ Casilla de verificación. Permite selección múltiple,    │
+│                     │ varios pueden estar seleccionados a la vez.             │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JList               │ Lista de elementos seleccionables. Puede permitir       │
+│                     │ selección simple o múltiple.                            │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JTable              │ Tabla de datos con filas y columnas. Muestra datos      │
+│                     │ en formato de hoja de cálculo.                          │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JTree               │ Muestra datos en estructura jerárquica de árbol,        │
+│                     │ con nodos que pueden expandirse/colapsarse.             │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JMenu/JMenuBar      │ Sistema de menús desplegables en la parte superior.     │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JOptionPane         │ Diálogos predefinidos: mensajes, confirmaciones,        │
+│                     │ entradas de usuario. Muy útil para interactuar rápido.   │
+├─────────────────────┼──────────────────────────────────────────────────────────┤
+│ JScrollPane         │ Panel con barras de desplazamiento. Se usa para         │
+│                     │ envolver componentes grandes (JTextArea, JList, etc.)   │
+└─────────────────────┴──────────────────────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+JFRAME - LA VENTANA PRINCIPAL (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+El JFrame es el contenedor principal de cualquier aplicación Swing. Es la
+ventana que aparece en tu pantalla con su título, bordes y botones de control.
+
+¿POR QUÉ SE LLAMA JFrame Y NO Window?
+──────────────────────────────────────
+
+Porque hereda de java.awt.Frame (de la librería AWT original). La "J" delante
+indica que es la versión Swing (JFrame, JButton, JLabel, etc.).
+
+ESTRUCTRA INTERNA DE UN JFrame:
+────────────────────────────────
+
+┌─────────────────────────────────────────────────────┐
+│  JRootPane                                         │
+│  ┌───────────────────────────────────────────────┐ │
+│  │ JLayeredPane                                  │ │
+│  │  ┌─────────────────────────────────────────┐  │ │
+│  │  │ contentPane (JPanel)                    │  │ │
+│  │  │                                         │  │ │
+│  │  │   ← Aquí añades tus componentes        │  │ │
+│  │  │                                         │  │ │
+│  │  └─────────────────────────────────────────┘  │ │
+│  │  ┌─────────────────────────────────────────┐  │ │
+│  │  │ JMenuBar (barra de menús)               │  │ │
+│  │  └─────────────────────────────────────────┘  │ │
+│  └───────────────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────────────┐ │
+│  │ GlassPane (capa transparente para eventos)   │ │
+│  └───────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────┘
+
+IMPORTANTE: Cuando haces frame.add(componente), en realidad se añade al
+contentPane. El contentPane usa BorderLayout por defecto.
+
+MÉTODOS ESENCIALES DE JFrame:
+─────────────────────────────
+
+import javax.swing.JFrame;
+
+public class EjemploJFrame {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 1. TÍTULO DE LA VENTANA
+        // ══════════════════════════════════════════════════════════════════
+        // Aparece en la barra de título de la ventana
+        frame.setTitle("Mi Primera Aplicación");
+        
+        // También se puede establecer en el constructor:
+        // JFrame frame = new JFrame("Mi Primera Aplicación");
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 2. TAMAÑO DE LA VENTANA
+        // ══════════════════════════════════════════════════════════════════
+        // Opción A: Establecer ancho y alto directamente en píxeles
+        frame.setSize(800, 600);  // 800 píxeles de ancho, 600 de alto
+        
+        // Opción B: Usar Dimension (útil si quieres reutilizar dimensiones)
+        // frame.setSize(new Dimension(800, 600));
+        
+        // Opción C: pack() - Ajusta automáticamente al tamaño de los componentes
+        // frame.pack();  // La ventana se encoge para ajustarse al contenido
+        
+        // Opción D: setPreferredSize() - Sugiere un tamaño (el layout puede ignorarlo)
+        // frame.setPreferredSize(new Dimension(800, 600));
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 3. POSICIÓN EN PANTALLA
+        // ══════════════════════════════════════════════════════════════════
+        // Opción A: Centrar la ventana en la pantalla (lo más común)
+        frame.setLocationRelativeTo(null);  // null = centrar respecto a la pantalla
+        
+        // Opción B: Posición específica (esquina superior izquierda)
+        // frame.setLocation(100, 50);  // x=100 píxeles, y=50 píxeles desde arriba
+        
+        // Opción C: Posición y tamaño en una sola llamada
+        // frame.setBounds(100, 50, 800, 600);  // x, y, ancho, alto
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 4. COMPORTAMIENTO AL CERRAR
+        // ══════════════════════════════════════════════════════════════════
+        // ¿Qué pasa cuando el usuario pulsa la X de cerrar?
+        
+        // EXIT_ON_CLOSE: Cierra completamente la aplicación (System.exit(0))
+        // Úsalo cuando tu aplicación tiene UNA sola ventana.
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // DISPOSE_ON_CLOSE: Cierra esta ventana pero la aplicación sigue
+        // Úsalo cuando tienes múltiples ventanas y solo quieres cerrar una.
+        // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        // HIDE_ON_CLOSE: Oculta la ventana pero no la destruye (por defecto)
+        // La ventana sigue en memoria, solo se hace invisible.
+        // frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        
+        // DO_NOTHING_ON_CLOSE: No hace nada automático
+        // Úsalo cuando quieres preguntar "¿Seguro que quieres salir?"
+        // Requiere añadir un WindowListener manualmente.
+        // frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 5. REDIMENSIONAMIENTO
+        // ══════════════════════════════════════════════════════════════════
+        frame.setResizable(true);   // Permite al usuario cambiar el tamaño (default)
+        // frame.setResizable(false);  // Bloquea el tamaño fijo
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 6. VISIBILIDAD - ¡IMPORTANTE!
+        // ══════════════════════════════════════════════════════════════════
+        // Por defecto, una ventana NO es visible. DEBES hacerla visible.
+        // Pon esto SIEMPRE al final, después de configurar todo.
+        frame.setVisible(true);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // 7. AÑADIR CONTENIDO
+        // ══════════════════════════════════════════════════════════════════
+        // Se añaden componentes al contentPane (implícitamente)
+        // JPanel panel = new JPanel();
+        // frame.add(panel);
+        
+        // Equivalente a:
+        // frame.getContentPane().add(panel);
+    }
+}
+
+ERROR COMÚN: OLVIDAR setVisible(true)
+──────────────────────────────────────
+
+Si tu programa compila y ejecuta pero no aparece ninguna ventana, seguramente
+olvidaste setVisible(true) o lo pusiste antes de configurar el resto.
+
+// ❌ MAL: La ventana aparece vacía si el panel no está listo
+frame.setVisible(true);
+frame.add(panel);  // Demasiado tarde, ya se mostró
+
+// ✅ BIEN: Configurar primero, mostrar después
+frame.add(panel);
+frame.setVisible(true);
+
+--------------------------------------------------------------------------------
+JPANEL - EL CONTENEDOR FLEXIBLE (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+El JPanel es el componente más versátil de Swing. Es como un "contenedor
+invisible" que te permite agrupar y organizar otros componentes.
+
+¿PARA QUÉ SIRVE UN JPanel?
+──────────────────────────
+
+1. AGRUPAR COMPONENTES: Puedes poner varios componentes relacionados en un
+   panel y tratarlos como una unidad.
+
+2. ORGANIZAR CON LAYOUTS: Cada JPanel puede tener su propio LayoutManager,
+   permitiendo diseños complejos anidando paneles.
+
+3. SEPARACIÓN VISUAL: Puedes poner bordes y colores de fondo diferentes
+   en cada panel para separar secciones de la interfaz.
+
+4. REUTILIZACIÓN: Un panel personalizado puede crearse una vez y añadirse
+   a múltiples ventanas.
+
+5. DIBUJO PERSONALIZADO: Puedes sobrescribir paintComponent() para dibujar
+   gráficos, formas, imágenes, etc.
+
+ESTRUCTURA BÁSICA DE UN PANEL PERSONALIZADO:
+────────────────────────────────────────────
+
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+
+public class MiPanel extends JPanel {
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONSTANTES - Definir dimensiones como constantes es una BUENA PRÁCTICA
+    // ══════════════════════════════════════════════════════════════════════════
+    // ¿Por qué public static final?
+    // - public: Accesible desde fuera (ej: VentanaPrincipal.ANCHO_PANEL)
+    // - static: Pertenece a la clase, no a cada instancia (una sola copia)
+    // - final: No se puede modificar (constante)
+    
+    public static final int ANCHO_PANEL = 600;
+    public static final int ALTO_PANEL = 200;
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // ATRIBUTOS - Los componentes se declaran como atributos privados
+    // ══════════════════════════════════════════════════════════════════════════
+    // ¿Por qué privados?
+    // - Encapsulamiento: Solo este panel debe manipular sus componentes
+    // - Si necesitas acceder desde fuera, crea métodos getter públicos
+    
+    private JLabel etiqueta;
+    private JButton boton;
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONSTRUCTOR - Se llama al crear el panel con new MiPanel()
+    // ══════════════════════════════════════════════════════════════════════════
+    public MiPanel() {
+        // CONFIGURACIÓN DEL PANEL
+        configurarPanel();
+        
+        // CREACIÓN DE COMPONENTES
+        inicializarComponentes();
+    }
+    
+    /**
+     * Configura las propiedades visuales del panel
+     */
+    private void configurarPanel() {
+        // ────────────────────────────────────────────────────────────────────
+        // LAYOUT MANAGER - Cómo se organizan los componentes dentro del panel
+        // ────────────────────────────────────────────────────────────────────
+        // FlowLayout: Coloca componentes en fila, de izquierda a derecha.
+        // Cuando no caben, pasa a la siguiente línea. Es el más simple.
+        this.setLayout(new FlowLayout());
+        
+        // Otras opciones de FlowLayout:
+        // new FlowLayout(FlowLayout.LEFT)      - Alinea a la izquierda
+        // new FlowLayout(FlowLayout.CENTER)    - Centrado (por defecto)
+        // new FlowLayout(FlowLayout.RIGHT)     - Alinea a la derecha
+        // new FlowLayout(FlowLayout.LEFT, 20, 10) - Con separación horizontal y vertical
+        
+        // ────────────────────────────────────────────────────────────────────
+        // COLOR DE FONDO
+        // ────────────────────────────────────────────────────────────────────
+        // Colores predefinidos: Color.RED, Color.BLUE, Color.GRAY, etc.
+        this.setBackground(Color.GRAY);
+        
+        // Color personalizado con RGB (valores 0-255):
+        // this.setBackground(new Color(240, 240, 240));  // Gris muy claro
+        
+        // Color con transparencia (requiere setOpaque(true)):
+        // this.setBackground(new Color(240, 240, 240, 128));  // Semi-transparente
+        
+        // ────────────────────────────────────────────────────────────────────
+        // TAMAÑO PREFERIDO
+        // ────────────────────────────────────────────────────────────────────
+        // setSize(): Establece el tamaño actual
+        this.setSize(ANCHO_PANEL, ALTO_PANEL);
+        
+        // setPreferredSize(): Sugiere un tamaño al layout manager
+        // Algunos layouts respetan esto, otros no (ej: BorderLayout.CENTER no lo hace)
+        // this.setPreferredSize(new Dimension(ANCHO_PANEL, ALTO_PANEL));
+        
+        // También existen:
+        // setMinimumSize() - Tamaño mínimo que puede tener
+        // setMaximumSize() - Tamaño máximo que puede tener
+    }
+    
+    /**
+     * Crea y configura todos los componentes del panel
+     */
+    private void inicializarComponentes() {
+        // Crear componentes
+        etiqueta = new JLabel("¡Hola Mundo!");
+        boton = new JButton("Púlsame");
+        
+        // Añadir al panel (el layout decide dónde colocarlos)
+        this.add(etiqueta);
+        this.add(boton);
+    }
+}
+
+¿POR QUÉ SEPARAR EN MÉTODOS configurarPanel() E inicializarComponentes()?
+───────────────────────────────────────────────────────────────────────────
+
+1. LEGIBILIDAD: El constructor queda limpio y fácil de leer
+2. ORGANIZACIÓN: Cada método tiene una responsabilidad única
+3. MANTENIMIENTO: Si hay un error, sabes dónde buscar
+4. REUTILIZACIÓN: Podrías llamar a inicializarComponentes() para resetear el panel
+
+--------------------------------------------------------------------------------
+JLABEL - ETIQUETAS DE TEXTO (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+El JLabel muestra texto o imágenes que el usuario puede leer pero NO editar.
+Es el componente más simple de Swing.
+
+¿CUÁNDO USAR JLabel?
+────────────────────
+
+• Títulos de secciones
+• Etiquetas junto a campos de texto (ej: "Nombre:" antes de un JTextField)
+• Mensajes informativos
+• Mostrar imágenes estáticas
+• Instrucciones para el usuario
+
+CONSTRUCTORES DISPONIBLES:
+──────────────────────────
+
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+
+// Constructor 1: Vacío (sin texto)
+JLabel lbl1 = new JLabel();
+
+// Constructor 2: Solo texto
+JLabel lbl2 = new JLabel("Introduce tu nombre:");
+
+// Constructor 3: Texto + alineación horizontal
+// Alineación: JLabel.LEFT, JLabel.CENTER, JLabel.RIGHT, JLabel.LEADING, JLabel.TRAILING
+JLabel lbl3 = new JLabel("Centrado", JLabel.CENTER);
+
+// Constructor 4: Solo imagen
+ImageIcon icono = new ImageIcon("imagen.png");
+JLabel lbl4 = new JLabel(icono);
+
+// Constructor 5: Texto + imagen + alineación
+JLabel lbl5 = new JLabel("Con icono", icono, JLabel.CENTER);
+
+MÉTODOS IMPORTANTES:
+────────────────────
+
+JLabel etiqueta = new JLabel();
+
+// ══════════════════════════════════════════════════════════════════════════
+// TEXTO
+// ══════════════════════════════════════════════════════════════════════════
+etiqueta.setText("Nuevo texto");           // Establecer texto
+String texto = etiqueta.getText();         // Obtener texto
+
+// ══════════════════════════════════════════════════════════════════════════
+// IMAGEN
+// ══════════════════════════════════════════════════════════════════════════
+ImageIcon icono = new ImageIcon("foto.png");
+etiqueta.setIcon(icono);                   // Establecer imagen
+Icon img = etiqueta.getIcon();             // Obtener imagen
+
+// ══════════════════════════════════════════════════════════════════════════
+// ALINEACIÓN DEL CONTENIDO
+// ══════════════════════════════════════════════════════════════════════════
+etiqueta.setHorizontalAlignment(JLabel.CENTER);  // Centrar horizontalmente
+etiqueta.setVerticalAlignment(JLabel.CENTER);    // Centrar verticalmente
+
+// Valores para horizontal: LEFT, CENTER, RIGHT, LEADING, TRAILING
+// Valores para vertical: TOP, CENTER, BOTTOM
+
+// ══════════════════════════════════════════════════════════════════════════
+// FUENTE Y COLOR
+// ══════════════════════════════════════════════════════════════════════════
+import java.awt.Font;
+
+// Cambiar fuente: new Font("Nombre", estilo, tamaño)
+// Estilos: Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD + Font.ITALIC
+etiqueta.setFont(new Font("Arial", Font.BOLD, 16));
+
+// Color del texto
+etiqueta.setForeground(Color.BLUE);
+
+// ══════════════════════════════════════════════════════════════════════════
+// TOOLTIP (texto que aparece al pasar el ratón)
+// ══════════════════════════════════════════════════════════════════════════
+etiqueta.setToolTipText("Este es un tooltip de ayuda");
+
+EJEMPLO PRÁCTICO: Etiqueta para campo de texto:
+────────────────────────────────────────────────
+
+// Es común usar un JLabel como etiqueta descriptiva para un JTextField:
+JLabel lblNombre = new JLabel("Nombre:");
+JTextField tfNombre = new JTextField(20);
+
+// Se añaden ambos al panel
+panel.add(lblNombre);
+panel.add(tfNombre);
+
+// El usuario ve:
+// Nombre: [____________________]
+//          ↑ JLabel    ↑ JTextField
+
+--------------------------------------------------------------------------------
+JTEXTFIELD - CAMPO DE TEXTO DE UNA LÍNEA (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+El JTextField permite al usuario introducir y editar una línea de texto.
+Es ideal para nombres, emails, números cortos, búsquedas, etc.
+
+¿CUÁNDO USAR JTextField?
+───────────────────────
+
+• Entrada de texto corto (nombres, emails, URLs)
+• Búsquedas
+• Números (aunque conviene validar que sean números)
+• Cualquier entrada de una sola línea
+
+¿CUÁNDO NO USAR JTextField?
+───────────────────────────
+
+• Texto multilínea (usa JTextArea)
+• Contraseñas (usa JPasswordField)
+• Selección de opciones predefinidas (usa JComboBox)
+
+CONSTRUCTORES:
+──────────────
+
+import javax.swing.JTextField;
+
+// Constructor 1: Vacío, tamaño por defecto (muy pequeño)
+JTextField tf1 = new JTextField();
+
+// Constructor 2: Especificando columnas (ancho aproximado en caracteres)
+JTextField tf2 = new JTextField(20);  // Aprox. 20 caracteres de ancho
+
+// Constructor 3: Con texto inicial
+JTextField tf3 = new JTextField("Texto inicial");
+
+// Constructor 4: Con texto inicial y columnas
+JTextField tf4 = new JTextField("Texto inicial", 30);
+
+MÉTODOS PRINCIPALES:
+────────────────────
+
+JTextField campo = new JTextField(20);
+
+// ══════════════════════════════════════════════════════════════════════════
+// OBTENER Y ESTABLECER TEXTO
+// ══════════════════════════════════════════════════════════════════════════
+String texto = campo.getText();        // Obtener el texto actual
+campo.setText("Nuevo texto");          // Establecer texto
+
+// ══════════════════════════════════════════════════════════════════════════
+// VERIFICAR SI ESTÁ VACÍO - ¡MUY IMPORTANTE PARA VALIDACIONES!
+// ══════════════════════════════════════════════════════════════════════════
+if (campo.getText().isEmpty()) {
+    // El campo está vacío, mostrar error
+}
+
+// También puedes verificar si solo tiene espacios:
+String texto = campo.getText().trim();  // Elimina espacios al inicio y final
+if (texto.isEmpty()) {
+    // El campo está vacío o solo tenía espacios
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// EDITABILIDAD
+// ══════════════════════════════════════════════════════════════════════════
+campo.setEditable(true);   // El usuario puede escribir (por defecto)
+campo.setEditable(false);  // El usuario puede leer pero NO escribir
+                           // El texto aparece pero no se puede modificar
+
+// ══════════════════════════════════════════════════════════════════════════
+// HABILITAR/DESHABILITAR
+// ══════════════════════════════════════════════════════════════════════════
+campo.setEnabled(true);   // Habilitado (normal)
+campo.setEnabled(false);  // Deshabilitado (gris, no responde)
+
+// Diferencia entre setEditable y setEnabled:
+// - setEditable(false): El texto se ve normal pero no se puede editar
+// - setEnabled(false): El campo se ve gris y no se puede interactuar
+
+// ══════════════════════════════════════════════════════════════════════════
+// SELECCIÓN DE TEXTO
+// ══════════════════════════════════════════════════════════════════════════
+campo.selectAll();                // Selecciona todo el texto
+campo.select(0, 5);               // Selecciona desde posición 0 hasta 5
+
+// ══════════════════════════════════════════════════════════════════════════
+// LIMPIAR EL CAMPO
+// ══════════════════════════════════════════════════════════════════════════
+campo.setText("");  // Deja el campo vacío
+
+EJEMPLO: VALIDACIÓN DE CAMPO NO VACÍO:
+──────────────────────────────────────
+
+JTextField tfNombre = new JTextField(20);
+JButton btnGuardar = new JButton("Guardar");
+
+btnGuardar.addActionListener(e -> {
+    // Validar que no esté vacío
+    if (tfNombre.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(
+            null,                           // Componente padre (null = centrar)
+            "El nombre no puede estar vacío", // Mensaje
+            "Error de validación",          // Título
+            JOptionPane.ERROR_MESSAGE       // Tipo de mensaje
+        );
+        return;  // Salir del método sin continuar
+    }
+    
+    // Si llegamos aquí, el campo tiene contenido
+    String nombre = tfNombre.getText();
+    // Procesar el nombre...
+});
+
+--------------------------------------------------------------------------------
+JBUTTON - BOTONES INTERACTIVOS (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+El JButton es el componente más común para iniciar acciones. El usuario hace
+clic y se ejecuta el código asociado.
+
+¿POR QUÉ SE USAN BOTONES?
+─────────────────────────
+
+Los botones son la forma principal de que el usuario inicie una acción:
+• Guardar datos
+• Cancelar una operación
+• Abrir una ventana
+• Enviar un formulario
+• Cualquier acción que requiera confirmación explícita
+
+CONSTRUCTORES:
+──────────────
+
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+
+// Constructor 1: Vacío
+JButton btn1 = new JButton();
+
+// Constructor 2: Solo texto
+JButton btn2 = new JButton("Guardar");
+
+// Constructor 3: Solo icono
+ImageIcon icono = new ImageIcon("guardar.png");
+JButton btn3 = new JButton(icono);
+
+// Constructor 4: Texto + icono
+JButton btn4 = new JButton("Guardar", icono);
+
+MÉTODOS IMPORTANTES:
+────────────────────
+
+JButton boton = new JButton("Aceptar");
+
+// ══════════════════════════════════════════════════════════════════════════
+// TEXTO
+// ══════════════════════════════════════════════════════════════════════════
+boton.setText("Cancelar");       // Cambiar texto
+String texto = boton.getText();  // Obtener texto
+
+// ══════════════════════════════════════════════════════════════════════════
+// HABILITAR/DESHABILITAR
+// ══════════════════════════════════════════════════════════════════════════
+boton.setEnabled(true);   // Habilitado - se puede pulsar
+boton.setEnabled(false);  // Deshabilitado - aparece gris, no responde
+
+// Útil cuando una acción no debe estar disponible:
+// Ejemplo: El botón "Guardar" deshabilitado hasta que se modify el documento
+
+// ══════════════════════════════════════════════════════════════════════════
+// TOOLTIP
+// ══════════════════════════════════════════════════════════════════════════
+boton.setToolTipText("Haz clic para guardar los cambios");
+
+AÑADIENDO EVENTOS AL BOTÓN - ¡LA PARTE MÁS IMPORTANTE!
+───────────────────────────────────────────────────────
+
+Un botón sin evento no hace nada. Para que funcione, necesitas añadir un
+ActionListener que se ejecute cuando el usuario hace clic.
+
+HAY TRES FORMAS DE HACERLO:
+
+═════════════════════════════════════════════════════════════════════════════
+FORMA 1: CLASE ANÓNIMA (Tradicional, Java 7 y anteriores)
+═════════════════════════════════════════════════════════════════════════════
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+JButton btnGuardar = new JButton("Guardar");
+
+btnGuardar.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Este código se ejecuta cuando se hace clic
+        System.out.println("¡Botón pulsado!");
+        
+        // Puedes acceder a componentes de la clase contenedora
+        // String texto = tfNombre.getText();
+    }
+});
+
+¿QUÉ ES UNA CLASE ANÓNIMA?
+Es una clase que se define y se instancia en una sola expresión, sin nombre.
+Aquí estamos creando una clase que implementa ActionListener sobre la marcha.
+
+═════════════════════════════════════════════════════════════════════════════
+FORMA 2: EXPRESIÓN LAMBDA (Java 8+) - RECOMENDADA
+═════════════════════════════════════════════════════════════════════════════
+
+// ActionListener es una "interfaz funcional" (solo tiene un método)
+// Por eso se puede usar lambda
+
+JButton btnGuardar = new JButton("Guardar");
+
+// Lambda completa
+btnGuardar.addActionListener((ActionEvent e) -> {
+    System.out.println("¡Botón pulsado!");
+});
+
+// Lambda simplificada (el tipo se infiere)
+btnGuardar.addActionListener(e -> {
+    System.out.println("¡Botón pulsado!");
+});
+
+// Lambda para una sola instrucción (sin llaves)
+btnGuardar.addActionListener(e -> System.out.println("¡Botón pulsado!"));
+
+¿POR QUÉ USAR LAMBDA?
+- Código más corto y limpio
+- Más fácil de leer
+- Es el estándar moderno de Java
+
+═════════════════════════════════════════════════════════════════════════════
+FORMA 3: IMPLEMENTAR ActionListener EN LA CLASE
+═════════════════════════════════════════════════════════════════════════════
+
+public class MiPanel extends JPanel implements ActionListener {
+    
+    private JButton btnGuardar, btnCancelar;
+    
+    public MiPanel() {
+        btnGuardar = new JButton("Guardar");
+        btnCancelar = new JButton("Cancelar");
+        
+        // Añadir THIS como listener (la propia clase implementa ActionListener)
+        btnGuardar.addActionListener(this);
+        btnCancelar.addActionListener(this);
+        
+        add(btnGuardar);
+        add(btnCancelar);
+    }
+    
+    // Este método se llama para TODOS los botones que tengan this como listener
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Identificar qué botón se pulsó
+        if (e.getSource() == btnGuardar) {
+            System.out.println("Guardar pulsado");
+        } else if (e.getSource() == btnCancelar) {
+            System.out.println("Cancelar pulsado");
+        }
+    }
+}
+
+¿CUÁNDO USAR ESTA FORMA?
+- Cuando tienes muchos botones con lógica relacionada
+- Cuando quieres centralizar el manejo de eventos
+- Puede ser más difícil de mantener si hay mucha lógica
+
+--------------------------------------------------------------------------------
+JCOMBOBOX - LISTA DESPLEGABLE (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+El JComboBox muestra una lista de opciones de la que el usuario puede
+seleccionar una. Es como un <select> de HTML.
+
+¿CUÁNDO USAR JComboBox?
+──────────────────────
+
+• Selección de una opción entre varias predefinidas
+• Cuando las opciones son demasiadas para radio buttons (más de 4-5)
+• Para ahorrar espacio en pantalla
+• Extensiones de archivo, países, categorías, etc.
+
+CONSTRUCTORES:
+──────────────
+
+import javax.swing.JComboBox;
+
+// Constructor 1: Vacío
+JComboBox<String> combo1 = new JComboBox<>();
+
+// Constructor 2: Con array de opciones
+String[] opciones = {"Opción 1", "Opción 2", "Opción 3"};
+JComboBox<String> combo2 = new JComboBox<>(opciones);
+
+// Constructor 3: Con Vector
+import java.util.Vector;
+Vector<String> vector = new Vector<>();
+vector.add("Uno");
+vector.add("Dos");
+JComboBox<String> combo3 = new JComboBox<>(vector);
+
+¿POR QUÉ JComboBox<String>?
+──────────────────────────
+
+El <String> es un genérico que indica que el combo contiene Strings.
+Si no lo pones, funciona pero el compilador puede mostrar advertencias.
+JComboBox<String> combo = new JComboBox<>();  // ✅ Recomendado
+JComboBox combo = new JComboBox();            // ⚠️ Funciona pero con warning
+
+MÉTODOS PRINCIPALES:
+────────────────────
+
+String[] opciones = {"jpg", "png", "gif"};
+JComboBox<String> combo = new JComboBox<>(opciones);
+
+// ══════════════════════════════════════════════════════════════════════════
+// OBTENER ELEMENTO SELECCIONADO
+// ══════════════════════════════════════════════════════════════════════════
+// getSelectedItem() devuelve Object, hay que hacer casting
+String seleccionado = (String) combo.getSelectedItem();
+
+// Si puede ser null (no hay selección), verificar:
+Object obj = combo.getSelectedItem();
+if (obj != null) {
+    String valor = (String) obj;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// OBTENER ÍNDICE SELECCIONADO
+// ══════════════════════════════════════════════════════════════════════════
+int indice = combo.getSelectedIndex();  // 0, 1, 2... o -1 si no hay selección
+
+// ══════════════════════════════════════════════════════════════════════════
+// ESTABLECER SELECCIÓN
+// ══════════════════════════════════════════════════════════════════════════
+combo.setSelectedIndex(0);      // Seleccionar por índice (0 = primero)
+combo.setSelectedItem("png");   // Seleccionar por valor
+
+// ══════════════════════════════════════════════════════════════════════════
+// MODIFICAR OPCIONES
+// ══════════════════════════════════════════════════════════════════════════
+combo.addItem("bmp");           // Añadir opción al final
+combo.insertItemAt("tiff", 1);  // Insertar en posición específica
+combo.removeItem("gif");        // Eliminar por valor
+combo.removeItemAt(0);          // Eliminar por índice
+combo.removeAllItems();         // Eliminar todo
+
+// ══════════════════════════════════════════════════════════════════════════
+// INFORMACIÓN
+// ══════════════════════════════════════════════════════════════════════════
+int cantidad = combo.getItemCount();      // Número de elementos
+String elemento = combo.getItemAt(0);     // Obtener elemento por índice
+
+EJEMPLO COMPLETO: USAR JComboBox CON BOTÓN:
+───────────────────────────────────────────
+
+String[] extensiones = {"jpg", "png", "gif"};
+JComboBox<String> cbxExtension = new JComboBox<>(extensiones);
+JButton btnGenerar = new JButton("Generar");
+
+btnGenerar.addActionListener(e -> {
+    // Obtener la extensión seleccionada
+    String extension = (String) cbxExtension.getSelectedItem();
+    
+    // Usar la extensión...
+    System.out.println("Generando archivo con extensión: " + extension);
+});
+
+--------------------------------------------------------------------------------
+JRADIOBUTTON Y BUTTONGROUP - SELECCIÓN EXCLUSIVA (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+Los JRadioButton permiten seleccionar UNA opción entre varias. Pero para que
+funcionen correctamente, DEBEN agruparse con ButtonGroup.
+
+¿CÓMO FUNCIONAN LOS RADIO BUTTONS?
+──────────────────────────────────
+
+Cada JRadioButton es independiente por defecto. Si creas 3 radio buttons sin
+más, el usuario podría seleccionar los 3 a la vez. NO es lo que queremos.
+
+Para que solo uno pueda estar seleccionado, los "agrupamos" con ButtonGroup.
+El ButtonGroup se encarga de que al seleccionar uno, los demás se desmarquen.
+
+¿POR QUÉ SE LLAMAN "RADIO" BUTTONS?
+Porque funcionan como los botones de una radio antigua: al pulsar uno,
+el que estaba pulsado antes se "suelta" automáticamente.
+
+CONSTRUCTORES:
+──────────────
+
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+
+// Constructor 1: Sin texto
+JRadioButton rb1 = new JRadioButton();
+
+// Constructor 2: Con texto
+JRadioButton rb2 = new JRadioButton("Opción A");
+
+// Constructor 3: Con texto y estado inicial
+JRadioButton rb3 = new JRadioButton("Opción B", true);   // Seleccionado
+JRadioButton rb4 = new JRadioButton("Opción C", false);  // No seleccionado
+
+AGRUPANDO RADIO BUTTONS - ¡PASO OBLIGATORIO!
+────────────────────────────────────────────
+
+// 1. Crear los radio buttons
+JRadioButton rbPng = new JRadioButton("Formato PNG", true);  // Seleccionado inicialmente
+JRadioButton rbJpg = new JRadioButton("Formato JPG");
+JRadioButton rbGif = new JRadioButton("Formato GIF");
+
+// 2. Crear el grupo y añadir los radio buttons
+ButtonGroup grupoFormato = new ButtonGroup();
+grupoFormato.add(rbPng);
+grupoFormato.add(rbJpg);
+grupoFormato.add(rbGif);
+
+// 3. Añadir CADA radio button al panel (individually)
+panel.add(rbPng);
+panel.add(rbJpg);
+panel.add(rbGif);
+
+// ¡OJO! El ButtonGroup NO es un componente visual.
+// Solo gestiona la lógica de selección exclusiva.
+// Los radio buttons se añaden al panel individualmente.
+
+MÉTODOS PRINCIPALES:
+────────────────────
+
+JRadioButton rbPng = new JRadioButton("PNG");
+
+// ══════════════════════════════════════════════════════════════════════════
+// VERIFICAR SI ESTÁ SELECCIONADO
+// ══════════════════════════════════════════════════════════════════════════
+if (rbPng.isSelected()) {
+    System.out.println("PNG está seleccionado");
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// SELECCIONAR/DESELECCIONAR PROGRAMÁTICAMENTE
+// ══════════════════════════════════════════════════════════════════════════
+rbPng.setSelected(true);   // Seleccionar (los demás del grupo se desmarcan)
+rbPng.setSelected(false);  // Deseleccionar
+
+// ══════════════════════════════════════════════════════════════════════════
+// OBTENER TEXTO
+// ══════════════════════════════════════════════════════════════════════════
+String texto = rbPng.getText();  // "PNG"
+
+MÉTODOS DE BUTTONGROUP:
+───────────────────────
+
+ButtonGroup grupo = new ButtonGroup();
+grupo.add(rbPng);
+grupo.add(rbJpg);
+
+// ══════════════════════════════════════════════════════════════════════════
+// OBTENER SELECCIÓN
+// ══════════════════════════════════════════════════════════════════════════
+ButtonModel seleccionado = grupo.getSelection();
+// ButtonModel es una representación del botón seleccionado
+
+// Obtener el texto del botón seleccionado:
+if (seleccionado != null) {
+    String comando = seleccionado.getActionCommand();
+    // Pero para esto hay que haber establecido actionCommand antes:
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// FORMA MÁS FÁCIL: VERIFICAR CADA RADIO BUTTON
+// ══════════════════════════════════════════════════════════════════════════
+String formato;
+if (rbPng.isSelected()) {
+    formato = "png";
+} else if (rbJpg.isSelected()) {
+    formato = "jpg";
+} else if (rbGif.isSelected()) {
+    formato = "gif";
+}
+
+// O más compacto con operador ternario:
+String formato = rbPng.isSelected() ? "png" : (rbJpg.isSelected() ? "jpg" : "gif");
+
+EJEMPLO COMPLETO:
+─────────────────
+
+public class PanelFormato extends JPanel {
+    
+    private JRadioButton rbPng, rbJpg, rbGif;
+    private ButtonGroup grupoFormato;
+    private JButton btnGuardar;
+    
+    public PanelFormato() {
+        setLayout(new FlowLayout());
+        
+        // Crear radio buttons
+        rbPng = new JRadioButton("PNG", true);  // Seleccionado por defecto
+        rbJpg = new JRadioButton("JPG");
+        rbGif = new JRadioButton("GIF");
+        
+        // Agrupar
+        grupoFormato = new ButtonGroup();
+        grupoFormato.add(rbPng);
+        grupoFormato.add(rbJpg);
+        grupoFormato.add(rbGif);
+        
+        // Añadir al panel
+        add(new JLabel("Selecciona formato:"));
+        add(rbPng);
+        add(rbJpg);
+        add(rbGif);
+        
+        // Botón
+        btnGuardar = new JButton("Guardar");
+        btnGuardar.addActionListener(e -> obtenerFormatoSeleccionado());
+        add(btnGuardar);
+    }
+    
+    private void obtenerFormatoSeleccionado() {
+        String formato;
+        if (rbPng.isSelected()) {
+            formato = "png";
+        } else if (rbJpg.isSelected()) {
+            formato = "jpg";
+        } else {
+            formato = "gif";
+        }
+        
+        JOptionPane.showMessageDialog(this, "Formato seleccionado: " + formato);
+    }
+}
+
+--------------------------------------------------------------------------------
+JCHECKBOX - CASILLAS DE VERIFICACIÓN (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+A diferencia de JRadioButton, los JCheckBox permiten selección MÚLTIPLE.
+El usuario puede marcar ninguno, uno, varios o todos.
+
+¿CUÁNDO USAR JCheckBox VS JRadioButton?
+───────────────────────────────────────
+
+• JRadioButton: Selección EXCLUSIVA (solo una opción posible)
+  Ejemplo: Género (Masculino/Femenino), Talla (S/M/L/XL)
+  
+• JCheckBox: Selección MÚLTIPLE (varias opciones posibles)
+  Ejemplo: Toppings de pizza, intereses, habilidades
+
+CONSTRUCTORES:
+──────────────
+
+import javax.swing.JCheckBox;
+
+JCheckBox cb1 = new JCheckBox();
+JCheckBox cb2 = new JCheckBox("Acepto los términos");
+JCheckBox cb3 = new JCheckBox("Recordarme", true);  // Marcado inicialmente
+
+MÉTODOS PRINCIPALES:
+────────────────────
+
+JCheckBox check = new JCheckBox("Opción");
+
+// Verificar si está marcado
+if (check.isSelected()) {
+    System.out.println("Está marcado");
+}
+
+// Marcar/desmarcar programáticamente
+check.setSelected(true);   // Marcar
+check.setSelected(false);  // Desmarcar
+
+EJEMPLO: MÚLTIPLES CHECKBOX:
+───────────────────────────
+
+JCheckBox cbDeporte = new JCheckBox("Deporte");
+JCheckBox cbMusica = new JCheckBox("Música");
+JCheckBox cbLectura = new JCheckBox("Lectura");
+JButton btnMostrar = new JButton("Mostrar intereses");
+
+btnMostrar.addActionListener(e -> {
+    StringBuilder intereses = new StringBuilder("Intereses: ");
+    
+    if (cbDeporte.isSelected()) intereses.append("Deporte, ");
+    if (cbMusica.isSelected()) intereses.append("Música, ");
+    if (cbLectura.isSelected()) intereses.append("Lectura, ");
+    
+    // Eliminar última coma si hay intereses
+    if (intereses.length() > 11) {  // Más que "Intereses: "
+        intereses.setLength(intereses.length() - 2);
+    } else {
+        intereses.append("Ninguno");
+    }
+    
+    JOptionPane.showMessageDialog(null, intereses.toString());
+});
+
+--------------------------------------------------------------------------------
+JOPTIONPANE - DIÁLOGOS PREDEFINIDOS (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+JOptionPane proporciona métodos estáticos para mostrar diálogos simples sin
+necesidad de crear ventanas personalizadas. Es muy útil para mensajes rápidos.
+
+TIPOS DE DIÁLOGOS:
+──────────────────
+
+1. showMessageDialog()  - Mostrar un mensaje (solo botón Aceptar)
+2. showConfirmDialog()  - Preguntar Sí/No/Cancelar
+3. showInputDialog()    - Pedir texto al usuario
+4. showOptionDialog()   - Diálogo completamente personalizado
+
+SHOWMESSAGEDIALOG - MOSTRAR MENSAJE:
+────────────────────────────────────
+
+import javax.swing.JOptionPane;
+
+// Mensaje simple
+JOptionPane.showMessageDialog(null, "Operación completada");
+
+// Mensaje con título
+JOptionPane.showMessageDialog(null, 
+    "Archivo guardado correctamente",  // Mensaje
+    "Éxito",                           // Título
+    JOptionPane.INFORMATION_MESSAGE    // Tipo
+);
+
+// Tipos disponibles:
+// JOptionPane.PLAIN_MESSAGE       - Sin icono
+// JOptionPane.INFORMATION_MESSAGE - Icono de información (i azul)
+// JOptionPane.QUESTION_MESSAGE    - Icono de pregunta (?)
+// JOptionPane.WARNING_MESSAGE     - Icono de advertencia (triángulo amarillo)
+// JOptionPane.ERROR_MESSAGE       - Icono de error (X roja)
+
+SHOWCONFIRMDIALOG - CONFIRMACIÓN:
+─────────────────────────────────
+
+int respuesta = JOptionPane.showConfirmDialog(null,
+    "¿Está seguro de que desea eliminar el archivo?",  // Mensaje
+    "Confirmar eliminación",                            // Título
+    JOptionPane.YES_NO_OPTION                           // Botones
+);
+
+// respuesta puede ser:
+// JOptionPane.YES_OPTION    = 0  (Usuario pulsó Sí)
+// JOptionPane.NO_OPTION     = 1  (Usuario pulsó No)
+// JOptionPane.CANCEL_OPTION = 2  (Usuario pulsó Cancelar o cerró)
+// JOptionPane.CLOSED_OPTION = -1 (Usuario cerró la ventana)
+
+if (respuesta == JOptionPane.YES_OPTION) {
+    // Usuario confirmó
+    System.out.println("Eliminando...");
+}
+
+// Opciones de botones:
+// JOptionPane.YES_NO_OPTION        - Sí, No
+// JOptionPane.YES_NO_CANCEL_OPTION - Sí, No, Cancelar
+// JOptionPane.OK_CANCEL_OPTION     - Aceptar, Cancelar
+
+SHOWINPUTDIALOG - PEDIR DATOS:
+─────────────────────────────
+
+// Input simple
+String nombre = JOptionPane.showInputDialog("Introduce tu nombre:");
+
+// El usuario puede escribir o cancelar
+if (nombre != null) {
+    System.out.println("Hola, " + nombre);
+} else {
+    System.out.println("El usuario canceló");
+}
+
+// Input con título y tipo
+String edad = JOptionPane.showInputDialog(
+    null,                          // Componente padre
+    "Introduce tu edad:",          // Mensaje
+    "Datos personales",            // Título
+    JOptionPane.QUESTION_MESSAGE   // Tipo
+);
+
+EJEMPLO COMPLETO: VALIDACIÓN CON JOPTIONPANE:
+─────────────────────────────────────────────
+
+JTextField tfNombre = new JTextField(20);
+JButton btnGuardar = new JButton("Guardar");
+
+btnGuardar.addActionListener(e -> {
+    // Validar que no esté vacío
+    String nombre = tfNombre.getText().trim();
+    
+    if (nombre.isEmpty()) {
+        // Mostrar error
+        JOptionPane.showMessageDialog(
+            null,
+            "El nombre no puede estar vacío",
+            "Error de validación",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;  // Salir sin continuar
+    }
+    
+    // Confirmar guardado
+    int opcion = JOptionPane.showConfirmDialog(
+        null,
+        "¿Guardar el nombre: " + nombre + "?",
+        "Confirmar",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
+    
+    if (opcion == JOptionPane.YES_OPTION) {
+        // Guardar...
+        JOptionPane.showMessageDialog(
+            null,
+            "Guardado correctamente",
+            "Éxito",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+});
+
+--------------------------------------------------------------------------------
+LAYOUT MANAGERS - GESTORES DE DISEÑO (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+Los Layout Managers determinan cómo se organizan y dimensionan los componentes
+dentro de un contenedor. Es una de las partes más importantes de Swing.
+
+¿POR QUÉ USAR LAYOUTS EN VEZ DE COORDENADAS FIJAS?
+──────────────────────────────────────────────────
+
+Si usas coordenadas fijas (setLayout(null) + setBounds()), tu interfaz:
+• No se adapta si se redimensiona la ventana
+• Se ve diferente en distintos sistemas operativos
+• No funciona bien con diferentes resoluciones de pantalla
+• Es una pesadilla de mantenimiento
+
+Los layouts solucionan esto organizando los componentes dinámicamente.
+
+FLOWLAYOUT - FLUJO HORIZONTAL:
+─────────────────────────────
+
+El más simple. Coloca componentes en fila, de izquierda a derecha. Cuando no
+caben más en la línea, pasa a la siguiente (como texto en un documento).
+
+import java.awt.FlowLayout;
+
+JPanel panel = new JPanel();
+panel.setLayout(new FlowLayout());
+
+// Opciones de alineación:
+new FlowLayout();                   // Centrado (por defecto)
+new FlowLayout(FlowLayout.LEFT);    // Alineado a la izquierda
+new FlowLayout(FlowLayout.RIGHT);   // Alineado a la derecha
+new FlowLayout(FlowLayout.CENTER);  // Centrado
+new FlowLayout(FlowLayout.LEADING); // Alineado al inicio (depende del idioma)
+new FlowLayout(FlowLayout.TRAILING);// Alineado al final
+
+// Con espaciado personalizado:
+new FlowLayout(FlowLayout.LEFT, 20, 10);  // Alineación, gap horizontal, gap vertical
+
+// Los componentes mantienen su tamaño preferido
+JButton btn1 = new JButton("Botón 1");
+JButton btn2 = new JButton("Botón muy largo");
+panel.add(btn1);
+panel.add(btn2);
+
+BORDERLAYOUT - 5 REGIONES:
+──────────────────────────
+
+Divide el contenedor en 5 regiones: NORTH, SOUTH, EAST, WEST, CENTER.
+Solo UN componente por región.
+
+import java.awt.BorderLayout;
+
+JFrame frame = new JFrame();
+frame.setLayout(new BorderLayout());
+
+frame.add(btnNorte, BorderLayout.NORTH);   // Arriba, altura fija
+frame.add(btnSur, BorderLayout.SOUTH);     // Abajo, altura fija
+frame.add(btnEste, BorderLayout.EAST);     // Derecha, ancho fijo
+frame.add(btnOeste, BorderLayout.WEST);    // Izquierda, ancho fijo
+frame.add(panelCentro, BorderLayout.CENTER); // Centro, ocupa todo el resto
+
+// CENTER se expande para llenar el espacio disponible
+// NORTH y SOUTH respetan su altura preferida
+// EAST y WEST respetan su ancho preferido
+
+// Sin espaciado:
+new BorderLayout();           // 0 píxeles entre componentes
+new BorderLayout(10, 5);      // 10px horizontal, 5px vertical entre componentes
+
+GRIDLAYOUT - MATRIZ REGULAR:
+────────────────────────────
+
+Organiza los componentes en una cuadrícula de filas y columnas. Todos los
+componentes tienen EL MISMO TAMAÑO.
+
+import java.awt.GridLayout;
+
+JPanel panel = new JPanel();
+panel.setLayout(new GridLayout(3, 2));  // 3 filas, 2 columnas
+
+panel.add(btn1);  // Fila 0, Columna 0
+panel.add(btn2);  // Fila 0, Columna 1
+panel.add(btn3);  // Fila 1, Columna 0
+panel.add(btn4);  // Fila 1, Columna 1
+panel.add(btn5);  // Fila 2, Columna 0
+panel.add(btn6);  // Fila 2, Columna 1
+
+// Con espaciado:
+new GridLayout(3, 2, 5, 10);  // filas, columnas, gap horizontal, gap vertical
+
+NULL LAYOUT - COORDENADAS ABSOLUTAS (NO RECOMENDADO):
+─────────────────────────────────────────────────────
+
+Sin layout manager. Tú especificas posición y tamaño de cada componente.
+
+panel.setLayout(null);
+
+JButton btn = new JButton("Botón");
+btn.setBounds(50, 30, 100, 25);  // x, y, ancho, alto
+panel.add(btn);
+
+⚠️ PROBLEMAS:
+• No se adapta a redimensionamientos
+• Se ve diferente en distintos sistemas
+• Código difícil de mantener
+• No respeta diferentes resoluciones
+
+SOLO úsalo si tienes una razón muy específica.
+
+--------------------------------------------------------------------------------
+COLOR Y FUENTES (EXPLICACIÓN DETALLADA)
+--------------------------------------------------------------------------------
+
+COLORES EN JAVA:
+────────────────
+
+import java.awt.Color;
+
+// Colores predefinidos (constantes estáticas)
+Color rojo = Color.RED;
+Color verde = Color.GREEN;
+Color azul = Color.BLUE;
+Color negro = Color.BLACK;
+Color blanco = Color.WHITE;
+Color gris = Color.GRAY;
+Color grisOscuro = Color.DARK_GRAY;
+Color grisClaro = Color.LIGHT_GRAY;
+Color rosa = Color.PINK;
+Color naranja = Color.ORANGE;
+Color amarillo = Color.YELLOW;
+Color cyan = Color.CYAN;
+Color magenta = Color.MAGENTA;
+
+// Color personalizado con RGB (Red, Green, Blue)
+// Cada valor va de 0 a 255
+Color miColor = new Color(100, 150, 200);  // Azul grisáceo
+
+// Color con transparencia (RGBA)
+Color semiTransparente = new Color(255, 0, 0, 128);  // Rojo al 50%
+
+// Color desde hexadecimal
+Color desdeHex = new Color(0xFF6600);  // Naranja
+
+// Usar colores en componentes
+componente.setBackground(Color.YELLOW);      // Color de fondo
+componente.setForeground(Color.RED);         // Color de texto
+
+FUENTES EN JAVA:
+────────────────
+
+import java.awt.Font;
+
+// Constructor: Font(String nombre, int estilo, int tamaño)
+// Estilos: Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD + Font.ITALIC
+
+Font fuenteNormal = new Font("Arial", Font.PLAIN, 12);
+Font fuenteNegrita = new Font("Arial", Font.BOLD, 14);
+Font fuenteCursiva = new Font("Arial", Font.ITALIC, 12);
+Font fuenteNegritaCursiva = new Font("Arial", Font.BOLD + Font.ITALIC, 16);
+
+// Nombres de fuente comunes:
+// "Arial" - Sans-serif común
+// "Serif" - Con serifa (Times New Roman estilo)
+// "SansSerif" - Sin serifa
+// "Monospaced" - Todos los caracteres igual de anchos (para código)
+// "Dialog" - Fuente del sistema para diálogos
+
+// Usar fuente en componente
+componente.setFont(new Font("Arial", Font.BOLD, 16));
+
+// Obtener fuentes del sistema
+String[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment()
+    .getAvailableFontFamilyNames();
+for (String f : fuentes) {
+    System.out.println(f);
+}
+
+--------------------------------------------------------------------------------
+ERRORES COMUNES EN SWING - LO QUE DEBES EVITAR
+--------------------------------------------------------------------------------
+
+❌ ERROR 1: OLVIDAR setVisible(true)
+───────────────────────────────────
+JFrame frame = new JFrame("Mi Ventana");
+frame.setSize(400, 300);
+// Falta: frame.setVisible(true);  <-- La ventana nunca aparece
+
+SOLUCIÓN: Siempre añade setVisible(true) AL FINAL de la configuración.
+
+❌ ERROR 2: NO AÑADIR EL PANEL AL FRAME
+──────────────────────────────────────
+JFrame frame = new JFrame();
+MiPanel panel = new MiPanel();
+// Falta: frame.add(panel);  <-- El panel no se muestra
+
+SOLUCIÓN: Siempre añade el panel al frame: frame.add(panel);
+
+❌ ERROR 3: NO USAR BUTTONGROUP CON RADIOBUTTONS
+────────────────────────────────────────────────
+JRadioButton rb1 = new JRadioButton("Opción 1");
+JRadioButton rb2 = new JRadioButton("Opción 2");
+// Sin ButtonGroup, AMBOS pueden seleccionarse a la vez
+
+SOLUCIÓN: Siempre agrupa los radio buttons relacionados:
+ButtonGroup grupo = new ButtonGroup();
+grupo.add(rb1);
+grupo.add(rb2);
+
+❌ ERROR 4: CASTING INCORRECTO EN JCOMBOBOX
+───────────────────────────────────────────
+String valor = cbxExtension.getSelectedItem();  // ERROR de compilación
+// getSelectedItem() devuelve Object, no String
+
+SOLUCIÓN: Haz casting explícito:
+String valor = (String) cbxExtension.getSelectedItem();
+
+❌ ERROR 5: NO AÑADIR LISTENER AL BOTÓN
+───────────────────────────────────────
+JButton btn = new JButton("Pulsar");
+// Falta: btn.addActionListener(...)
+// El botón aparece pero no hace nada
+
+SOLUCIÓN: Siempre añade un listener:
+btn.addActionListener(e -> System.out.println("Pulsado"));
+
+❌ ERROR 6: ACCEDER A VARIABLE LOCAL DESDE CLASE ANÓNIMA
+───────────────────────────────────────────────────────
+private void metodo() {
+    JTextField tfLocal = new JTextField();  // Variable local
+    btn.addActionListener(e -> {
+        tfLocal.getText();  // Error si tfLocal no es "effectively final"
+    });
+}
+
+SOLUCIÓN: Declara los componentes como atributos de la clase, no variables locales.
+
+❌ ERROR 7: MODIFICAR GUI FUERA DEL EDT
+──────────────────────────────────────
+new Thread(() -> {
+    label.setText("Actualizado");  // PELIGROSO - puede causar bugs
+}).start();
+
+SOLUCIÓN: Usa SwingUtilities.invokeLater():
+new Thread(() -> {
+    SwingUtilities.invokeLater(() -> label.setText("Actualizado"));
+}).start();
+
+================================================================================
+                 17. SETUP COMPLETO DE INTERFAZ GRÁFICA (GUI)
+================================================================================
+
+--------------------------------------------------------------------------------
+ESTRUCTURA PROFESIONAL DE UNA APLICACIÓN SWING
+--------------------------------------------------------------------------------
+
+Una aplicación Swing bien estructurada sigue el principio de "separación de
+responsabilidades". Cada clase tiene una función específica:
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         ARQUITECTURA RECOMENDADA                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   Main.java                    ← Punto de entrada, lanza la aplicación     │
+│        │                                                                    │
+│        └── VentanaPrincipal.java ← JFrame: configura la ventana            │
+│                │                                                            │
+│                └── PanelPrincipal.java ← JPanel: contiene componentes      │
+│                        │                                                    │
+│                        ├── Componentes (JButton, JTextField, etc.)         │
+│                        └── Eventos (ActionListener)                        │
+│                                                                             │
+│   Esta separación permite:                                                  │
+│   • Código más limpio y mantenible                                          │
+│   • Cada clase tiene una responsabilidad única                              │
+│   • Fácil de modificar sin afectar otras partes                             │
+│   • Posibilidad de reutilizar paneles en otras ventanas                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+¿POR QUÉ ESTA ESTRUCTURA?
+────────────────────────
+
+1. Main.java separado: El punto de entrada es independiente de la ventana.
+   Esto permite cambiar la ventana principal sin modificar el main.
+
+2. VentanaPrincipal vs PanelPrincipal: La ventana configura el "marco"
+   (título, tamaño, cierre), mientras el panel contiene el "contenido"
+   (botones, campos, etiquetas). Si quieres cambiar el contenido, solo
+   modificas el panel.
+
+3. Un panel por "pantalla": Si tu aplicación tiene múltiples pantallas
+   (ej: login, menú principal, configuración), cada una es un panel
+   diferente que se intercambia en la misma ventana.
+
+--------------------------------------------------------------------------------
+CLASE 1: MAIN.JAVA - EL PUNTO DE ENTRADA
+--------------------------------------------------------------------------------
+
+El método main es donde todo comienza. En Swing, hay una regla importante:
+LA INTERFAZ GRÁFICA DEBE CREARSE EN EL EVENT DISPATCH THREAD (EDT).
+
+¿QUÉ ES EL EVENT DISPATCH THREAD (EDT)?
+───────────────────────────────────────
+
+Swing es "single-threaded" para operaciones de GUI. Todas las operaciones
+sobre componentes Swing (crear, modificar, mostrar) deben hacerse en un
+hilo específico llamado EDT.
+
+Si no usas el EDT, pueden ocurrir:
+• Race conditions (condiciones de carrera)
+• Pantallas que no se actualizan correctamente
+• Bloqueos de la interfaz
+• Errores impredecibles
+
+¿CÓMO ASEGURARSE DE USAR EL EDT?
+────────────────────────────────
+
+Usa SwingUtilities.invokeLater():
+
+import javax.swing.SwingUtilities;
+
+public class Main {
+    public static void main(String[] args) {
+        // ══════════════════════════════════════════════════════════════════
+        // CORRECTO: Ejecutar en el EDT
+        // ══════════════════════════════════════════════════════════════════
+        SwingUtilities.invokeLater(() -> {
+            // Todo lo que esté aquí se ejecuta en el EDT
+            new VentanaPrincipal();
+        });
+        
+        // El main termina, pero la aplicación sigue ejecutándose
+        // porque Swing mantiene su propio hilo de eventos
+    }
+}
+
+¿QUÉ HACE invokeLater()?
+───────────────────────
+
+1. Pone la tarea en una cola de eventos
+2. El EDT ejecuta las tareas de la cola en orden
+3. La tarea se ejecuta cuando el EDT está disponible
+4. "invokeLater" significa "invocar después" - es asíncrono
+
+DIFERENCIA ENTRE invokeLater() E invokeAndWait():
+──────────────────────────────────────────────────
+
+// invokeLater(): No espera, continúa inmediatamente (ASÍNCRONO)
+SwingUtilities.invokeLater(() -> crearVentana());
+System.out.println("Esto se ejecuta ANTES de que se cree la ventana");
+
+// invokeAndWait(): Espera a que termine (SÍNCRONO)
+try {
+    SwingUtilities.invokeAndWait(() -> crearVentana());
+} catch (Exception e) {
+    e.printStackTrace();
+}
+System.out.println("Esto se ejecuta DESPUÉS de que se cree la ventana");
+
+// invokeAndWait() puede causar deadlocks si se usa incorrectamente
+// Por eso invokeLater() es más común
+
+--------------------------------------------------------------------------------
+CLASE 2: VENTANAPRINCIPAL.JAVA - LA VENTANA (JFRAME)
+--------------------------------------------------------------------------------
+
+La clase VentanaPrincipal extiende JFrame y configura todos los aspectos
+de la ventana principal de la aplicación.
+
+CÓDIGO COMPLETO CON EXPLICACIONES:
+──────────────────────────────────
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class VentanaPrincipal extends JFrame {
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONSTANTES
+    // ══════════════════════════════════════════════════════════════════════════
+    // ¿Por qué constantes para el tamaño?
+    // - Fácil de modificar en un solo lugar
+    // - Se pueden usar desde otras clases (public static)
+    // - Documentación clara de las dimensiones
+    
+    public static final int ANCHO_VENTANA = 800;
+    public static final int ALTO_VENTANA = 600;
+    public static final String TITULO = "Mi Aplicación Swing";
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // ATRIBUTOS
+    // ══════════════════════════════════════════════════════════════════════════
+    private PanelPrincipal panelPrincipal;
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONSTRUCTOR
+    // ══════════════════════════════════════════════════════════════════════════
+    public VentanaPrincipal() {
+        // Llamar a métodos de configuración en orden lógico
+        configurarLookAndFeel();  // Primero: apariencia visual
+        configurarVentana();       // Segundo: propiedades de la ventana
+        inicializarComponentes();  // Tercero: crear y añadir componentes
+        configurarEventos();       // Cuarto: eventos específicos de ventana
+        hacerVisible();            // Quinto: mostrar la ventana
+    }
+    
+    /**
+     * Configura el Look and Feel (apariencia visual)
+     * 
+     * ¿Qué es Look and Feel?
+     * Es el "tema visual" de la aplicación. Swing puede imitar la apariencia
+     * del sistema operativo donde se ejecuta.
+     */
+    private void configurarLookAndFeel() {
+        try {
+            // Usar la apariencia del sistema operativo
+            // En Windows: parecerá una aplicación de Windows
+            // En Mac: parecerá una aplicación de Mac
+            // En Linux: usará el tema del escritorio
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            
+        } catch (ClassNotFoundException e) {
+            System.err.println("Look and Feel no encontrado: " + e.getMessage());
+        } catch (InstantiationException e) {
+            System.err.println("No se pudo instanciar: " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println("Acceso denegado: " + e.getMessage());
+        } catch (UnsupportedLookAndFeelException e) {
+            System.err.println("Look and Feel no soportado: " + e.getMessage());
+        }
+        
+        // OTROS LOOK AND FEEL DISPONIBLES:
+        // ────────────────────────────────────────────────────────────────────
+        // Multiplataforma (Metal) - El clásico de Java:
+        // UIManager.getCrossPlatformLookAndFeelClassName()
+        
+        // Nimbus - Más moderno (Java 6+):
+        // "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+        
+        // Motif - Estilo Unix antiguo:
+        // "com.sun.java.swing.plaf.motif.MotifLookAndFeel"
+        
+        // Personalizado (si tienes la librería):
+        // "com.formdev.flatlaf.FlatLightLaf"  // FlatLaf (moderno)
+    }
+    
+    /**
+     * Configura las propiedades básicas de la ventana
+     */
+    private void configurarVentana() {
+        // ══════════════════════════════════════════════════════════════════
+        // TÍTULO
+        // ══════════════════════════════════════════════════════════════════
+        setTitle(TITULO);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // TAMAÑO
+        // ══════════════════════════════════════════════════════════════════
+        // setSize() vs setPreferredSize() vs pack():
+        // ─────────────────────────────────────────────────────────────────
+        // setSize(): Establece el tamaño directamente. El layout puede
+        //            ignorarlo si el componente se expande.
+        setSize(ANCHO_VENTANA, ALTO_VENTANA);
+        
+        // setPreferredSize(): Sugiere un tamaño. Funciona mejor con algunos
+        //                     layouts, pero no con BorderLayout.CENTER.
+        // setPreferredSize(new Dimension(ANCHO_VENTANA, ALTO_VENTANA));
+        
+        // pack(): Ajusta automáticamente al tamaño de los componentes.
+        //         Útil cuando quieres que la ventana se ajuste al contenido.
+        // pack();
+        
+        // ══════════════════════════════════════════════════════════════════
+        // POSICIÓN
+        // ══════════════════════════════════════════════════════════════════
+        // setLocationRelativeTo(null) centra la ventana en la pantalla
+        setLocationRelativeTo(null);
+        
+        // Alternativas:
+        // ─────────────────────────────────────────────────────────────────
+        // Posición absoluta:
+        // setLocation(100, 50);  // x=100px, y=50px desde esquina sup.izq.
+        
+        // Posición relativa a otro componente:
+        // setLocationRelativeTo(otroComponente);
+        
+        // Posición y tamaño en uno:
+        // setBounds(100, 50, ANCHO_VENTANA, ALTO_VENTANA);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // COMPORTAMIENTO AL CERRAR
+        // ══════════════════════════════════════════════════════════════════
+        // EXIT_ON_CLOSE: Cierra TODA la aplicación (System.exit(0))
+        // Útil cuando tu app tiene una sola ventana.
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Otras opciones:
+        // ─────────────────────────────────────────────────────────────────
+        // DISPOSE_ON_CLOSE: Cierra esta ventana pero la app sigue.
+        //                   Útil para ventanas secundarias.
+        // HIDE_ON_CLOSE: Solo oculta, no destruye. La ventana permanece
+        //                en memoria y se puede volver a mostrar.
+        // DO_NOTHING_ON_CLOSE: No hace nada automático. Tú decides qué hacer
+        //                      con un WindowListener (ver más abajo).
+        
+        // ══════════════════════════════════════════════════════════════════
+        // REDIMENSIONAMIENTO
+        // ══════════════════════════════════════════════════════════════════
+        // Por defecto, el usuario puede cambiar el tamaño de la ventana
+        setResizable(true);
+        
+        // Si quieres tamaño fijo:
+        // setResizable(false);
+        
+        // Tamaño mínimo (para que no se haga demasiado pequeña):
+        // setMinimumSize(new Dimension(400, 300));
+    }
+    
+    /**
+     * Crea y añade los componentes a la ventana
+     */
+    private void inicializarComponentes() {
+        // Crear el panel principal
+        panelPrincipal = new PanelPrincipal();
+        
+        // Añadir el panel al frame
+        // JFrame tiene un contentPane con BorderLayout por defecto
+        // add(panel) equivale a getContentPane().add(panel)
+        add(panelPrincipal);
+        
+        // Si quisieras añadir múltiples paneles:
+        // add(panelNorte, BorderLayout.NORTH);
+        // add(panelCentro, BorderLayout.CENTER);
+        // add(panelSur, BorderLayout.SOUTH);
+    }
+    
+    /**
+     * Configura eventos específicos de la ventana (no de los componentes)
+     */
+    private void configurarEventos() {
+        // Ejemplo: Preguntar antes de cerrar
+        // ─────────────────────────────────────────────────────────────────
+        
+        // Primero, cambiar el comportamiento de cierre
+        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        // Luego, añadir un WindowListener
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmarSalida();
+            }
+        });
+        
+        // Otros eventos de ventana disponibles:
+        // ─────────────────────────────────────────────────────────────────
+        // windowOpened()    - Cuando se abre la ventana
+        // windowClosed()    - Después de cerrarse
+        // windowIconified() - Cuando se minimiza
+        // windowDeiconified() - Cuando se restaura
+        // windowActivated() - Cuando gana el foco
+        // windowDeactivated() - Cuando pierde el foco
+    }
+    
+    /**
+     * Pregunta al usuario si realmente quiere salir
+     */
+    private void confirmarSalida() {
+        int opcion = javax.swing.JOptionPane.showConfirmDialog(
+            this,                                    // Componente padre
+            "¿Está seguro de que desea salir?",      // Mensaje
+            "Confirmar salida",                       // Título
+            javax.swing.JOptionPane.YES_NO_OPTION,   // Botones
+            javax.swing.JOptionPane.QUESTION_MESSAGE // Icono
+        );
+        
+        if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+            // Usuario confirmó: cerrar
+            dispose();       // Cierra esta ventana
+            // System.exit(0); // Cierra toda la aplicación (si hay varias ventanas)
+        }
+        // Si NO, no hacer nada (la ventana permanece abierta)
+    }
+    
+    /**
+     * Hace visible la ventana - SIEMPRE AL FINAL
+     */
+    private void hacerVisible() {
+        // setVisible(true) debe llamarse DESPUÉS de configurar todo
+        // Si se llama antes, la ventana puede aparecer incompleta
+        setVisible(true);
+    }
+}
+
+--------------------------------------------------------------------------------
+CLASE 3: PANELPRINCIPAL.JAVA - EL CONTENIDO (JPANEL)
+--------------------------------------------------------------------------------
+
+El panel es donde está todo el contenido visible de la aplicación: botones,
+campos de texto, etiquetas, etc. Es el "corazón" de la interfaz.
+
+CÓDIGO COMPLETO CON EXPLICACIONES:
+──────────────────────────────────
+
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
+import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class PanelPrincipal extends JPanel {
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONSTANTES
+    // ══════════════════════════════════════════════════════════════════════════
+    public static final int ANCHO_PANEL = 600;
+    public static final int ALTO_PANEL = 400;
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // COMPONENTES (siempre privados)
+    // ══════════════════════════════════════════════════════════════════════════
+    private JLabel lblTitulo;
+    private JLabel lblNombre;
+    private JTextField tfNombre;
+    private JLabel lblOpciones;
+    private JComboBox<String> cbxOpciones;
+    private JRadioButton rbOpcion1;
+    private JRadioButton rbOpcion2;
+    private ButtonGroup grupoRadio;
+    private JButton btnAceptar;
+    private JButton btnCancelar;
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // CONSTRUCTOR
+    // ══════════════════════════════════════════════════════════════════════════
+    public PanelPrincipal() {
+        configurarPanel();
+        inicializarComponentes();
+    }
+    
+    /**
+     * Configura las propiedades del panel
+     */
+    private void configurarPanel() {
+        // ────────────────────────────────────────────────────────────────────
+        // LAYOUT MANAGER
+        // ────────────────────────────────────────────────────────────────────
+        // FlowLayout es el más simple: coloca componentes en fila
+        setLayout(new FlowLayout(FlowLayout.LEFT, 15, 10));
+        //                           ↑           ↑    ↑
+        //                           │           │    └── Espacio vertical
+        //                           │           └─────── Espacio horizontal
+        //                           └─────────────────── Alineación izquierda
+        
+        // ────────────────────────────────────────────────────────────────────
+        // COLOR DE FONDO
+        // ────────────────────────────────────────────────────────────────────
+        setBackground(new Color(245, 245, 245));  // Gris muy claro
+        
+        // ────────────────────────────────────────────────────────────────────
+        // BORDE (espacio interior)
+        // ────────────────────────────────────────────────────────────────────
+        // EmptyBorder añade espacio vacío alrededor del contenido
+        setBorder(new EmptyBorder(20, 20, 20, 20));  // arriba, izquierda, abajo, derecha
+        
+        // ────────────────────────────────────────────────────────────────────
+        // TAMAÑO PREFERIDO
+        // ────────────────────────────────────────────────────────────────────
+        setPreferredSize(new Dimension(ANCHO_PANEL, ALTO_PANEL));
+    }
+    
+    /**
+     * Crea y configura todos los componentes
+     */
+    private void inicializarComponentes() {
+        // ══════════════════════════════════════════════════════════════════
+        // TÍTULO
+        // ══════════════════════════════════════════════════════════════════
+        lblTitulo = new JLabel("Formulario de Registro");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setForeground(new Color(50, 50, 50));
+        add(lblTitulo);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // CAMPO NOMBRE
+        // ══════════════════════════════════════════════════════════════════
+        lblNombre = new JLabel("Nombre:");
+        add(lblNombre);
+        
+        tfNombre = new JTextField(20);  // Ancho aproximado de 20 caracteres
+        add(tfNombre);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // COMBOBOX
+        // ══════════════════════════════════════════════════════════════════
+        lblOpciones = new JLabel("Categoría:");
+        add(lblOpciones);
+        
+        String[] categorias = {"Personal", "Trabajo", "Estudios", "Otros"};
+        cbxOpciones = new JComboBox<>(categorias);
+        cbxOpciones.setSelectedIndex(0);  // Seleccionar el primero
+        add(cbxOpciones);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // RADIO BUTTONS (selección exclusiva)
+        // ══════════════════════════════════════════════════════════════════
+        rbOpcion1 = new JRadioButton("Opción A", true);  // Seleccionado
+        rbOpcion2 = new JRadioButton("Opción B");
+        
+        // IMPORTANTE: Agrupar para selección exclusiva
+        grupoRadio = new ButtonGroup();
+        grupoRadio.add(rbOpcion1);
+        grupoRadio.add(rbOpcion2);
+        
+        add(rbOpcion1);
+        add(rbOpcion2);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // BOTONES CON EVENTOS
+        // ══════════════════════════════════════════════════════════════════
+        btnAceptar = new JButton("Aceptar");
+        btnCancelar = new JButton("Cancelar");
+        
+        // ─────────────────────────────────────────────────────────────────
+        // Evento Aceptar - CON CLASE ANÓNIMA (forma tradicional)
+        // ─────────────────────────────────────────────────────────────────
+        btnAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                procesarFormulario();
+            }
+        });
+        
+        // ─────────────────────────────────────────────────────────────────
+        // Evento Cancelar - CON LAMBDA (forma moderna)
+        // ─────────────────────────────────────────────────────────────────
+        btnCancelar.addActionListener(e -> {
+            // Preguntar confirmación
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que quieres cancelar?",
+                "Confirmar",
+                JOptionPane.YES_NO_OPTION
+            );
+            
+            if (opcion == JOptionPane.YES_OPTION) {
+                // Limpiar campos
+                tfNombre.setText("");
+                cbxOpciones.setSelectedIndex(0);
+                rbOpcion1.setSelected(true);
+            }
+        });
+        
+        add(btnAceptar);
+        add(btnCancelar);
+    }
+    
+    /**
+     * Procesa los datos del formulario
+     */
+    private void procesarFormulario() {
+        // ══════════════════════════════════════════════════════════════════
+        // OBTENER VALORES DE LOS COMPONENTES
+        // ══════════════════════════════════════════════════════════════════
+        String nombre = tfNombre.getText().trim();  // trim() elimina espacios
+        String categoria = (String) cbxOpciones.getSelectedItem();
+        String opcion = rbOpcion1.isSelected() ? "A" : "B";
+        
+        // ══════════════════════════════════════════════════════════════════
+        // VALIDACIÓN
+        // ══════════════════════════════════════════════════════════════════
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,                                    // Componente padre
+                "El nombre no puede estar vacío",        // Mensaje
+                "Error de validación",                   // Título
+                JOptionPane.ERROR_MESSAGE                // Icono
+            );
+            return;  // Salir sin continuar
+        }
+        
+        // ══════════════════════════════════════════════════════════════════
+        // MOSTRAR RESULTADO
+        // ══════════════════════════════════════════════════════════════════
+        String mensaje = String.format(
+            "Datos introducidos:\n\nNombre: %s\nCategoría: %s\nOpción: %s",
+            nombre, categoria, opcion
+        );
+        
+        JOptionPane.showMessageDialog(
+            this,
+            mensaje,
+            "Datos del formulario",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // MÉTODOS PÚBLICOS (para acceso externo si es necesario)
+    // ══════════════════════════════════════════════════════════════════════════
+    
+    public String getNombre() {
+        return tfNombre.getText().trim();
+    }
+    
+    public String getCategoria() {
+        return (String) cbxOpciones.getSelectedItem();
+    }
+    
+    public void limpiarFormulario() {
+        tfNombre.setText("");
+        cbxOpciones.setSelectedIndex(0);
+        rbOpcion1.setSelected(true);
+    }
+}
+
+--------------------------------------------------------------------------------
+DIAGRAMA DE FLUJO DE INICIALIZACIÓN
+--------------------------------------------------------------------------------
+
+El orden en que se ejecuta el código es crucial. Este diagrama muestra
+exactamente qué pasa cuando ejecutas la aplicación:
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        ORDEN DE EJECUCIÓN PASO A PASO                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  1. JVM llama a Main.main()                                                │
+│     │                                                                       │
+│     ▼                                                                       │
+│  2. SwingUtilities.invokeLater(() -> new VentanaPrincipal())               │
+│     │  (Pone la tarea en la cola del EDT)                                  │
+│     │                                                                       │
+│     ▼                                                                       │
+│  3. El EDT ejecuta new VentanaPrincipal()                                  │
+│     │                                                                       │
+│     ▼                                                                       │
+│  4. Constructor de VentanaPrincipal                                        │
+│     │                                                                       │
+│     ├── 4a. configurarLookAndFeel()                                        │
+│     │        └── UIManager.setLookAndFeel(...)                             │
+│     │                                                                       │
+│     ├── 4b. configurarVentana()                                            │
+│     │        ├── setTitle(...)                                             │
+│     │        ├── setSize(...)                                              │
+│     │        ├── setLocationRelativeTo(null)                               │
+│     │        ├── setDefaultCloseOperation(...)                              │
+│     │        └── setResizable(...)                                         │
+│     │                                                                       │
+│     ├── 4c. inicializarComponentes()                                       │
+│     │        ├── new PanelPrincipal()                                      │
+│     │        │      ├── configurarPanel()                                  │
+│     │        │      │      ├── setLayout(...)                              │
+│     │        │      │      ├── setBackground(...)                          │
+│     │        │      │      └── setBorder(...)                              │
+│     │        │      │                                                      │
+│     │        │      └── inicializarComponentes()                           │
+│     │        │             ├── Crea JLabel (título)                        │
+│     │        │             ├── Crea JTextField                             │
+│     │        │             ├── Crea JComboBox                              │
+│     │        │             ├── Crea JRadioButtons + ButtonGroup            │
+│     │        │             ├── Crea JButtons                               │
+│     │        │             └── Añade addActionListener a botones           │
+│     │        │                                                              │
+│     │        └── add(panelPrincipal)  // Añade panel al frame              │
+│     │                                                                       │
+│     ├── 4d. configurarEventos()                                            │
+│     │        └── addWindowListener(...)  // Para confirmar salida          │
+│     │                                                                       │
+│     └── 4e. hacerVisible()                                                 │
+│              └── setVisible(true)  // ¡La ventana aparece!                 │
+│                                                                             │
+│  5. La aplicación entra en el "bucle de eventos"                           │
+│     └── Espera interacciones del usuario                                   │
+│         └── Cuando el usuario hace clic en un botón:                       │
+│             └── El EDT llama a actionPerformed()                           │
+│                                                                             │
+│  6. La aplicación termina cuando:                                          │
+│     ├── El usuario cierra la ventana (EXIT_ON_CLOSE)                       │
+│     ├── Se llama a System.exit(0)                                          │
+│     └── O el usuario fuerza el cierre                                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+MÚLTIPLES PANELES EN UNA VENTANA (BorderLayout)
+--------------------------------------------------------------------------------
+
+Cuando necesitas organizar tu interfaz en secciones (cabecera, contenido,
+pie), usa múltiples paneles con BorderLayout:
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+public class VentanaMultiPanel extends JFrame {
+    
+    private JPanel panelNorte;    // Cabecera/título
+    private JPanel panelCentro;   // Contenido principal
+    private JPanel panelSur;      // Botones/estado
+    
+    public VentanaMultiPanel() {
+        setTitle("Ventana con Múltiples Paneles");
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // JFrame usa BorderLayout por defecto, no hace falta setLayout()
+        
+        // ══════════════════════════════════════════════════════════════════
+        // PANEL NORTE (cabecera)
+        // ══════════════════════════════════════════════════════════════════
+        panelNorte = new JPanel();
+        panelNorte.setBackground(new Color(70, 130, 180));  // Azul acero
+        panelNorte.setPreferredSize(new Dimension(0, 60));  // Altura fija
+        // Ancho 0 = se ajusta automáticamente
+        add(panelNorte, BorderLayout.NORTH);
+        
+        // ══════════════════════════════════════════════════════════════════
+        // PANEL CENTRO (contenido principal)
+        // ══════════════════════════════════════════════════════════════════
+        panelCentro = new PanelPrincipal();  // Tu panel con el contenido
+        add(panelCentro, BorderLayout.CENTER);
+        // CENTER ocupa todo el espacio restante
+        
+        // ══════════════════════════════════════════════════════════════════
+        // PANEL SUR (pie/botones)
+        // ══════════════════════════════════════════════════════════════════
+        panelSur = new JPanel();
+        panelSur.setBackground(Color.LIGHT_GRAY);
+        panelSur.setPreferredSize(new Dimension(0, 40));  // Altura fija
+        add(panelSur, BorderLayout.SOUTH);
+        
+        setVisible(true);
+    }
+}
+
+CÓMO SE DISTRIBUYE EL ESPACIO:
+─────────────────────────────
+
+┌─────────────────────────────────────────────────┐
+│              NORTE (altura fija)                │  ← panelNorte
+├─────────────────────────────────────────────────┤
+│                                                 │
+│                                                 │
+│               CENTRO                            │  ← panelCentro
+│            (se expande)                         │
+│                                                 │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│               SUR (altura fija)                 │  ← panelSur
+└─────────────────────────────────────────────────┘
+
+• NORTE y SUR mantienen su altura preferida
+• ESTE y OESTE mantienen su ancho preferido
+• CENTRO ocupa todo el espacio restante
+
+--------------------------------------------------------------------------------
+PATRÓN MVC (MODEL-VIEW-CONTROLLER) EN SWING
+--------------------------------------------------------------------------------
+
+El patrón MVC separa la aplicación en tres componentes con responsabilidades
+distintas. Esto hace el código más mantenible y escalable.
+
+¿QUÉ ES MVC?
+────────────
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         PATRÓN MVC EN SWING                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   ┌─────────────────┐                              ┌─────────────────┐     │
+│   │     MODELO      │                              │     VISTA       │     │
+│   │                 │                              │                 │     │
+│   │ • Datos         │                              │ • JFrame        │     │
+│   │ • Lógica de     │                              │ • JPanel        │     │
+│   │   negocio       │                              │ • Componentes   │     │
+│   │ • Validaciones  │                              │   Swing         │     │
+│   │ • Persistencia  │                              │ • Mostrar datos │     │
+│   │                 │                              │ • Capturar      │     │
+│   │ (No depende de  │                              │   eventos       │     │
+│   │  Swing)         │                              │                 │     │
+│   └────────┬────────┘                              └────────┬────────┘     │
+│            │                                                │              │
+│            │                                                │              │
+│            │         ┌─────────────────┐                   │              │
+│            │         │  CONTROLADOR    │                   │              │
+│            └────────►│                 │◄──────────────────┘              │
+│                      │ • Procesa       │                                   │
+│                      │   eventos       │                                   │
+│                      │ • Actualiza     │                                   │
+│                      │   modelo        │                                   │
+│                      │ • Actualiza     │                                   │
+│                      │   vista         │                                   │
+│                      │ • Coordina      │                                   │
+│                      │   M y V         │                                   │
+│                      └─────────────────┘                                   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+EJEMPLO PRÁCTICO DE MVC:
+────────────────────────
+
+// ══════════════════════════════════════════════════════════════════════════
+// MODELO: Representa los datos. NO tiene código de Swing.
+// ══════════════════════════════════════════════════════════════════════════
+public class Persona {
+    private String nombre;
+    private int edad;
+    
+    public Persona() {
+        this.nombre = "";
+        this.edad = 0;
+    }
+    
+    public Persona(String nombre, int edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+    
+    // Getters y setters
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public int getEdad() { return edad; }
+    public void setEdad(int edad) { this.edad = edad; }
+    
+    // Validación (lógica de negocio)
+    public boolean esValido() {
+        return nombre != null && !nombre.isEmpty() && edad >= 0;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// VISTA: Solo muestra la interfaz y captura eventos. Delega al controlador.
+// ══════════════════════════════════════════════════════════════════════════
+public class PanelPersona extends JPanel {
+    
+    private JTextField tfNombre;
+    private JTextField tfEdad;
+    private JButton btnGuardar;
+    private JButton btnCargar;
+    private JLabel lblEstado;
+    
+    // Referencia al controlador
+    private ControladorPersona controlador;
+    
+    public PanelPersona(ControladorPersona controlador) {
+        this.controlador = controlador;
+        inicializarComponentes();
+    }
+    
+    private void inicializarComponentes() {
+        setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        
+        // Nombre
+        add(new JLabel("Nombre:"));
+        tfNombre = new JTextField(20);
+        add(tfNombre);
+        
+        // Edad
+        add(new JLabel("Edad:"));
+        tfEdad = new JTextField(5);
+        add(tfEdad);
+        
+        // Botones
+        btnGuardar = new JButton("Guardar");
+        btnCargar = new JButton("Cargar");
+        
+        // Los botones delegan las acciones al controlador
+        btnGuardar.addActionListener(e -> controlador.guardarPersona());
+        btnCargar.addActionListener(e -> controlador.cargarPersona());
+        
+        add(btnGuardar);
+        add(btnCargar);
+        
+        // Estado
+        lblEstado = new JLabel("Listo");
+        add(lblEstado);
+    }
+    
+    // Métodos para que el controlador acceda a los datos
+    public String getNombre() { return tfNombre.getText().trim(); }
+    public String getEdadTexto() { return tfEdad.getText().trim(); }
+    
+    public void setNombre(String nombre) { tfNombre.setText(nombre); }
+    public void setEdad(int edad) { tfEdad.setText(String.valueOf(edad)); }
+    
+    public void mostrarMensaje(String mensaje) {
+        lblEstado.setText(mensaje);
+    }
+    
+    public void mostrarError(String titulo, String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void mostrarInfo(String titulo, String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// CONTROLADOR: Coordina modelo y vista. Contiene la lógica de la aplicación.
+// ══════════════════════════════════════════════════════════════════════════
+public class ControladorPersona {
+    
+    private PanelPersona vista;
+    private Persona modelo;
+    
+    public ControladorPersona(PanelPersona vista) {
+        this.vista = vista;
+        this.modelo = new Persona();
+    }
+    
+    /**
+     * Guarda los datos de la vista en el modelo
+     */
+    public void guardarPersona() {
+        // Obtener datos de la vista
+        String nombre = vista.getNombre();
+        String edadTexto = vista.getEdadTexto();
+        
+        // Validar
+        if (nombre.isEmpty()) {
+            vista.mostrarError("Error", "El nombre no puede estar vacío");
+            return;
+        }
+        
+        int edad;
+        try {
+            edad = Integer.parseInt(edadTexto);
+        } catch (NumberFormatException e) {
+            vista.mostrarError("Error", "La edad debe ser un número");
+            return;
+        }
+        
+        // Guardar en el modelo
+        modelo.setNombre(nombre);
+        modelo.setEdad(edad);
+        
+        // Actualizar vista
+        vista.mostrarMensaje("Guardado: " + nombre);
+        vista.mostrarInfo("Éxito", "Persona guardada correctamente");
+    }
+    
+    /**
+     * Carga los datos del modelo en la vista
+     */
+    public void cargarPersona() {
+        if (modelo.getNombre().isEmpty()) {
+            vista.mostrarError("Error", "No hay datos guardados");
+            return;
+        }
+        
+        // Cargar datos del modelo a la vista
+        vista.setNombre(modelo.getNombre());
+        vista.setEdad(modelo.getEdad());
+        
+        vista.mostrarMensaje("Datos cargados");
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// MAIN: Configura la aplicación conectando los componentes
+// ══════════════════════════════════════════════════════════════════════════
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            // Crear vista
+            PanelPersona vista = new PanelPersona(null);  // Temporalmente null
+            
+            // Crear controlador con referencia a la vista
+            ControladorPersona controlador = new ControladorPersona(vista);
+            
+            // Conectar vista con controlador
+            vista = new PanelPersona(controlador);
+            
+            // Crear y mostrar ventana
+            JFrame frame = new JFrame("MVC Ejemplo");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(400, 200);
+            frame.setLocationRelativeTo(null);
+            frame.add(vista);
+            frame.setVisible(true);
+        });
+    }
+}
+
+VENTAJAS DE MVC:
+────────────────
+
+1. SEPARACIÓN DE RESPONSABILIDADES: Cada clase hace una sola cosa.
+2. FACILITA TESTING: Puedes probar el modelo sin la interfaz.
+3. REUTILIZACIÓN: El modelo puede usarse con diferentes vistas (ej: web).
+4. MANTENIMIENTO: Cambios en la vista no afectan al modelo y viceversa.
+5. TRABAJO EN EQUIPO: Un equipo puede trabajar en la vista mientras otro
+   trabaja en el modelo.
+
+--------------------------------------------------------------------------------
+CHECKLIST PARA CREAR UNA GUI SWING
+--------------------------------------------------------------------------------
+
+Antes de empezar a programar, revisa esta lista:
+
+PLANIFICACIÓN:
+□ ¿Qué información necesita mostrar/mostrar la aplicación?
+□ ¿Qué acciones puede realizar el usuario?
+□ ¿Cómo se organizará la interfaz? (dibuja un esquema)
+□ ¿Qué componentes necesito? (botones, campos, listas, etc.)
+□ ¿Qué layout es más adecuado?
+
+IMPLEMENTACIÓN:
+□ Crear clase Main con SwingUtilities.invokeLater()
+□ Crear clase VentanaPrincipal que extiende JFrame
+   □ Configurar título, tamaño, posición
+   □ Configurar comportamiento al cerrar
+   □ Configurar Look and Feel (opcional)
+□ Crear clase PanelPrincipal que extiende JPanel
+   □ Declarar componentes como atributos privados
+   □ Configurar layout
+   □ Inicializar componentes en método separado
+   □ Añadir listeners a los botones
+□ Añadir el panel al frame
+□ Hacer visible la ventana al final
+
+VALIDACIÓN:
+□ ¿Funciona al ejecutar?
+□ ¿Se ve correctamente?
+□ ¿Los botones hacen lo que deben?
+□ ¿Las validaciones funcionan?
+□ ¿Qué pasa si el usuario introduce datos incorrectos?
+□ ¿Funciona al redimensionar la ventana?
+
+--------------------------------------------------------------------------------
+TEMPLATE RÁPIDO PARA COPIAR Y PEGAR
+--------------------------------------------------------------------------------
+
+// ══════════════════════════════════════════════════════════════════════════
+// Main.java - Punto de entrada
+// ══════════════════════════════════════════════════════════════════════════
+import javax.swing.SwingUtilities;
+
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new VentanaPrincipal());
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// VentanaPrincipal.java - La ventana
+// ══════════════════════════════════════════════════════════════════════════
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+
+public class VentanaPrincipal extends JFrame {
+    
+    public VentanaPrincipal() {
+        // Configuración básica
+        setTitle("Mi Aplicación");
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Look and feel del sistema
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) { }
+        
+        // Añadir panel
+        add(new PanelPrincipal());
+        
+        // Mostrar (SIEMPRE al final)
+        setVisible(true);
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// PanelPrincipal.java - El contenido
+// ══════════════════════════════════════════════════════════════════════════
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class PanelPrincipal extends JPanel {
+    
+    // Componentes
+    private JButton btnAccion;
+    
+    public PanelPrincipal() {
+        setLayout(new FlowLayout());
+        inicializarComponentes();
+    }
+    
+    private void inicializarComponentes() {
+        btnAccion = new JButton("Púlsame");
+        
+        btnAccion.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "¡Botón pulsado!");
+        });
+        
+        add(btnAccion);
+    }
+}
+
+================================================================================
+                           FIN DE LA CHEATSHEET
+================================================================================

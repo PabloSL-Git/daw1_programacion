@@ -12,7 +12,7 @@ BEGIN
     SELECT stock INTO stock_actual
     FROM productos;
 
-    END IF;
+
 END $$
 
 DELIMITER ;
