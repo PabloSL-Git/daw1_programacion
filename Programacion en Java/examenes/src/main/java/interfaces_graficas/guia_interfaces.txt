@@ -1,0 +1,225 @@
+========================
+CHULETA JAVA SWING
+========================
+
+1) CONCEPTOS BÁSICOS
+---------------------
+- JFrame → ventana principal
+- JPanel → contenedor interno
+- Componentes → JButton, JLabel, JTextField, JTextArea...
+- Layout → organiza componentes
+- Eventos → interacción usuario (click, teclado...)
+
+Estructura típica:
+JFrame → JPanel → Componentes
+
+---------------------
+
+2) JFRAME (VENTANA BÁSICA)
+---------------------
+import javax.swing.JFrame;
+
+public class Main {
+    public static void main(String[] args) {
+
+        JFrame frame = new JFrame("App");
+
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null); // centrar
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setVisible(true);
+    }
+}
+
+---------------------
+
+3) JPANEL PERSONALIZADO
+---------------------
+import javax.swing.*;
+import java.awt.*;
+
+public class MiPanel extends JPanel {
+
+    private JLabel etiqueta;
+
+    public MiPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+        etiqueta = new JLabel("Hola");
+        this.add(etiqueta);
+
+        this.setBackground(Color.CYAN);
+    }
+}
+
+USO:
+frame.add(new MiPanel());
+
+---------------------
+
+4) LAYOUTS
+---------------------
+
+// BorderLayout (por defecto en JFrame)
+frame.setLayout(new BorderLayout());
+
+frame.add(new JButton("NORTE"), BorderLayout.NORTH);
+frame.add(new JButton("SUR"), BorderLayout.SOUTH);
+frame.add(new JButton("CENTRO"), BorderLayout.CENTER);
+frame.add(new JButton("OESTE"), BorderLayout.WEST);
+frame.add(new JButton("ESTE"), BorderLayout.EAST);
+
+
+// FlowLayout (en fila)
+panel.setLayout(new FlowLayout());
+
+
+// GridLayout (rejilla)
+panel.setLayout(new GridLayout(2, 3)); // filas, columnas
+
+
+// Ajustar tamaño automático
+frame.pack();
+
+---------------------
+
+5) COMPONENTES BÁSICOS
+---------------------
+
+JButton boton = new JButton("Click");
+
+JLabel label = new JLabel("Texto");
+
+JTextField campo = new JTextField(20);
+
+JTextArea area = new JTextArea(5, 20);
+
+panel.add(boton);
+panel.add(label);
+panel.add(campo);
+panel.add(area);
+
+---------------------
+
+6) EJEMPLO COMPLETO PANEL
+---------------------
+import javax.swing.*;
+import java.awt.*;
+
+public class PanelEjemplo extends JPanel {
+
+    private JButton boton;
+    private JTextArea texto;
+
+    public PanelEjemplo() {
+        initComponents();
+    }
+
+    private void initComponents() {
+
+        boton = new JButton("Saludar");
+        texto = new JTextArea(1, 20);
+
+        this.setLayout(new FlowLayout());
+
+        this.add(boton);
+        this.add(texto);
+    }
+}
+
+---------------------
+
+7) EVENTOS (SIN ANÓNIMAS)
+---------------------
+import java.awt.event.*;
+
+public class PanelEventos extends JPanel implements ActionListener {
+
+    private JButton boton;
+    private JTextArea texto;
+
+    public PanelEventos() {
+        initComponents();
+    }
+
+    private void initComponents() {
+
+        boton = new JButton("Click");
+        texto = new JTextArea(1, 20);
+
+        this.setLayout(new FlowLayout());
+
+        this.add(boton);
+        this.add(texto);
+
+        boton.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        texto.setText("Hola!");
+    }
+}
+
+---------------------
+
+8) VARIOS BOTONES
+---------------------
+private JButton b1, b2;
+
+b1 = new JButton("Hola");
+b2 = new JButton("Adios");
+
+b1.addActionListener(this);
+b2.addActionListener(this);
+
+@Override
+public void actionPerformed(ActionEvent e) {
+
+    if (e.getSource() == b1) {
+        texto.setText("Hola");
+    } else if (e.getSource() == b2) {
+        texto.setText("Adios");
+    }
+}
+
+---------------------
+
+9) CLASE PRINCIPAL CON PANEL
+---------------------
+public class Main {
+    public static void main(String[] args) {
+
+        JFrame frame = new JFrame("App");
+
+        frame.add(new PanelEventos());
+
+        frame.pack();
+
+        frame.setLocationRelativeTo(null);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setVisible(true);
+    }
+}
+
+---------------------
+
+10) RECORDATORIOS RÁPIDOS
+---------------------
+- Siempre: frame.setVisible(true)
+- Cerrar app: EXIT_ON_CLOSE
+- Añadir componentes: add()
+- Eventos: addActionListener()
+- Sin layout → se pisan componentes
+- pack() ajusta tamaño automáticamente
+- initComponents() = buena práctica
+
+========================
+FIN CHULETA
+========================
