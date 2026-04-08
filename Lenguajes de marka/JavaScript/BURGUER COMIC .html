@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<body>
+    <h1>Burger Comic - Calcula el precio de tu compra</h1>
+
+    <form id="formularioCompra">
+        <div>
+            Cantidad de hamburguesas normales (3,00 EUR):<input type="number" id="hamburguesasNormales" min="0"
+                value="0">
+        </div>
+        <div>
+            Cantidad de hamburguesas premium (5,00 EUR):<input type="number" id="hamburguesasPremium" min="0" value="0">
+        </div>
+        <div>
+            Cantidad de bebidas (2,00 EUR):<input type="number" id="bebidas" min="0" value="0">
+        </div>
+        <div>
+            Cantidad de patatas (2,50 EUR):<input type="number" id="patatas" min="0" value="0">
+        </div>
+        <div>
+            <input type="checkbox" id="quesoExtra">Queso extra en la
+            hamburguesa (+0,20 EUR por hamburguesa)
+        </div>
+
+        <div>
+            <input type="checkbox" id="doblePepinillo">Doble pepinillo
+            (+0,10 EUR por hamburguesa)
+
+        </div>
+        <div>
+            <input type="checkbox" id="socio">Eres socio (20% de descuento)
+        </div>
+        <div>
+            <button type="button" onclick="calcularCompra()">Calcular</button>
+            <button type="button" onclick="limpiarFormulario()">Borrar</button>
+        </div>
+    </form>
+
+    <div id="resultado" style="display: block;">
+        <h2>Resultado</h2>
+        <p id="subtotalNormales">Subtotal hamburguesas normales: 0.00
+            EUR</p>
+        <p id="subtotalPremium">Subtotal hamburguesas premium: 0.00 EUR</p>
+        <p id="subtotalBebidas">Subtotal bebidas: 0.00 EUR</p>
+        <p id="subtotalPatatas">Subtotal patatas: 0.00 EUR</p>
+        <p id="subtotalExtras">Subtotal extras: 0.00 EUR</p>
+        <p id="descuentoSocio">Descuento socio: -0.00 EUR</p>
+        <p id="totalCompra">Total: 0.00 EUR</p>
+    </div>
+    <script>
+
+        const NORMAL_BURGUER = 3;
+        const PREMIUM = 5;
+        const BEBIDA = 2;
+        const PATATAS = 3.50;
+        const QUESO = 0.20;
+        const DOBLE_PEPINILLO = 0.10;
+        const SOCIO = 20;
+
+        function calcularCompra() {
+
+
+            let hamburguesasNormales = document.getElementById("hamburguesasNormales").value;
+            let hamburguesasPremium = document.getElementById("hamburguesasPremium").value;
+            let bebidas = document.getElementById("bebidas").value;
+            let patatas = document.getElementById("patatas").checked;
+            let quesoExtra = document.getElementById("quesoExtra").checked;
+            let doblePepinillo = document.getElementById("doblePepinillo").checked;
+            let socio = document.getElementById("socio").checked;
+
+            let subtotalNormal = hamburguesasNormales * NORMAL_BURGUER;
+            let subtotalPremium = hamburguesasPremium * PREMIUM;
+            let subtotalBebidas = bebidas * BEBIDA;
+            let subtotalPatatas = patatas * PATATAS;
+
+            let subtotalQExtra = 0;
+            if (quesoExtra) {
+                let subtotalQExtra = QUESO;
+            }
+
+            let subtotalPExtra = 0;
+            if (doblePepinillo) {
+                let subtotalPExtra = DOBLE_PEPINILLO;
+            }
+
+            let subtotalExtras = subtotalPExtra + subtotalQExtra;
+
+
+            let totalSinDescuento =
+                subtotalNormal +
+                subtotalPremium +
+                subtotalBebidas +
+                subtotalPatatas;
+
+            let descuento = 0;
+            if (socio) {
+                let descuento = totalSinDescuento * 0.20;
+            }
+
+            let totalCompra = totalSinDescuento - descuento;
+
+            document.getElementById("subtotalNormales").textContent =
+                "subtotal hamburguesas normales: " + subtotalNormal.toFixed(2) + " EUR";
+            document.getElementById("subtotalPremium").textContent =
+                "Subtotal hamburguesas premium: " + subtotalPremium.toFixed(2) + " EUR";
+            document.getElementById("subtotalBebidas").textContent =
+                "Subtotal bebidas: " + subtotalBebidas.toFixed(2) + " EUR";
+            document.getElementById("subtotalPatatas").textContent =
+                "subtotal Subtotal patatas: " + subtotalPatatas.toFixed(2) + " EUR";
+            document.getElementById("subtotalExtras").textContent =
+                "subtotal Subtotal extras: " + subtotalExtras.toFixed(2) + " EUR";
+            document.getElementById("descuentoSocio").textContent =
+                "subtotal Descuento socio: " + descuento.toFixed(2) + " EUR";
+            document.getElementById("totalCompra").textContent =
+                "Total: " + totalCompra.toFixed(2) + " EUR";
+
+
+
+                 <div id="resultado" style="display: block;">
+        <h2>Resultado</h2>
+        <p id="subtotalNormales">Subtotal hamburguesas normales: 0.00
+            EUR</p>
+        <p id="subtotalPremium">Subtotal hamburguesas premium: 0.00 EUR</p>
+        <p id="subtotalBebidas">Subtotal bebidas: 0.00 EUR</p>
+        <p id="subtotalPatatas">Subtotal patatas: 0.00 EUR</p>
+        <p id="subtotalExtras">Subtotal extras: 0.00 EUR</p>
+        <p id="descuentoSocio">Descuento socio: -0.00 EUR</p>
+        <p id="totalCompra">Total: 0.00 EUR</p>
+    </div>
+
+        }
+
+
+    </script>
+</body>
+
+</html>
