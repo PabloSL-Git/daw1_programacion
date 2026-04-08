@@ -6,12 +6,19 @@ CREATE TRIGGER venta
 BEFORE UPDATE ON pedidos
 FOR EACH ROW
 BEGIN
-    -- Obtener el stock del producto
-    SELECT stock --  INTO stock_actual
-    FROM productos
-    where codproducto = 
+	DECLARE stock_actual INT;
 
+    -- Obtener el stock actual
+    SELECT stock into stock_actual
+    FROM articulos
+    WHERE refart = NEW.refart;
 
-END $$
+    -- Verificar si hay suficiente stock
+    IF stock < NEW.cantidad THEN
+    SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No hay suficiente stock para realizar la venta';
+    END IF;
+
+END$$
 
 DELIMITER ;
