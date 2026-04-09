@@ -110,7 +110,12 @@ public class Main {
     public static Map<String, Integer> contarPorColor(List<Vehiculo> lista) {
         Map<String, Integer> map = new TreeMap<>();
         for (Vehiculo v : lista) {
-            map.put(v.vehicle_color(), map.getOrDefault(v.vehicle_color(), 0) + 1);
+            String color = v.vehicle_color();
+            if (map.containsKey(color)) {
+                map.put(color, map.get(color) + 1);
+            } else {
+                map.put(color, 1);
+            }
         }
         return map;
     }
