@@ -14,20 +14,15 @@ import java.io.FileWriter;
 
 public class Main {
 
-    // record
-    public record Vehiculo(String vehicle_make, String vehicle_model, int vehicle_year, String vehicle_vin,
-            String vehicle_color, String vehicle_license_plate) {
-    }
-
     // main
     public static void main(String[] args) {
 
         List<Vehiculo> vehiculos = leerVehiculos("vehiculos.csv");
 
         // Mostrar lista
-        // for (Vehiculo v : vehiculos) {
-        // System.out.println(v);
-        // }
+        for (Vehiculo v : vehiculos) {
+        System.out.println(v);
+        }
 
         System.out.println("Total vehículos: " + vehiculos.size());
 
