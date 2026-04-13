@@ -45,7 +45,7 @@ set @nuevocentro = (select max(numce)+1 from centros);
 insert into centros
 	(numce, nomce, dirce,codpostal)
 values
-	(@nuevocentro, centros.getnombre,centros.getdircentro, centros.getcodpostal); 
+	(@nuevazona, zonas.nomzona, zonas.deszona);
 
 
 delimiter $$
