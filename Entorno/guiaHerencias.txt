@@ -1,0 +1,88 @@
+1. Herencia (Inheritance)
+
+👉 Relación “es-un” (is-a)
+
+Una clase hija hereda atributos y métodos de una clase padre.
+
+Ejemplo:
+class Animal {
+    void hacerSonido() {
+        System.out.println("El animal hace un sonido");
+    }
+}
+
+class Perro extends Animal {
+    void ladrar() {
+        System.out.println("El perro ladra");
+    }
+}
+Uso:
+Perro p = new Perro();
+p.hacerSonido(); // heredado
+p.ladrar();      // propio
+
+✅ Idea clave:
+Un Perro es un Animal.
+
+
+2. Agregación (Aggregation)
+
+👉 Relación “tiene-un” (has-a), pero débil
+
+Una clase contiene otra, pero ambas pueden existir independientemente.
+
+Ejemplo:
+class Motor {
+    void encender() {
+        System.out.println("Motor encendido");
+    }
+}
+
+class Coche {
+    Motor motor;
+
+    Coche(Motor motor) {
+        this.motor = motor;
+    }
+}
+Uso:
+Motor m = new Motor();
+Coche c = new Coche(m);
+
+✅ Idea clave:
+Un Coche tiene un Motor, pero el Motor puede existir sin el Coche.
+
+3. Composición (Composition)
+
+👉 Relación “tiene-un” (has-a), pero fuerte
+
+La clase contiene otra y controla su ciclo de vida. Si la principal se destruye, la otra también.
+
+Ejemplo:
+class Motor {
+    void encender() {
+        System.out.println("Motor encendido");
+    }
+}
+
+class Coche {
+    private Motor motor;
+
+    Coche() {
+        motor = new Motor(); // se crea dentro
+    }
+}
+
+✅ Idea clave:
+El Motor no existe sin el Coche.
+
+| Concepto    | Tipo de relación  | Dependencia | Ejemplo mental          |
+| ----------- | ----------------- | ----------- | ----------------------- |
+| Herencia    | es-un             | Alta        | Perro → Animal          |
+| Agregación  | tiene-un (débil)  | Baja        | Coche → Motor (externo) |
+| Composición | tiene-un (fuerte) | Alta        | Coche → Motor (interno) |
+
+Resumen rápido
+Herencia → reutilizar comportamiento (jerarquía)
+Agregación → usar objetos sin poseerlos
+Composición → construir objetos con otros (dependencia fuerte)
