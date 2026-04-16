@@ -12,13 +12,13 @@ public class Plantilla {
     }
 
     // metodo contratar empleado
-    public void contratarEmpleado(Empleado empleado){
+    public void contratarEmpleado(Empleado empleado) {
         this.empleados.add(empleado);
     }
 
     // metodo lista empleados, nueva lista con un nombre o apellido especifico
 
-    public List<Empleado> getEmpleadosPorNombre(String filtroNombre){
+    public List<Empleado> getEmpleadosPorNombre(String filtroNombre) {
 
         List<Empleado> empledosFiltrados = new ArrayList<>();
 
@@ -31,8 +31,6 @@ public class Plantilla {
         }
 
         return empledosFiltrados;
-
-
 
     }
 }
