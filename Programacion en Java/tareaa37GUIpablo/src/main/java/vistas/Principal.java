@@ -22,12 +22,13 @@ public class Principal extends javax.swing.JFrame {
         int numColumnas = modelo.getColumnCount();
 
         for (Plato plato : listaPlatos.getPlatosConPrecioMayorQue(10.0)) {
-            Object[] fila = new Object[numColumnas];
+            Object[] fila = new Object[5];
             fila[0] = plato.getIdPlato();
             fila[1] = plato.getNombre();
             fila[2] = plato.getDescripcion();
             fila[3] = plato.getPrecio();
             fila[4] = plato.isEsTemporada();
+            
             modelo.addRow(fila);
         }
 
