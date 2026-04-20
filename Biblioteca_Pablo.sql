@@ -1,10 +1,8 @@
 create database if not exists Biblioteca_Pablo;
 use Biblioteca_Pablo;
 
-
 -- TABLA BIBLIOTECA
 
-drop table if exists Biblioteca;
 create table Biblioteca
 (
  id_biblioteca int,
@@ -12,7 +10,6 @@ create table Biblioteca
  direccion varchar(150),
  constraint pk_biblioteca primary key (id_biblioteca)
 );
-
 
 -- TABLA AUTOR
 
@@ -25,10 +22,8 @@ create table Autor
  constraint pk_autor primary key (id_autor)
 );
 
-
 -- TABLA LIBRO
 
-drop table if exists Libro;
 create table Libro
 (
  id_libro int,
@@ -44,10 +39,8 @@ create table Libro
     on delete no action on update cascade
 );
 
-
 -- TABLA LECTOR
 
-drop table if exists Lector;
 create table Lector
 (
  id_lector int,
@@ -60,10 +53,8 @@ create table Lector
     on delete no action on update cascade
 );
 
-
 -- TABLA CREDENCIAL 
 
-drop table if exists Credencial;
 create table Credencial
 (
  id_credencial int,
@@ -77,10 +68,8 @@ create table Credencial
     on delete no action on update cascade
 );
 
-
 -- TABLA PRESTAMO
 
-drop table if exists Prestamo;
 create table Prestamo
 (
  id_prestamo int,
@@ -94,3 +83,48 @@ create table Prestamo
  constraint fk_prestamo_libro foreign key (id_libro) references Libro(id_libro)
     on delete no action on update cascade
 );
+
+
+-- INSERT 
+
+insert into Biblioteca values
+(1, 'Biblioteca Central', 'Calle Mayor 1'),
+(2, 'Biblioteca Norte', 'Avenida Norte 45'),
+(3, 'Biblioteca Sur', 'Calle Sur 23'),
+(4, 'Biblioteca Este', 'Avenida Este 12'),
+(5, 'Biblioteca Oeste', 'Calle Oeste 9');
+
+insert into Autor values
+(1, 'Gabriel Garcia Marquez', 'Colombia'),
+(2, 'J.K. Rowling', 'Reino Unido'),
+(3, 'George Orwell', 'Reino Unido'),
+(4, 'Isabel Allende', 'Chile'),
+(5, 'Julio Cortazar', 'Argentina');
+
+insert into Libro values
+(1, 'Cien años de soledad', 1967, 'disponible', 1, 1),
+(2, 'Harry Potter y la piedra filosofal', 1997, 'prestado', 2, 2),
+(3, '1984', 1949, 'disponible', 3, 3),
+(4, 'La casa de los espiritus', 1982, 'disponible', 4, 4),
+(5, 'Rayuela', 1963, 'prestado', 5, 5);
+
+insert into Lector values
+(1, 'Juan Perez', 'juan@email.com', '123456789', 1),
+(2, 'Maria Lopez', 'maria@email.com', '987654321', 2),
+(3, 'Carlos Ruiz', 'carlos@email.com', '456123789', 3),
+(4, 'Ana Torres', 'ana@email.com', '321654987', 4),
+(5, 'Luis Gomez', 'luis@email.com', '654987321', 5);
+
+insert into Credencial values
+(1, 'TARJ001', '2024-01-01', 1),
+(2, 'TARJ002', '2024-01-02', 2),
+(3, 'TARJ003', '2024-01-03', 3),
+(4, 'TARJ004', '2024-01-04', 4),
+(5, 'TARJ005', '2024-01-05', 5);
+
+insert into Prestamo values
+(1, '2025-01-10', '2025-01-20', 1, 2),
+(2, '2025-01-11', '2025-01-21', 2, 1),
+(3, '2025-01-12', '2025-01-22', 3, 5),
+(4, '2025-01-13', '2025-01-23', 4, 3),
+(5, '2025-01-14', '2025-01-24', 5, 4);
