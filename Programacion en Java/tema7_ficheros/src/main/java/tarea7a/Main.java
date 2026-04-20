@@ -1,4 +1,4 @@
-package daw;
+package tarea7a;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

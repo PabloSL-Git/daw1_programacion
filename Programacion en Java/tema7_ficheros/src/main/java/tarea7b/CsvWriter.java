@@ -1,4 +1,4 @@
-package ficheros;
+package tarea7b;
 
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;

@@ -1,4 +1,4 @@
-package ficheros;
+package tarea7b;
 
 import java.nio.file.Path;
 import java.util.List;
