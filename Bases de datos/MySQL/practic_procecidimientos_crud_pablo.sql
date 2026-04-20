@@ -16,7 +16,7 @@ delimiter ;
 
 call buscaZonas();
 
-/* 2.1 Consulta de datos de una zona */
+/* 1.2 Consulta de datos de una zona */
 
 delimiter $$
 
@@ -39,7 +39,7 @@ delimiter ;
 
 call BuscaUnaZona(1);
 
-/* 3.1 Insertar una nueva zona */
+/* 1.3 Insertar una nueva zona */
 
 /*
 set @nuevazona = (select max(numzona)+1 from zonas);
@@ -77,7 +77,7 @@ delimiter ;
 call insertaZonas('Zona nueva', 'Descripción', @result);
 select @res;
 
-/* 4.1 update de una zona */
+/* 1.4 update de una zona */
 delimiter $$
 drop procedure if exists actualizaZona $$
 create procedure actualizaZona 
@@ -98,7 +98,7 @@ delimiter ;
 call actualizaZona(4, 'nombre nuevo', 'descripcion nueva');
 call BuscaUnaZona(4);
 
-/* 5.1 Eliminar una zona */
+/* 1.5 Eliminar una zona */
 
 delimiter $$
 drop procedure if exists borrarZona $$
@@ -130,7 +130,7 @@ call borrarZona();
 
 -- TIPOS CASAS
 
-/* 1.2 Procedimiento para obtener listado de todos los tipos */
+/* 2.1 Procedimiento para obtener listado de todos los tipos */
 delimiter $$
 drop procedure if exists buscaTipos $$
 create procedure buscaTipos()
@@ -165,7 +165,7 @@ delimiter ;
 
 call BuscaUnTipo(3);
 
-/* 3.2 Insertar un nuevo tipo */
+/* 2.3 Insertar un nuevo tipo */
 
 delimiter $$
 drop procedure if exists insertaTipos $$
@@ -194,7 +194,7 @@ delimiter ;
 call insertaTipos('tipo nueva', @result);
 select @result;
 
-/* 4.2 update de un tipo */
+/* 2.4 update de un tipo */
 delimiter $$
 drop procedure if exists actualizaTipo $$
 create procedure actualizaTipo 
@@ -212,7 +212,7 @@ delimiter ;
 call actualizaTipo(4, 'tipo nuevo');
 call BuscaUnTipo(4);
 
-/* 5.2 Eliminar un tipo */
+/* 2.5 Eliminar un tipo */
 
 delimiter $$
 drop procedure if exists borrarTipo $$
@@ -240,7 +240,7 @@ delimiter ;
 
 call borrarTipo();
 
-/* 1.3 Procedimiento para obtener listado de todas las casas */
+/* 3.1 Procedimiento para obtener listado de todas las casas */
 
 delimiter $$
 
@@ -250,9 +250,11 @@ begin
     select 
         casas.codcasa as numero,
         casas.nomcasa as nombre,
+        propietarios.nompropietario as propietario,
         zonas.nomzona as zona,
         tiposcasa.nomtipo as tipo
     from casas
+    left join propietarios on casas.codpropi = propietarios.codpropietario
     left join zonas on casas.codzona = zonas.numzona
     left join tiposcasa on casas.codtipocasa = tiposcasa.numtipo
     order by casas.codcasa;
@@ -262,7 +264,7 @@ delimiter ;
 
 call buscaCasas();
 
-/* 2.2 Consulta de datos de una casa */
+/* 3.2 Consulta de datos de una casa */
 
 delimiter $$
 
@@ -282,9 +284,11 @@ begin
         casas.codpostal,
         casas.poblacion,
         casas.provincia,
+        propietarios.nompropietario,
 		zonas.nomzona,
         tiposcasa.nomtipo
     from casas
+    left join propietarios on casas.codpropi = propietarios.codpropietario
     left join zonas on casas.codzona = zonas.numzona
     left join tiposcasa on casas.codtipocasa = tiposcasa.numtipo
     where casas.codcasa = numero;
@@ -293,7 +297,7 @@ delimiter ;
 
 call BuscaUnaCasa(2);
 
-/* 3.2 Insertar un nueva casa */
+/* 3.3 Insertar un nueva casa */
 
 delimiter $$
 drop procedure if exists insertaCasa $$
@@ -305,6 +309,7 @@ create procedure insertaCasa(
     in minpers int,
     in maxpers int,
     in precio decimal(10,2),
+    in codPropi int,
     in codZona int,
     in codTipo int,
     in direccion varchar(100),
@@ -315,19 +320,20 @@ create procedure insertaCasa(
 begin
     declare nuevaCasa int;
     start transaction;
+
     select ifnull(max(codcasa),0) + 1 into nuevaCasa
     from casas;
 
     insert into casas (
         codcasa, nomcasa, numbanios, numhabit, m2,
         minpersonas, maxpersonas, preciobase,
-        codzona, codtipocasa,
+        codpropi, codzona, codtipocasa,
         dirpostal, poblacion, provincia, codpostal
     )
     values (
         nuevaCasa, nombre, banios, habitaciones, metros,
         minpers, maxpers, precio,
-        codZona, codTipo,
+        codPropi, codZona, codTipo,
         direccion, poblacion, provincia, codpostal
     );
     
@@ -339,15 +345,16 @@ delimiter ;
 call insertaCasa(
     'Casa nueva', 2, 3, 120,
     2, 6, 75.00,
-    1, 1,
+    1, 1, 1,
     'Calle Real 5',
     'Estepona',
     'Malaga',
     '29680',
     @result);
+
 select @result;
 
-/* 4.2 update de una casa */
+/* 3.4 update de una casa */
 
 delimiter $$
 drop procedure if exists actualizaCasa $$
@@ -360,6 +367,7 @@ create procedure actualizaCasa(
     in minpers int,
     in maxpers int,
     in precio decimal(10,2),
+    in codPropi int,
     in codZona int,
     in codTipo int,
     in direccion varchar(100),
@@ -377,6 +385,7 @@ begin
         minpersonas = minpers,
         maxpersonas = maxpers,
         preciobase = precio,
+        codpropi = codPropi,
         codzona = codZona,
         codtipocasa = codTipo,
         dirpostal = direccion,
@@ -388,9 +397,21 @@ begin
 end $$
 delimiter ;
 
+call actualizaCasa(
+    1,
+    'Casa modificada',
+    2, 3, 120,
+    2, 6, 80.00,
+    1, 1, 1,
+    'Nueva direccion',
+    'Estepona',
+    'Malaga',
+    '29680'
+);
+
 call BuscaUnaCasa(1);
 
-/* 5.2 Eliminar una casa */
+/* 3.5 Eliminar una casa */
 
 delimiter $$
 drop procedure if exists borrarCasa $$
@@ -402,3 +423,158 @@ end $$
 delimiter ;
 
 call borrarCasa(1);
+
+-- PROPIETARIOS
+
+/* 4.1 Procedimiento para obtener listado de todos los propietarios */
+
+delimiter $$
+drop procedure if exists buscaPropietarios $$
+create procedure buscaPropietarios()
+begin
+	select propietarios.codpropietario as 'Numero', 
+		propietarios.nompropietario as 'Nombre'
+	from propietarios
+	order by propietarios.codpropietario;
+
+end $$
+delimiter ;
+
+call buscaPropietarios();
+
+/* 4.2 Consulta de datos de un propietario */
+
+delimiter $$
+drop procedure if exists BuscaUnPropietario $$
+create procedure BuscaUnPropietario(in numero int)
+begin
+    select 
+        propietarios.codpropietario as numero,
+        propietarios.nompropietario as nombre,
+        propietarios.personacontacto,
+        propietarios.dni_cif,
+        propietarios.tlf_contacto as telefono,
+        propietarios.correoelectronico,
+        casas.codcasa as numeroCasa,
+        casas.nomcasa as nombreCasa
+    from propietarios
+    left join casas 
+        on propietarios.codpropietario = casas.codpropi
+    where propietarios.codpropietario = numero;
+end $$
+
+delimiter ;
+
+call BuscaUnPropietario(1);
+
+/* 4.3 Insertar un nuevo propietario */
+
+delimiter $$
+drop procedure if exists insertaPropietario $$
+create procedure insertaPropietario(
+    in nombre varchar(100),
+    in contacto varchar(100),
+    in dni char(12),
+    in telefono char(13),
+    in correo varchar(60),
+    in codtipo int,
+    out resultado int
+)
+begin
+    declare nuevoProp int;
+
+    start transaction;
+    
+    select ifnull(max(codpropietario),0) + 1 into nuevoProp
+    from propietarios;
+
+    insert into propietarios (
+        codpropietario, nompropietario, personacontacto,
+        dni_cif, tlf_contacto, correoelectronico, codtipopropi
+    )
+    values (
+        nuevoProp, nombre, contacto,
+        dni, telefono, correo, codtipo
+    );
+
+    commit;
+
+    set resultado = nuevoProp;
+
+end $$
+delimiter ;
+
+call insertaPropietario(
+    'Propietario nuevo',
+    'Persona contacto',
+    '12345678A',
+    '600000000',
+    'correo@mail.com',
+    null,
+    @result);
+
+select @result;
+
+/* 4.4 update de un propietario */
+delimiter $$
+drop procedure if exists actualizaPropietario $$
+create procedure actualizaPropietario 
+	(in numero int,
+     in nombre varchar(100),
+     in contacto varchar(100),
+     in dni char(12),
+     in telefono char(13),
+     in correo varchar(60),
+     in codtipo int)
+begin
+    update propietarios
+    set 
+		nompropietario = nombre,
+        personacontacto = contacto,
+        dni_cif = dni,
+        tlf_contacto = telefono,
+        correoelectronico = correo,
+        codtipopropi = codtipo
+	where codpropietario = numero;
+
+end $$
+delimiter ;
+
+call actualizaPropietario(
+    1,
+    'Nombre nuevo',
+    'Nuevo contacto',
+    '11111111A',
+    '600000000',
+    'nuevo@mail.com',
+    null
+);
+
+call BuscaUnPropietario(1);
+
+/* 4.5 Eliminar un propietario */
+delimiter $$
+drop procedure if exists borrarPropietario $$
+create procedure borrarPropietario (in numero int)
+begin
+    start transaction;
+    
+    if exists (
+        select 1 
+        from casas 
+        where codpropi = numero
+    ) then
+    
+        rollback;
+        
+    else
+        delete from propietarios
+        where codpropietario = numero;
+        
+        commit;
+    end if;
+
+end $$
+delimiter ;
+
+call borrarPropietario(1);
