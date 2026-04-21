@@ -6,7 +6,7 @@ use Biblioteca_Pablo;
 create table Biblioteca
 (
  id_biblioteca int,
- nombre varchar(100) not null,
+ nombre varchar(100),
  direccion varchar(150),
  constraint pk_biblioteca primary key (id_biblioteca)
 );
@@ -18,6 +18,8 @@ create table Autor
 (
  id_autor int,
  nombre varchar(100) not null,
+ apellido1 varchar(100) not null,
+ apellido2 varchar(100),
  nacionalidad varchar(100),
  constraint pk_autor primary key (id_autor)
 );
@@ -28,7 +30,7 @@ create table Libro
 (
  id_libro int,
  titulo varchar(150) not null,
- anio_publicacion year,
+ anio_publicacion int,
  estado varchar(50),
  id_autor int,
  id_biblioteca int,
@@ -45,6 +47,8 @@ create table Lector
 (
  id_lector int,
  nombre varchar(100) not null,
+ apellido1 varchar(100) not null,
+ apellido2 varchar(100),
  email varchar(100),
  telefono varchar(20),
  id_biblioteca int,
@@ -95,25 +99,28 @@ insert into Biblioteca values
 (5, 'Biblioteca Oeste', 'Calle Oeste 9');
 
 insert into Autor values
-(1, 'Gabriel Garcia Marquez', 'Colombia'),
-(2, 'J.K. Rowling', 'Reino Unido'),
-(3, 'George Orwell', 'Reino Unido'),
-(4, 'Isabel Allende', 'Chile'),
-(5, 'Julio Cortazar', 'Argentina');
+(1, 'Gabriel', 'Garcia', null, 'Colombia'),
+(2, 'J.R.R.', 'Tolkien', null, 'Reino Unido'),
+(3, 'George', 'Orwell', null, 'Reino Unido'),
+(4, 'Isabel', 'Allende', null, 'Chile'),
+(5, 'Julio', 'Cortazar', null, 'Argentina'),
+(6, 'Miguel', 'de Cervantes', 'Saavedra', 'España');
+
 
 insert into Libro values
 (1, 'Cien años de soledad', 1967, 'disponible', 1, 1),
-(2, 'Harry Potter y la piedra filosofal', 1997, 'prestado', 2, 2),
+(2, 'El Hobbit', 1937, 'prestado', 2, 2),
 (3, '1984', 1949, 'disponible', 3, 3),
 (4, 'La casa de los espiritus', 1982, 'disponible', 4, 4),
-(5, 'Rayuela', 1963, 'prestado', 5, 5);
+(5, 'Rayuela', 1963, 'prestado', 5, 5),
+(6, 'Don Quijote de la Mancha', 1605, 'disponible', 6, 1);
 
 insert into Lector values
-(1, 'Juan Perez', 'juan@email.com', '123456789', 1),
-(2, 'Maria Lopez', 'maria@email.com', '987654321', 2),
-(3, 'Carlos Ruiz', 'carlos@email.com', '456123789', 3),
-(4, 'Ana Torres', 'ana@email.com', '321654987', 4),
-(5, 'Luis Gomez', 'luis@email.com', '654987321', 5);
+(1, 'Juan', 'Perez', 'Gomez', 'juan@email.com', '123456789', 1),
+(2, 'Maria', 'Lopez', 'Fernandez', 'maria@email.com', '987654321', 2),
+(3, 'Carlos', 'Ruiz', 'Martinez', 'carlos@email.com', '456123789', 3),
+(4, 'Ana', 'Torres', 'Sanchez', 'ana@email.com', '321654987', 4),
+(5, 'Luis', 'Gomez', 'Diaz', 'luis@email.com', '654987321', 5);
 
 insert into Credencial values
 (1, 'TARJ001', '2024-01-01', 1),
