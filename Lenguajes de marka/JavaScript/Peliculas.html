@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Películas</title>
+</head>
+<body>
+  <h1>Películas</h1>
+
+  <div>
+    <label>Nombre de la película:</label>
+    <input type="text" id="nombrePelicula" placeholder="Ej: Gladiator">
+    <button id="crearPelicula">Crear</button>
+  </div>
+
+  <div>
+    <label>Borrar Película:</label>
+    <input type="text" id="borrarPelicula" placeholder="Nombre exacto">
+    <button id="botonBorrar">Borrar</button>
+  </div>
+
+  <div id="listaPelis"></div>
+
+  <script>
+
+    const inputCrear = document.getElementById("nombrePelicula");
+    const inputBorrar = document.getElementById("borrarPelicula");
+    const botonCrear = document.getElementById("crearPelicula");
+    const botonBorrar = document.getElementById("botonBorrar");
+    const lista = document.getElementById("listaPelis");
+
+    function crear() {
+      let nombre = inputCrear.value;
+
+      let nuevaPeli = document.createElement("button");
+      nuevaPeli.textContent = nombre;
+
+      lista.appendChild(nuevaPeli);
+
+    function borrar() {
+      let nombreABorrar = inputBorrar.value;
+      let pelis = lista.children;
+
+      for (let peli of pelis) {
+        if (peli.textContent === nombreABorrar) {
+          peli.remove();
+        }
+      }
+    }
+
+    botonCrear.addEventListener("click", crear);
+    botonBorrar.addEventListener("click", borrar);
+
+  </script>
+</body>
+</html>

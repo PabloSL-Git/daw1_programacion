@@ -15,18 +15,17 @@
         <button type="button" id="crearRey">Crear</button>
     </div>
     <div id="listaReyes">aquí aparecen los reyes</div>
+
     <script>
 
         const input = document.getElementById("nombreRey");
         const botonCrear = document.getElementById("crearRey");
         const lista = document.getElementById("listaReyes");
 
-        botonCrear.addEventListener("click", function () {
-
+        function crearRey() {
             let nombre = input.value;
 
             let nuevoRey = document.createElement("button");
-
             nuevoRey.textContent = nombre;
 
             lista.appendChild(nuevoRey);
@@ -34,10 +33,9 @@
             nuevoRey.addEventListener("click", function () {
                 nuevoRey.remove();
             });
+        }
 
-        });
-
-
+        botonCrear.addEventListener("click", crearRey);
 
     </script>
 </body>
