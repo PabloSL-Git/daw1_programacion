@@ -1,10 +1,11 @@
 package daw;
 
-import java.util.List;
+import java.time.LocalDate;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -17,23 +18,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Precipitacion {
 
     @JsonProperty("fecha")
-    private List<Integer> fecha;
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
+    private LocalDate fecha;
+
     @JsonProperty("estacionMeteorologica")
     private String estacionMeteorologica;
+
     @JsonProperty("provincia")
     private String provincia;
-    @JsonProperty("precipitacion")
-    private float precipitacion;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
+    @JsonProperty("precipitacion")
+    private Float precipitacion;
+
     public Precipitacion() {
     }
 
-    public Precipitacion(List<Integer> fecha, String estacionMeteorologica, String provincia, float precipitacion) {
-        super();
+    public Precipitacion(LocalDate fecha, String estacionMeteorologica, String provincia, Float precipitacion) {
         this.fecha = fecha;
         this.estacionMeteorologica = estacionMeteorologica;
         this.provincia = provincia;
@@ -41,16 +41,16 @@ public class Precipitacion {
     }
 
     @JsonProperty("fecha")
-    public List<Integer> getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
     @JsonProperty("fecha")
-    public void setFecha(List<Integer> fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public Precipitacion withFecha(List<Integer> fecha) {
+    public Precipitacion withFecha(LocalDate fecha) {
         this.fecha = fecha;
         return this;
     }
@@ -86,18 +86,17 @@ public class Precipitacion {
     }
 
     @JsonProperty("precipitacion")
-    public float getPrecipitacion() {
+    public Float getPrecipitacion() {
         return precipitacion;
     }
 
     @JsonProperty("precipitacion")
-    public void setPrecipitacion(float precipitacion) {
+    public void setPrecipitacion(Float precipitacion) {
         this.precipitacion = precipitacion;
     }
 
-    public Precipitacion withPrecipitacion(float precipitacion) {
+    public Precipitacion withPrecipitacion(Float precipitacion) {
         this.precipitacion = precipitacion;
         return this;
     }
-
 }

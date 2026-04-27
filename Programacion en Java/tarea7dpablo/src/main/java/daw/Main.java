@@ -49,7 +49,7 @@ public class Main {
             }
 
             // Guardar el map en un fichero JSON
-            mapper.writeValue(
+            mapper.writerWithDefaultPrettyPrinter().writeValue(
                     new java.io.File("mapaPrecipitaciones.json"),
                     mapa);
 
@@ -60,17 +60,17 @@ public class Main {
                     .max((p1, p2) -> Float.compare(p1.getPrecipitacion(), p2.getPrecipitacion()))
                     .orElseThrow(() -> new RuntimeException("Lista vacía"));
 
-            // Mostrar mayor precipitacion
             System.out.println("MAYOR PRECIPITACION");
             System.out.println(
                     max.getEstacionMeteorologica() + " - " +
                             max.getPrecipitacion() + " mm - " +
                             max.getFecha());
 
-            // mostrar estaciones (entre 10 y 20 octubre)
+            // estaciones entre 10 y 20 octubre
             long contador = lista.stream()
-                    .filter(p -> p.getFecha().get(1) == 10) // octubre
-                    .filter(p -> p.getFecha().get(2) >= 10 && p.getFecha().get(2) <= 20)
+                    .filter(p -> p.getFecha().getMonthValue() == 10)
+                    .filter(p -> p.getFecha().getDayOfMonth() >= 10 &&
+                            p.getFecha().getDayOfMonth() <= 20)
                     .map(Precipitacion::getEstacionMeteorologica)
                     .distinct()
                     .count();
@@ -78,10 +78,11 @@ public class Main {
             System.out.println("ESTACIONES ENTRE 10 Y 20 DE OCTUBRE");
             System.out.println(contador);
 
-            // mostrar media precipitaciones
+            // media precipitaciones
             double media = lista.stream()
-                    .filter(p -> p.getFecha().get(1) == 10) // octubre
-                    .filter(p -> p.getFecha().get(2) >= 10 && p.getFecha().get(2) <= 20)
+                    .filter(p -> p.getFecha().getMonthValue() == 10)
+                    .filter(p -> p.getFecha().getDayOfMonth() >= 10 &&
+                            p.getFecha().getDayOfMonth() <= 20)
                     .mapToDouble(Precipitacion::getPrecipitacion)
                     .average()
                     .orElse(0);
