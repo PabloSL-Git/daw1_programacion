@@ -5,7 +5,6 @@ import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -18,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Precipitacion {
 
     @JsonProperty("fecha")
-    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
-    private LocalDate fecha;
+    private int[] fecha;
 
     @JsonProperty("estacionMeteorologica")
     private String estacionMeteorologica;
@@ -33,24 +31,27 @@ public class Precipitacion {
     public Precipitacion() {
     }
 
-    public Precipitacion(LocalDate fecha, String estacionMeteorologica, String provincia, Float precipitacion) {
+    public Precipitacion(int[] fecha, String estacionMeteorologica, String provincia, Float precipitacion) {
         this.fecha = fecha;
         this.estacionMeteorologica = estacionMeteorologica;
         this.provincia = provincia;
         this.precipitacion = precipitacion;
     }
 
-    @JsonProperty("fecha")
+    // 🔥 CONVERSIÓN A LocalDate (CLAVE)
     public LocalDate getFecha() {
-        return fecha;
+        return LocalDate.of(fecha[0], fecha[1], fecha[2]);
     }
 
-    @JsonProperty("fecha")
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(int[] fecha) {
         this.fecha = fecha;
     }
 
-    public Precipitacion withFecha(LocalDate fecha) {
+    public int[] getFechaRaw() {
+        return fecha;
+    }
+
+    public Precipitacion withFecha(int[] fecha) {
         this.fecha = fecha;
         return this;
     }
