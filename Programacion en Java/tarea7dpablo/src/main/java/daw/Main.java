@@ -18,6 +18,10 @@ public class Main {
             InputStream is = Main.class.getClassLoader()
                     .getResourceAsStream("precipitacionesBadajoz.json");
 
+            if (is == null) {
+                throw new RuntimeException("No se ha encontrado el fichero JSON en resources");
+            }
+
             // Convertir JSON a array de objetos
             Precipitacion[] array = mapper.readValue(is, Precipitacion[].class);
 
@@ -54,7 +58,7 @@ public class Main {
             // Registro con mayor precipitación
             Precipitacion max = lista.stream()
                     .max((p1, p2) -> Float.compare(p1.getPrecipitacion(), p2.getPrecipitacion()))
-                    .orElse(null);
+                    .orElseThrow(() -> new RuntimeException("Lista vacía"));
 
             // Mostrar mayor precipitacion
             System.out.println("MAYOR PRECIPITACION");
@@ -63,17 +67,18 @@ public class Main {
                             max.getPrecipitacion() + " mm - " +
                             max.getFecha());
 
-            // mostrar estaciones
+            // mostrar estaciones (entre 10 y 20 octubre)
             long contador = lista.stream()
                     .filter(p -> p.getFecha().get(1) == 10) // octubre
                     .filter(p -> p.getFecha().get(2) >= 10 && p.getFecha().get(2) <= 20)
+                    .map(Precipitacion::getEstacionMeteorologica)
+                    .distinct()
                     .count();
 
             System.out.println("ESTACIONES ENTRE 10 Y 20 DE OCTUBRE");
             System.out.println(contador);
 
-            // mostrar media precipationes
-
+            // mostrar media precipitaciones
             double media = lista.stream()
                     .filter(p -> p.getFecha().get(1) == 10) // octubre
                     .filter(p -> p.getFecha().get(2) >= 10 && p.getFecha().get(2) <= 20)
