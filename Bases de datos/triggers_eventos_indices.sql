@@ -91,3 +91,54 @@ show index from empleados;
 select *
 from empleados ignore index(nombresEmpleados)
 where nomem = 'eva';
+
+/*
+📅 FUNCIONES DE FECHA Y TIEMPO
+CURDATE()              -- fecha actual
+CURTIME()              -- hora actual
+NOW()                  -- fecha y hora actual
+YEAR(fecha)            -- año de una fecha
+MONTH(fecha)           -- mes
+DAY(fecha)             -- día
+DAYNAME(fecha)         -- nombre del día
+MONTHNAME(fecha)       -- nombre del mes
+DATEDIFF(f1,f2)        -- diferencia en días
+DATE_ADD(f, INTERVAL 7 DAY)   -- sumar días
+DATE_SUB(f, INTERVAL 1 MONTH) -- restar meses
+
+🔢 FUNCIONES MATEMÁTICAS
+ABS(x)                 -- valor absoluto
+ROUND(x,2)             -- redondear
+CEIL(x)                -- hacia arriba
+FLOOR(x)               -- hacia abajo
+MOD(a,b)               -- resto
+POWER(a,b)             -- potencia
+SQRT(x)                -- raíz cuadrada
+
+🔤 FUNCIONES DE TEXTO
+UPPER(txt)             -- mayúsculas
+LOWER(txt)             -- minúsculas
+CONCAT(a,b)            -- unir textos
+LENGTH(txt)            -- longitud
+SUBSTRING(txt,1,3)     -- cortar texto
+TRIM(txt)              -- quitar espacios
+
+🔍 FUNCIONES DE CONTROL
+IF(cond,a,b)           -- si cumple → a, si no → b
+IFNULL(x,0)            -- reemplaza NULL
+CASE WHEN c THEN a ELSE b END -- múltiples condiciones
+
+🧮 FUNCIONES DE AGREGACIÓN
+COUNT(*)               -- contar filas
+SUM(col)               -- suma
+AVG(col)               -- media
+MAX(col)               -- máximo
+MIN(col)               -- mínimo
+
+⚡ TRIGGERS (CLAVE)
+NEW.columna            -- valor nuevo (INSERT/UPDATE)
+OLD.columna            -- valor antiguo (DELETE/UPDATE)
+NOW()                  -- timestamp automático
+CURDATE()              -- fecha en triggers
+USER()                 -- usuario actual
+*/
