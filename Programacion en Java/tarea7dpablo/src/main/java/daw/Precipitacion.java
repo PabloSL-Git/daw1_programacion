@@ -38,7 +38,7 @@ public class Precipitacion {
         this.precipitacion = precipitacion;
     }
 
-    // 🔥 CONVERSIÓN A LocalDate (CLAVE)
+    // conversion A LocalDate
     public LocalDate getFecha() {
         return LocalDate.of(fecha[0], fecha[1], fecha[2]);
     }
