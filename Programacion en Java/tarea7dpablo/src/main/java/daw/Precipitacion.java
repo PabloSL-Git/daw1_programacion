@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "fecha",
-        "estacionMeteorologica",
-        "provincia",
-        "precipitacion"
+    "fecha",
+    "estacionMeteorologica",
+    "provincia",
+    "precipitacion"
 })
 @Generated("jsonschema2pojo")
 public class Precipitacion {
