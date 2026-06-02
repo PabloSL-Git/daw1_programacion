@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reyes Godos</title>
+</head>
+
+<body>
+<h1>Reyes Godos</h1>
+
+<div>
+<label for="nombreRey">Nombre del rey godo:</label>
+<input type="text" id="nombreRey" placeholder="Ej: Leovigildo">
+<button type="button" id="crearRey">Crear</button>
+</div>
+
+<div id="listaReyes">aquí aparecen los reyes</div>
+
+<script>
+
+const botonCrear = document.getElementById("crearRey");
+
+function crearRey() {
+
+let nombreRey = document.getElementById("nombreRey").value;
+
+if(nombreRey.trim() == "") return;
+
+let boton = document.createElement("button");
+
+boton.textContent = nombreRey;
+
+boton.id = nombreRey;
+
+document.getElementById("listaReyes").appendChild(boton)
+
+boton.addEventListener("click", function () {
+	boton.remove();
+	});
+	
+}
+
+botonCrear.addEventListener("click", crearRey);
+
+</script>
+
+</body>
+</html>

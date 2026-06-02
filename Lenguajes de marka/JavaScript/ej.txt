@@ -1,0 +1,14 @@
+const PRECIO_BARRA_PAN = 0.80;
+
+ let barrasPan = document.getElementById("barrasPan").value;
+
+  if (bolsa) {
+                subtotalBolsa = PRECIO_BOLSA;
+            }
+
+if (delPueblo && totalSinDescuento > MINIMO_DESCUENTO) {
+                descuentoPueblo = DESCUENTO_PUEBLO
+            }
+
+ document.getElementById("subtotalPan").textContent =
+"Subtotal barras de pan: " + subtotalPan.toFixed(2) + "EUR";

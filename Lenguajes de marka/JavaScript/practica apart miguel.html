@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Apartamentos Miguel Angel - Reservas</title>
+</head>
+<body>
+  <h1>Apartamentos Miguel Angel</h1>
+
+  <form id="formReserva">
+    <label>Día de entrada</label><br>
+    <input id="dia" type="number" min="1" max="31" /><br>
+
+    <label>Mes de entrada</label><br>
+    <select id="mes">
+      <option value="">Selecciona mes</option>
+      <option value="1">Enero</option>
+      <option value="2">Febrero</option>
+      <option value="3">Marzo</option>
+      <option value="4">Abril</option>
+      <option value="5">Mayo</option>
+      <option value="6">Junio</option>
+      <option value="7">Julio</option>
+      <option value="8">Agosto</option>
+      <option value="9">Septiembre</option>
+      <option value="10">Octubre</option>
+      <option value="11">Noviembre</option>
+      <option value="12">Diciembre</option>
+    </select><br>
+
+    <label>Número de días</label><br>
+    <input id="diasReserva" type="number" min="1" /><br>
+
+    <label>Tipo de apartamento</label><br>
+    <select id="tipoApartamento">
+      <option value="">Selecciona tipo</option>
+      <option value="2">2 habitaciones (50 €/día)</option>
+      <option value="3">3 habitaciones (70 €/día)</option>
+      <option value="4">4 habitaciones (80 €/día)</option>
+    </select><br>
+
+    <label>Limpieza</label><br>
+    <select id="limpieza">
+      <option value="">Selecciona opción</option>
+      <option value="diaria">Diaria (25 €/día)</option>
+      <option value="semanal">Semanal (25 € cada 7 días)</option>
+      <option value="ninguna">Sin limpieza</option>
+    </select><br>
+
+    <input id="socio" type="checkbox" />
+    <label>Es socio (10% de descuento sobre el total)</label><br><br>
+
+    <button type="submit">Calcular total</button>
+  </form>
+
+  <p id="error" style="color:red"></p>
+  <div id="resultado"></div>
+
+  <script>
+    var meses = ["enero","febrero","marzo","abril","mayo","junio",
+                 "julio","agosto","septiembre","octubre","noviembre","diciembre"];
+    var precios = { 2: 50, 3: 70, 4: 80 };
+
+    document.getElementById("formReserva").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      var dia      = document.getElementById("dia").value;
+      var mes      = document.getElementById("mes").value;
+      var dias     = Number(document.getElementById("diasReserva").value);
+      var tipo     = document.getElementById("tipoApartamento").value;
+      var limpieza = document.getElementById("limpieza").value;
+      var socio    = document.getElementById("socio").checked;
+
+      if (!dia || !mes || !dias || !tipo || !limpieza) {
+        document.getElementById("error").textContent = "Rellena todos los campos.";
+        document.getElementById("resultado").innerHTML = "";
+        return;
+      }
+      document.getElementById("error").textContent = "";
+
+      var precioDia    = precios[tipo];
+      var subtotalApto = precioDia * dias;
+
+      var costeLimpieza = 0;
+      if (limpieza === "diaria")  costeLimpieza = 25 * dias;
+      if (limpieza === "semanal") costeLimpieza = Math.floor(dias / 7) * 25;
+
+      var subtotal  = subtotalApto + costeLimpieza;
+      var descuento = socio ? subtotal * 0.10 : 0;
+      var total     = subtotal - descuento;
+
+      document.getElementById("resultado").innerHTML =
+        "<p><strong>Entrada:</strong> " + dia + " de " + meses[mes - 1] + "</p>" +
+        "<p><strong>Días reservados:</strong> " + dias + "</p>" +
+        "<p><strong>Apartamento:</strong> " + tipo + " habitaciones (" + precioDia + " €/día)</p>" +
+        "<p><strong>Subtotal apartamento:</strong> " + subtotalApto.toFixed(2) + " €</p>" +
+        "<p><strong>Coste limpieza:</strong> " + costeLimpieza.toFixed(2) + " € (" + limpieza + ")</p>" +
+        "<p><strong>Descuento socio:</strong> " + descuento.toFixed(2) + " €</p>" +
+        "<p><strong>Total a pagar: " + total.toFixed(2) + " €</strong></p>";
+    });
+  </script>
+</body>
+</html>
