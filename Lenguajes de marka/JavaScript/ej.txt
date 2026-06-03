@@ -1,32 +1,6 @@
-<script>
 
-const botonCrear = document.getElementById("crearRey");
-
-function crearRey() {
-
-let nombreRey = document.getElementById("nombreRey").value;
-
-if(nombreRey.trim() == "") return;
-
-let boton = document.createElement("button");
-
-boton.textContent = nombreRey;
-
-boton.id = nombreRey;
-
-document.getElementById("listaReyes").appendChild(boton)
-
-boton.addEventListener("click", function () {
-	boton.remove();
-	});
-	
-}
 
 botonCrear.addEventListener("click", crearRey);
-
-</script>
-
-<script>
 
     function crearBotonPelicula() {
 
@@ -53,38 +27,12 @@ botonCrear.addEventListener("click", crearRey);
 
       if (obj !== null) obj.remove();
       
-    }
-  </script>
-
-  <script>
-
+  
         const PRECIO_BARRA_PAN = 0.80;
-        const PRECIO_MOLLETE = 0.25;
-        const PRECIO_ACEITUNAS = 4.00;
-        const PRECIO_BOLSA = 0.15;
-        const DESCUENTO_PUEBLO = 2.00;
-        const MINIMO_DESCUENTO = 20.00;
 
-        function calcularCompra() {
+
 
             let barrasPan = document.getElementById("barrasPan").value;
-            let molletes = document.getElementById("molletes").value;
-            let aceitunas = document.getElementById("aceitunas").value;
-            let bolsa = document.getElementById("bolsa").checked;
-            let delPueblo = document.getElementById("delPueblo").checked;
-
-            let subtotalPan = barrasPan * PRECIO_BARRA_PAN;
-            let subtotalMolletes = molletes * PRECIO_MOLLETE;
-            let subtotalAceitunas = aceitunas * PRECIO_ACEITUNAS;
-            let subtotalBolsa = 0
-            if (bolsa) {
-                subtotalBolsa = PRECIO_BOLSA;
-            }
-            let totalSinDescuento =
-                subtotalPan +
-                subtotalMolletes +
-                subtotalAceitunas +
-                subtotalBolsa;
 
             let descuentoPueblo = 0
             if (delPueblo && totalSinDescuento > MINIMO_DESCUENTO) {
@@ -95,22 +43,4 @@ botonCrear.addEventListener("click", crearRey);
             document.getElementById("subtotalPan").textContent =
                 "Subtotal barras de pan: " + subtotalPan.toFixed(2) + "EUR";
 
-            document.getElementById("subtotalMolletes").textContent =
-                "Subtotal molletes: " + subtotalMolletes.toFixed(2) + "EUR";
 
-            document.getElementById("subtotalAceitunas").textContent =
-                "Subtotal aceitunas: " + subtotalAceitunas.toFixed(2) + "EUR";
-
-            document.getElementById("subtotalBolsa").textContent =
-                "Subtotal bolsa: " + subtotalBolsa.toFixed(2) + " EUR";
-
-            document.getElementById("descuentoPueblo").textContent =
-
-                "Descuento del pueblo: -" + descuentoPueblo.toFixed(2) + "EUR";
-                
-            document.getElementById("totalCompra").textContent =
-                "Total: " + totalCompra.toFixed(2) + " EUR";
-
-        }
-
-    </script>
