@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<body>
+    <h1>Cafeteria La Mari (IES Mar de Alborán) - Calcula el precio de tu compra</h1>
+
+    <br>Cantidad de bocadillos de tortilla (1,75 EUR):
+    <input type="number" id="bocadillosTortilla" min="0" value="0">
+
+    <br>Cantidad de bocadillos africanos (2,15 EUR):
+    <input type="number" id="bocadillosAfricanos" min="0" value="0">
+
+    <br>Cantidad de bocadillos de bacon (2,00 EUR):
+    <input type="number" id="bocadillosBacon" min="0" value="0">
+
+    <br>Cantidad de cafés (1,20 EUR):
+    <input type="number" id="cafes" min="0" value="0">
+
+    <br><input type="checkbox" id="cafeParaLLevar"> Café para llevar (+0,10 EUR por café)
+
+    <br>Cantidad de refrescos (1,25 EUR):
+    <input type="number" id="refrescos" min="0" value="0">
+
+    <br>Tipo de refresco:
+    <select id="tipoRefresco">
+        <option value="Cocacola">Cocacola</option>
+        <option value="Nestea">Nestea</option>
+        <option value="Fanta">Fanta</option>
+    </select>
+
+    <br><input type="checkbox" id="bonoJoven"> He pagado con bono joven (-10% del total)
+
+    <br><button type="button" onclick="Calcular()">Calcular</button>
+
+    <div id="Resultado">
+        <h2>Resultado</h2>
+        <p id="subtotalTortilla">Subtotal bocadillos de tortilla: 0.00 EUR</p>
+        <p id="subtotalAfricanos">Subtotal bocadillos africanos: 0.00 EUR</p>
+        <p id="subtotalBacon">Subtotal bocadillos de bacon: 0.00 EUR</p>
+        <p id="subtotalCafes">Subtotal cafés: 0.00 EUR</p>
+        <p id="subtotalRefrescos">Subtotal refrescos: 0.00 EUR</p>
+        <p id="descuentoBonoJoven">Descuento bono joven: 0.00 EUR</p>
+        <p id="totalCompra">Total: 0.00 EUR</p>
+    </div>
+
+    <script>
+        const precioTortilla = 1.75;
+        const precioAfricanos = 2.15;
+        const precioBacon = 2.00;
+        const precioCafes = 1.20;
+        const precioLLevar = 0.10;
+        const precioRefresco = 1.25;
+
+        // Inputs
+        const inTortilla = document.getElementById("bocadillosTortilla");
+        const inAfricanos = document.getElementById("bocadillosAfricanos");
+        const inBacon = document.getElementById("bocadillosBacon");
+        const inCafes = document.getElementById("cafes");
+        const inRefrescos = document.getElementById("refrescos");
+        const chkLlevar = document.getElementById("cafeParaLLevar");
+        const chkBono = document.getElementById("bonoJoven");
+
+        function Calcular() {
+            
+            let subTortilla = Number(inTortilla.value) * precioTortilla;
+            let subAfricanos = Number(inAfricanos.value) * precioAfricanos;
+            let subBacon = Number(inBacon.value) * precioBacon;
+            let subCafes = Number(inCafes.value) * precioCafes;
+            let subRefrescos = Number(inRefrescos.value) * precioRefresco;
+
+            let subLlevar = 0;
+            if (chkLlevar.checked) subLlevar = Number(inCafes.value) * precioLLevar;
+
+            let totalSin = subTortilla + subAfricanos + subBacon + subCafes + subRefrescos + subLlevar;
+
+            let subBono = 0;
+            if (chkBono.checked) subBono = totalSin * 0.10;
+
+            let total = totalSin - subBono;
+
+            document.getElementById("subtotalTortilla").textContent = "Subtotal bocadillos de tortilla: " + subTortilla.toFixed(2) + " EUR";
+            document.getElementById("subtotalAfricanos").textContent = "Subtotal bocadillos africanos: " + subAfricanos.toFixed(2) + " EUR";
+            document.getElementById("subtotalBacon").textContent = "Subtotal bocadillos de bacon: " + subBacon.toFixed(2) + " EUR";
+            document.getElementById("subtotalCafes").textContent = "Subtotal cafés: " + subCafes.toFixed(2) + " EUR";
+            document.getElementById("subtotalRefrescos").textContent = "Subtotal refrescos: " + subRefrescos.toFixed(2) + " EUR";
+            document.getElementById("descuentoBonoJoven").textContent = "Descuento bono joven: " + subBono.toFixed(2) + " EUR";
+            document.getElementById("totalCompra").textContent = "Total: " + total.toFixed(2) + " EUR";
+        }
+    </script>
+</body>
+
+</html>

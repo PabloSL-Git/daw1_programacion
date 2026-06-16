@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<body>
+    <h1>Pizzería Napoli - Calcula tu pedido</h1>
+
+    Cantidad de pizzas margarita (6,00 EUR):
+    <input type="number" id="margarita" min="0" value="0"><br>
+
+    Cantidad de pizzas cuatro quesos (8,00 EUR):
+    <input type="number" id="cuatroQuesos" min="0" value="0"><br>
+
+    Cantidad de refrescos (1,50 EUR):
+    <input type="number" id="refrescos" min="0" value="0"><br>
+
+    <input type="checkbox" id="bordesRellenos"> Bordes rellenos (+1,00 EUR por pizza)<br>
+
+    <input type="checkbox" id="repartidor"> Envío a domicilio (+2,00 EUR)<br>
+
+    <button type="button" onclick="calcular()">Calcular</button>
+
+    <div id="resultado">
+        <h2>Resultado</h2>
+        <p id="subMargarita">Subtotal pizzas margarita: 0.00 EUR</p>
+        <p id="subCuatroQuesos">Subtotal pizzas cuatro quesos: 0.00 EUR</p>
+        <p id="subRefrescos">Subtotal refrescos: 0.00 EUR</p>
+        <p id="subExtras">Subtotal extras: 0.00 EUR</p>
+        <p id="total">Total: 0.00 EUR</p>
+    </div>
+
+    <script>
+        
+	const margarita = 6;
+	const quesos = 8;
+	const refrescos = 1.5;
+	const bordes = 1;
+	const envio = 2;
+
+	// input 
+
+	const inMargarita = document.getElementById("margarita");
+	const inQuesos = document.getElementById("cuatroQuesos");
+	const inRefrescos = document.getElementById("refrescos");
+	const inBordes = document.getElementById("bordesRellenos");
+	const inEnvio = document.getElementById("repartidor");
+
+	function calcular(){
+
+	let subMargarita = Number(inMargarita.value) * margarita;
+	let subCuatroQuesos = Number(inQuesos.value) * quesos;
+	let subRefrescos = Number(inRefrescos.value) * refrescos;
+
+	let totalPizzas = Number(inMargarita.value) + Number(inQuesos.value);
+
+	let subExtras = 0;
+	if(inBordes.checked){
+	subExtras = totalPizzas * bordes;
+	}
+
+	if(inEnvio.checked){
+	subExtras = subExtras + envio;
+	}
+
+	 let total = subMargarita + subCuatroQuesos + subRefrescos + subExtras;
+
+	document.getElementById("subMargarita").textContent    = "Subtotal pizzas margarita: "     + subMargarita.toFixed(2)    + " EUR";
+
+    document.getElementById("subCuatroQuesos").textContent = "Subtotal pizzas cuatro quesos: " + subCuatroQuesos.toFixed(2) + " EUR";
+
+    document.getElementById("subRefrescos").textContent    = "Subtotal refrescos: "            + subRefrescos.toFixed(2)    + " EUR";
+
+    document.getElementById("subExtras").textContent       = "Subtotal extras: "               + subExtras.toFixed(2)       + " EUR";
+
+    document.getElementById("total").textContent           = "Total: "                         + total.toFixed(2)           + " EUR";
+
+	}
+
+
+    </script>
+</body>
+</html>

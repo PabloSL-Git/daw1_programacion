@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Películas</title>
+</head>
+
+<body>
+    <h1>Películas</h1>
+    <div>
+        <label>Nombre de la película:</label>
+        <input type="text" id="nombrePelicula" placeholder="Ej: Gladiator">
+        <button id="crearPelicula" onclick="crearBotonPelicula()">Crear</button>
+    </div>
+    <div>
+        <label>Borrar película:</label>
+        <input type="text" id="borrarPelicula" placeholder="Nombre exacto">
+        <button id="botonBorrar" onclick="borrarPorNombre()">Borrar</button>
+    </div>
+    <div id="listaPelis"></div>
+    <script>
+        function crearBotonPelicula() {
+            let nombre = document.getElementById("nombrePelicula").value;
+            if (nombre.trim() == "") return;
+
+            let boton = document.createElement("button");
+            boton.textContent = nombre;
+            boton.id = nombre;
+            boton.addEventListener("click", function () { boton.remove(); });
+
+            document.getElementById("listaPelis").appendChild(boton);
+        }
+
+        function borrarPorNombre() {
+            let nombre = document.getElementById("borrarPelicula").value;
+            if (nombre.trim() == "") return;
+
+            let obj = document.getElementById(nombre);
+            if (obj !== null) obj.remove();
+        }
+    </script>
+</body>
+
+</html>
