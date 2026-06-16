@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <body>
     <h1>Lista de la compra</h1>
 
@@ -18,31 +19,32 @@
     <div id="listaProductos"></div>
 
     <script>
-        
-	function añadir() {
 
-    let nombre = document.getElementById("nombreProducto").value;
-    let boton = document.createElement("button");
+        function añadir() {
 
-    boton.textContent = nombre;
-    boton.id = nombre;
+            let nombre = document.getElementById("nombreProducto").value;
+            let boton = document.createElement("button");
 
-    boton.addEventListener("click", function() { boton.remove(); });
+            boton.textContent = nombre;
+            boton.id = nombre;
 
-    document.getElementById("listaProductos").appendChild(boton);
-}
+            boton.addEventListener("click", function () { boton.remove(); });
 
-function borrar() {
+            document.getElementById("listaProductos").appendChild(boton);
+        }
 
-    let nombre = document.getElementById("borrarProducto").value;
+        function borrar() {
 
-    let obj = document.getElementById(nombre);
-    obj.remove();
-}
+            let nombre = document.getElementById("borrarProducto").value;
 
-document.getElementById("btnAnadir").addEventListener("click", añadir);
-document.getElementById("btnBorrar").addEventListener("click", borrar);
+            let obj = document.getElementById(nombre);
+            obj.remove();
+        }
+
+        document.getElementById("btnAnadir").addEventListener("click", añadir);
+        document.getElementById("btnBorrar").addEventListener("click", borrar);
 
     </script>
 </body>
+
 </html>
