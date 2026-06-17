@@ -3,10 +3,10 @@
  */
 package tema6;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
+
 import java.util.HashSet;
-import java.util.List;
+
 
 /**
  *
@@ -34,7 +34,7 @@ public class Resort {
         // hotel
         Hotel hotel = new Hotel("564", "Elba", habitaciones, clientes);
 
-        System.out.println("aaaaaaa");
+        System.out.println("aaaaaaa" + hotel);
         // 2
 
     }

@@ -1,0 +1,198 @@
+================================================================
+CHULETA JAVA — LIST, SET, MAP, FOR, COMPARABLE/COMPARATOR
+================================================================
+
+----------------------------------------------------------------
+LIST — ordenada, permite duplicados
+----------------------------------------------------------------
+
+ArrayList  → uso general, acceso rápido por índice
+LinkedList → inserciones/borrados rápidos en medio
+
+List<Vuelo> lista = new ArrayList<>();
+
+Métodos:
+  lista.add(vuelo)          // añadir al final
+  lista.add(0, vuelo)       // añadir en posición
+  lista.get(i)              // obtener por índice
+  lista.remove(i)           // borrar por índice
+  lista.remove(vuelo)       // borrar por objeto (usa equals)
+  lista.size()
+  lista.contains(vuelo)
+  lista.isEmpty()
+
+-- Borrar con iterador (única forma segura dentro de un bucle) --
+
+Iterator<Vuelo> it = lista.iterator();
+while (it.hasNext()) {
+    Vuelo v = it.next();
+    if (v.getDestino().equals("Valencia")) {
+        it.remove();  // NO lista.remove() aquí
+    }
+}
+
+⚠ NUNCA hagas lista.remove() dentro de un for-each
+  → lanza ConcurrentModificationException
+
+-- Ordenar --
+
+Collections.sort(lista);                          // orden natural (requiere Comparable en la clase)
+Collections.sort(lista, (v1, v2) -> v1.getOrigen().compareTo(v2.getOrigen()));  // por campo
+
+-- Búsqueda binaria --
+
+// La lista DEBE estar ordenada antes
+Vuelo buscado = new Vuelo(3, "a", "b", 100);
+int pos = Collections.binarySearch(lista, buscado);
+// devuelve índice si encuentra, negativo si no
+
+⚠ Si la lista no está ordenada, el resultado es impredecible
+
+
+----------------------------------------------------------------
+SET — sin duplicados (usa equals + hashCode)
+----------------------------------------------------------------
+
+HashSet       → sin orden, el más rápido
+LinkedHashSet → mantiene orden de inserción
+TreeSet       → ordenado automáticamente (requiere Comparable)
+
+Set<Vuelo> set = new HashSet<>();
+Set<Vuelo> set = new LinkedHashSet<>();
+Set<Vuelo> set = new TreeSet<>();
+
+-- Convertir lista a set de únicos --
+
+Set<Vuelo> unicos = new HashSet<>(lista);
+// elimina duplicados usando equals/hashCode de Vuelo
+
+✓ Piden "conjunto ordenado"  → TreeSet
+✓ Piden solo "únicos"        → HashSet
+
+⚠ Si equals/hashCode no están bien implementados
+  en la clase, el Set no detecta duplicados
+
+
+----------------------------------------------------------------
+MAP — clave → valor, sin claves duplicadas
+----------------------------------------------------------------
+
+HashMap       → sin orden de claves
+LinkedHashMap → mantiene orden de inserción
+TreeMap       → claves ordenadas alfabéticamente
+
+Map<String, Integer> map = new HashMap<>();
+Map<String, Integer> map = new TreeMap<>();
+
+Métodos:
+  map.put(clave, valor)
+  map.get(clave)
+  map.containsKey(clave)
+  map.getOrDefault(clave, 0)   // si no existe devuelve 0
+  map.entrySet()               // para recorrer pares clave-valor
+
+-- Contar/acumular con getOrDefault --
+
+for (Vuelo v : lista) {
+    String dest = v.getDestino();
+    map.put(dest, map.getOrDefault(dest, 0) + v.getPasajeros().size());
+}
+
+-- Recorrer un Map --
+
+for (Map.Entry<String, Integer> e : map.entrySet()) {
+    System.out.println(e.getKey() + " → " + e.getValue());
+}
+
+-- Pasar HashMap a TreeMap (ordenar claves) --
+
+Map<String, Integer> ordenado = new TreeMap<>(mapSinOrden);
+
+-- Map con colección como valor --
+
+Map<Integer, Set<Pasajero>> map = new HashMap<>();
+for (Vuelo v : lista) {
+    map.put(v.getCodigo(), v.getPasajeros());
+}
+
+⚠ map.put() con clave ya existente sobreescribe el valor anterior
+
+
+----------------------------------------------------------------
+FORMAS DE RECORRER COLECCIONES
+----------------------------------------------------------------
+
+// For clásico — cuando necesitas el índice
+for (int i = 0; i < lista.size(); i++) {
+    System.out.println(lista.get(i));
+}
+
+// For-each — el más común
+for (Vuelo v : lista) {
+    System.out.println(v);
+}
+
+// forEach con lambda
+lista.forEach(v -> System.out.println(v));
+lista.forEach(System.out::println);   // referencia a método
+
+// Iterador — para borrar en bucle
+Iterator<Vuelo> it = lista.iterator();
+while (it.hasNext()) {
+    Vuelo v = it.next();
+    if (condicion) it.remove();
+}
+
+
+----------------------------------------------------------------
+COMPARABLE vs COMPARATOR
+----------------------------------------------------------------
+
+-- Comparable: orden natural, se implementa EN la clase --
+
+public class Vuelo implements Comparable<Vuelo> {
+    @Override
+    public int compareTo(Vuelo otro) {
+        return Integer.compare(this.codigo, otro.codigo);
+        // Para Strings: this.nombre.compareTo(otro.nombre)
+    }
+}
+
+→ Permite Collections.sort(lista) sin argumentos
+
+-- Comparator: orden personalizado, se pasa AL sort --
+
+// Con lambda
+Collections.sort(lista, (v1, v2) -> v1.getOrigen().compareTo(v2.getOrigen()));
+
+// Con Comparator.comparing
+lista.sort(Comparator.comparing(Vuelo::getOrigen));
+
+// Invertido
+lista.sort(Comparator.comparing(Vuelo::getOrigen).reversed());
+
+✓ Regla: "orden natural" en el enunciado → Comparable en la clase
+          "ordenar por X"                 → Comparator en el sort
+
+
+----------------------------------------------------------------
+IMPORTS QUE MÁS SE USAN
+----------------------------------------------------------------
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.TreeSet;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;       // para equals/hashCode
+
+================================================================
