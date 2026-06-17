@@ -1,0 +1,469 @@
+================================================================
+CHULETA JAVA — FICHEROS, OPENCSV, JACKSON Y API STREAM
+================================================================
+(Complementa la chuleta de List/Set/Map/For/Comparator)
+
+
+----------------------------------------------------------------
+ESTRUCTURA TÍPICA DEL PROYECTO MAVEN
+----------------------------------------------------------------
+
+src/main/java/
+  modelos/
+    Persona.java        ← POJO con anotaciones OpenCSV
+  ficheros/
+    LeerCSV.java        ← lee el CSV y devuelve List<Persona>
+    EscribirJSON.java   ← escribe una lista a fichero JSON
+  apistream/
+    OperacionesStream.java  ← métodos estáticos con Stream
+  Programa.java         ← main, prueba todo
+personas.csv            ← en la raíz del proyecto
+salida.json             ← se genera en la raíz del proyecto
+
+
+----------------------------------------------------------------
+POM.XML — DEPENDENCIAS NECESARIAS
+----------------------------------------------------------------
+
+<!-- Leer CSV con OpenCSV -->
+<dependency>
+    <groupId>com.opencsv</groupId>
+    <artifactId>opencsv</artifactId>
+    <version>5.8</version>
+</dependency>
+
+<!-- Escribir/leer JSON con Jackson -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.13.4.2</version>
+</dependency>
+
+<!-- Para que Jackson entienda LocalDate -->
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+    <version>2.14.1</version>
+</dependency>
+
+Y en <properties>:
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+
+----------------------------------------------------------------
+CLASE MODELO (POJO) — Persona.java
+----------------------------------------------------------------
+
+Lo que necesita para funcionar con OpenCSV Y Jackson:
+  - Constructor VACÍO obligatorio (Jackson lo necesita)
+  - Constructor parametrizado
+  - Getters y setters para TODO
+  - equals/hashCode por id
+  - toString
+  - Anotaciones @CsvBindByName en cada atributo
+
+package modelos;
+
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
+import java.time.LocalDate;
+import java.util.Objects;
+
+public class Persona {
+
+    @CsvBindByName(column = "id")
+    private long id;
+
+    @CsvBindByName(column = "nombre")
+    private String nombre;
+
+    @CsvBindByName(column = "email")
+    private String email;
+
+    @CsvBindByName(column = "genero")
+    private String genero;
+
+    @CsvDate("dd-MM-yyyy")              // ← formato de fecha en el CSV
+    @CsvBindByName(column = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;  // ← tipo LocalDate, no String
+
+    @CsvBindByName(column = "jubilado")
+    private boolean jubilado;
+
+    @CsvBindByName(column = "ciudad")
+    private String ciudad;
+
+    public Persona() {}   // ← OBLIGATORIO para Jackson
+
+    public Persona(long id, String nombre, String email, String genero,
+                   LocalDate fechaNacimiento, boolean jubilado, String ciudad) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.genero = genero;
+        this.fechaNacimiento = fechaNacimiento;
+        this.jubilado = jubilado;
+        this.ciudad = ciudad;
+    }
+
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getGenero() { return genero; }
+    public void setGenero(String genero) { this.genero = genero; }
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(LocalDate f) { this.fechaNacimiento = f; }
+    public boolean isJubilado() { return jubilado; }
+    public void setJubilado(boolean jubilado) { this.jubilado = jubilado; }
+    public String getCiudad() { return ciudad; }
+    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Persona)) return false;
+        Persona p = (Persona) o;
+        return id == p.id;
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(id); }
+
+    @Override
+    public String toString() {
+        return "Persona{id=" + id + ", nombre=" + nombre + ", email=" + email
+             + ", genero=" + genero + ", fechaNacimiento=" + fechaNacimiento
+             + ", jubilado=" + jubilado + ", ciudad=" + ciudad + "}";
+    }
+}
+
+⚠ Los nombres en column = "..." deben coincidir EXACTAMENTE
+  con las cabeceras del CSV (mayúsculas, guiones bajos, etc.)
+
+⚠ Para boolean usa isJubilado() como getter, no getJubilado()
+  Jackson y OpenCSV lo esperan así
+
+
+----------------------------------------------------------------
+LEER CSV — LeerCSV.java
+----------------------------------------------------------------
+
+package ficheros;
+
+import com.opencsv.bean.CsvToBeanBuilder;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import modelos.Persona;
+
+public class LeerCSV {
+
+    public static List<Persona> leer(String ruta) throws IOException {
+        try (FileReader reader = new FileReader(ruta)) {
+            return new CsvToBeanBuilder<Persona>(reader)
+                    .withType(Persona.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build()
+                    .parse();
+        }
+    }
+}
+
+Cómo funciona:
+  - FileReader abre el fichero
+  - CsvToBeanBuilder lee cada línea y la convierte en un objeto Persona
+    usando las anotaciones @CsvBindByName
+  - withIgnoreLeadingWhiteSpace(true) evita errores por espacios
+  - try-with-resources cierra el fichero automáticamente al acabar
+  - El método lanza IOException → en el main hay que poner throws IOException
+
+Cómo llamarlo desde el main:
+  List<Persona> personas = LeerCSV.leer("personas.csv");
+
+
+----------------------------------------------------------------
+ESCRIBIR JSON — EscribirJSON.java
+----------------------------------------------------------------
+
+package ficheros;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import modelos.Persona;
+
+public class EscribirJSON {
+
+    public static void escribir(List<Persona> personas, String ruta) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(ruta), personas);
+    }
+}
+
+Cómo funciona línea a línea:
+  ObjectMapper mapper = new ObjectMapper();
+    → el objeto principal de Jackson, hace toda la serialización
+
+  mapper.registerModule(new JavaTimeModule());
+    → sin esto Jackson no sabe manejar LocalDate y lanza error
+
+  mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    → sin esto escribe la fecha como número (timestamp)
+    → con false escribe "1985-03-21" en formato legible
+
+  mapper.writerWithDefaultPrettyPrinter().writeValue(new File(ruta), personas);
+    → writerWithDefaultPrettyPrinter() → JSON indentado y legible
+    → writeValue() → escribe la lista en el fichero
+
+Cómo llamarlo desde el main:
+  EscribirJSON.escribir(jubiladas, "jubiladas.json");
+
+⚠ El fichero JSON se crea en la raíz del proyecto (donde está el pom.xml)
+⚠ Si el fichero ya existe lo sobreescribe
+
+
+----------------------------------------------------------------
+LEER FICHERO MANUALMENTE (sin OpenCSV)
+----------------------------------------------------------------
+
+Si el examen no pide OpenCSV puedes hacerlo con BufferedReader:
+
+public static List<Persona> leer(String ruta) {
+    List<Persona> lista = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        String linea;
+        br.readLine(); // saltar cabecera
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+            Persona p = new Persona(
+                Long.parseLong(partes[0].trim()),
+                partes[1].trim(),
+                partes[2].trim()
+                // ... etc según columnas
+            );
+            lista.add(p);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return lista;
+}
+
+⚠ Con este método tienes que parsear cada campo manualmente
+⚠ Las fechas hay que convertirlas: LocalDate.parse(partes[5].trim())
+  o con formatter si el formato no es yyyy-MM-dd
+
+
+----------------------------------------------------------------
+ESCRIBIR FICHERO MANUALMENTE (sin Jackson)
+----------------------------------------------------------------
+
+public static void escribir(Map<String, Integer> map, String ruta) {
+    try (FileWriter fw = new FileWriter(ruta)) {
+        for (Map.Entry<String, Integer> e : map.entrySet()) {
+            fw.write(e.getKey() + "," + e.getValue() + "\n");
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+⚠ FileWriter sobreescribe el fichero por defecto
+  new FileWriter(ruta, true) → modo append (añade al final)
+
+
+----------------------------------------------------------------
+API STREAM — PATRONES QUE MÁS CAEN
+----------------------------------------------------------------
+
+Los streams siguen siempre esta estructura:
+  lista.stream()
+       .operacionIntermedia()   // filter, map, sorted, limit...
+       .operacionIntermedia()   // se pueden encadenar
+       .operacionTerminal();    // collect, forEach, count, reduce...
+
+-- PATRÓN 1: filter + map + collect → Set o List --
+
+// Set de emails de personas en Los Angeles
+Set<String> correos = personas.stream()
+    .filter(p -> p.getCiudad().equals("Los Angeles"))
+    .map(Persona::getEmail)          // extrae solo el email
+    .collect(Collectors.toSet());    // → HashSet (sin orden)
+    // .collect(Collectors.toList()) → si quieres List
+
+-- PATRÓN 2: groupingBy + counting → Map<String, Long> --
+
+// Contar personas por género
+Map<String, Long> conteo = personas.stream()
+    .collect(Collectors.groupingBy(
+        Persona::getGenero,      // clave del map
+        Collectors.counting()    // valor = cuántos hay
+    ));
+// resultado: {"Female"=320, "Male"=280, ...}
+
+-- PATRÓN 3: groupingBy solo → Map<String, List<Persona>> --
+
+// Agrupar personas por género
+Map<String, List<Persona>> grupos = personas.stream()
+    .collect(Collectors.groupingBy(Persona::getGenero));
+// resultado: {"Female"=[Persona1, Persona2...], "Male"=[...]}
+
+-- PATRÓN 4: filter + filter + sorted + collect → List ordenada --
+
+// Jubiladas femeninas ordenadas por fecha de nacimiento
+List<Persona> jubiladas = personas.stream()
+    .filter(Persona::isJubilado)
+    .filter(p -> p.getGenero().equals("Female"))
+    .sorted(Comparator.comparing(Persona::getFechaNacimiento))
+    .collect(Collectors.toList());
+
+// Orden inverso:
+    .sorted(Comparator.comparing(Persona::getFechaNacimiento).reversed())
+
+-- PATRÓN 5: map + collect → cambiar tipo de colección --
+
+// Lista de nombres (de List<Persona> a List<String>)
+List<String> nombres = personas.stream()
+    .map(Persona::getNombre)
+    .collect(Collectors.toList());
+
+-- PATRÓN 6: filter + count → contar elementos --
+
+long mayoresDe25 = personas.stream()
+    .filter(p -> calcularEdad(p.getFechaNacimiento()) > 25)
+    .count();
+
+-- OTROS OPERADORES ÚTILES --
+
+.limit(10)                          // solo los primeros 10
+.distinct()                         // elimina duplicados
+.sorted()                           // orden natural
+.sorted(Comparator.comparing(...))  // orden por campo
+.map(String::toUpperCase)           // transformar cada elemento
+.anyMatch(p -> p.isJubilado())      // ¿alguno cumple? → boolean
+.allMatch(p -> p.isJubilado())      // ¿todos cumplen? → boolean
+.findFirst()                        // primer elemento → Optional
+
+
+----------------------------------------------------------------
+CALCULAR EDAD CON LOCALDATE (puede caer)
+----------------------------------------------------------------
+
+import java.time.LocalDate;
+import java.time.Period;
+
+public static int calcularEdad(LocalDate fechaNacimiento) {
+    return Period.between(fechaNacimiento, LocalDate.now()).getYears();
+}
+
+// Uso en stream:
+.filter(p -> Period.between(p.getFechaNacimiento(), LocalDate.now())
+                   .getYears() > 25)
+
+
+----------------------------------------------------------------
+CLASE PROGRAMA — ESTRUCTURA DEL MAIN
+----------------------------------------------------------------
+
+public class Programa {
+
+    public static void main(String[] args) throws IOException {
+
+        // 1. Leer datos
+        List<Persona> personas = LeerCSV.leer("personas.csv");
+
+        // 2. Operaciones Stream
+        System.out.println("Correos en Los Angeles:");
+        System.out.println(OperacionesStream.correosEnLosAngeles(personas));
+
+        System.out.println("\nConteo por género:");
+        System.out.println(OperacionesStream.contarPorGenero(personas));
+
+        System.out.println("\nAgrupados por género:");
+        System.out.println(OperacionesStream.agruparPorGenero(personas));
+
+        // 3. Generar lista filtrada
+        List<Persona> jubiladas =
+            OperacionesStream.jubiladasFemeninasOrdenadasPorFecha(personas);
+
+        System.out.println("\nJubiladas femeninas:");
+        jubiladas.forEach(System.out::println);
+
+        // 4. Escribir JSON
+        EscribirJSON.escribir(jubiladas, "jubiladas.json");
+        System.out.println("\nFichero generado correctamente.");
+    }
+}
+
+⚠ throws IOException en el main es necesario si LeerCSV
+  o EscribirJSON lanzan IOException
+
+
+----------------------------------------------------------------
+IMPORTS MÁS USADOS EN ESTE BLOQUE
+----------------------------------------------------------------
+
+// OpenCSV
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+// Jackson
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+// Ficheros
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+// Fechas
+import java.time.LocalDate;
+import java.time.Period;
+
+// Stream y colecciones
+import java.util.List;
+import java.util.Set;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.Comparator;
+
+
+----------------------------------------------------------------
+ERRORES TÍPICOS A EVITAR
+----------------------------------------------------------------
+
+⚠ Olvidar el constructor vacío en la clase modelo
+  → Jackson no puede crear el objeto y lanza error
+
+⚠ @CsvDate solo va en atributos LocalDate, no en Strings
+
+⚠ El nombre en @CsvBindByName debe coincidir exactamente
+  con la cabecera del CSV (copia y pega del CSV para estar seguro)
+
+⚠ Olvidar registerModule(new JavaTimeModule()) en EscribirJSON
+  → Jackson lanza error con LocalDate
+
+⚠ Olvidar WRITE_DATES_AS_TIMESTAMPS = false
+  → Las fechas salen como [2026, 3, 21] en vez de "2026-03-21"
+
+⚠ El fichero CSV debe estar en la raíz del proyecto (donde pom.xml)
+  para que la ruta "personas.csv" funcione sin ruta absoluta
+
+⚠ throws IOException hay que ponerlo en el main si los métodos
+  de ficheros lo lanzan, o envolver en try-catch
+
+================================================================
