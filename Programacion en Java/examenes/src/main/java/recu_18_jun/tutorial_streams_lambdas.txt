@@ -1,0 +1,294 @@
+================================================================
+TUTORIAL — API STREAM Y LAMBDAS EN JAVA
+================================================================
+
+
+----------------------------------------------------------------
+1. QUÉ ES UNA LAMBDA  ( -> )
+----------------------------------------------------------------
+
+Una lambda es una función pequeña sin nombre que se escribe
+directamente donde se necesita.
+
+Estructura:
+    (parámetro) -> lo que hace
+
+Ejemplos leyéndolas en voz alta:
+
+    p -> p.getCiudad().equals("Los Angeles")
+    "para cada p, comprueba si su ciudad es Los Angeles"
+
+    p -> p.getEmail()
+    "para cada p, dame su email"
+
+    (p1, p2) -> p1.getNombre().compareTo(p2.getNombre())
+    "para cada par p1 y p2, compáralos por nombre"
+
+El parámetro (p, v, x...) es como el elemento del for-each,
+puedes llamarlo como quieras, normalmente una letra relacionada
+con el tipo (p de Persona, v de Vuelo, etc.)
+
+
+----------------------------------------------------------------
+2. QUÉ ES UNA REFERENCIA A MÉTODO  ( :: )
+----------------------------------------------------------------
+
+Es una lambda todavía más corta cuando solo llamas a un método.
+
+    Persona::getEmail       →  lo mismo que  p -> p.getEmail()
+    Persona::isJubilado     →  lo mismo que  p -> p.isJubilado()
+    System.out::println     →  lo mismo que  p -> System.out.println(p)
+
+Regla para leerlas:
+    Clase::metodo   →   "para cada elemento, llama a ese método"
+
+Son exactamente intercambiables. Si ves :: y no la entiendes,
+sustitúyela mentalmente por  p -> p.elMetodo()
+
+
+----------------------------------------------------------------
+3. QUÉ ES UN STREAM
+----------------------------------------------------------------
+
+Un Stream es una cadena de operaciones sobre una lista.
+Se lee de arriba a abajo, como una receta:
+
+    personas.stream()           // toma la lista de personas
+        .filter(...)            // quédate solo con algunas
+        .map(...)               // transforma cada elemento
+        .sorted(...)            // ordénalas
+        .collect(...)           // recoge el resultado
+
+Cada paso recibe lo que salió del paso anterior.
+Ningún paso modifica la lista original.
+
+Operaciones INTERMEDIAS (devuelven otro stream, se pueden encadenar):
+    .filter()       filtrar elementos
+    .map()          transformar cada elemento
+    .sorted()       ordenar
+    .limit(n)       quedarse solo con los primeros n
+    .distinct()     eliminar duplicados
+
+Operaciones TERMINALES (producen el resultado final):
+    .collect()      convierte a List, Set o Map
+    .forEach()      ejecuta algo con cada elemento
+    .count()        cuenta cuántos hay
+    .findFirst()    devuelve el primero
+
+
+----------------------------------------------------------------
+4. FILTER — filtrar elementos
+----------------------------------------------------------------
+
+Equivalente a un IF dentro de un bucle.
+
+    personas.stream()
+        .filter(p -> p.getCiudad().equals("Los Angeles"))
+
+Léelo así:
+    "de todas las personas, quédate solo con las de Los Angeles"
+
+Equivalente sin stream:
+    for (Persona p : personas) {
+        if (p.getCiudad().equals("Los Angeles")) {
+            // estas se quedan
+        }
+    }
+
+Puedes encadenar varios filter:
+    .filter(p -> p.isJubilado())
+    .filter(p -> p.getGenero().equals("Female"))
+
+    "quédate con las que estén jubiladas Y sean femeninas"
+
+
+----------------------------------------------------------------
+5. MAP — transformar cada elemento
+----------------------------------------------------------------
+
+Cambia cada elemento por otra cosa.
+
+    .map(p -> p.getEmail())
+    .map(Persona::getEmail)     // lo mismo con referencia a método
+
+Léelo así:
+    "de cada persona, coge solo su email"
+    El stream pasa de tener Personas a tener Strings (emails)
+
+Equivalente sin stream:
+    for (Persona p : personas) {
+        lista.add(p.getEmail());
+    }
+
+Otros ejemplos:
+    .map(p -> p.getNombre().toUpperCase())
+    "convierte cada nombre a mayúsculas"
+
+    .map(p -> p.getEdad() * 2)
+    "multiplica cada edad por 2"
+
+
+----------------------------------------------------------------
+6. SORTED — ordenar
+----------------------------------------------------------------
+
+    .sorted()
+    "ordena por orden natural (requiere Comparable en la clase)"
+
+    .sorted(Comparator.comparing(Persona::getFechaNacimiento))
+    "ordena por fecha de nacimiento"
+
+    .sorted(Comparator.comparing(Persona::getNombre).reversed())
+    "ordena por nombre al revés (Z→A)"
+
+Equivalente sin stream:
+    Collections.sort(lista, (p1, p2) ->
+        p1.getFechaNacimiento().compareTo(p2.getFechaNacimiento()));
+
+
+----------------------------------------------------------------
+7. COLLECT — recoger el resultado
+----------------------------------------------------------------
+
+Siempre va al final. Convierte el stream en una colección.
+
+    .collect(Collectors.toList())
+    → devuelve List
+
+    .collect(Collectors.toSet())
+    → devuelve Set (sin duplicados)
+
+    .collect(Collectors.groupingBy(Persona::getGenero))
+    → devuelve Map<String, List<Persona>>
+      agrupa las personas por género
+
+    .collect(Collectors.groupingBy(Persona::getGenero, Collectors.counting()))
+    → devuelve Map<String, Long>
+      cuenta cuántas personas hay por género
+
+
+----------------------------------------------------------------
+8. LOS 4 PATRONES QUE CAEN EN EL EXAMEN
+----------------------------------------------------------------
+
+-- PATRÓN 1: filtrar y sacar un campo → Set o List --
+
+Set<String> correos = personas.stream()
+    .filter(p -> p.getCiudad().equals("Los Angeles"))
+    .map(p -> p.getEmail())
+    .collect(Collectors.toSet());
+
+Léelo:
+    "toma las personas
+     → quédate con las de Los Angeles
+     → coge su email
+     → mételos en un Set"
+
+
+-- PATRÓN 2: contar por categoría → Map<String, Long> --
+
+Map<String, Long> conteo = personas.stream()
+    .collect(Collectors.groupingBy(
+        p -> p.getGenero(),
+        Collectors.counting()
+    ));
+
+Léelo:
+    "agrupa las personas por género
+     y cuenta cuántas hay en cada grupo"
+
+Resultado: {"Female"=320, "Male"=280}
+
+
+-- PATRÓN 3: agrupar por categoría → Map<String, List<Persona>> --
+
+Map<String, List<Persona>> grupos = personas.stream()
+    .collect(Collectors.groupingBy(p -> p.getGenero()));
+
+Léelo:
+    "agrupa las personas por género
+     guardando la lista completa de cada grupo"
+
+Resultado: {"Female"=[Persona1, Persona2...], "Male"=[...]}
+
+
+-- PATRÓN 4: filtrar + ordenar → List --
+
+List<Persona> jubiladas = personas.stream()
+    .filter(p -> p.isJubilado())
+    .filter(p -> p.getGenero().equals("Female"))
+    .sorted(Comparator.comparing(p -> p.getFechaNacimiento()))
+    .collect(Collectors.toList());
+
+Léelo:
+    "toma las personas
+     → quédate con las jubiladas
+     → de esas, solo las femeninas
+     → ordénalas por fecha de nacimiento
+     → mételas en una List"
+
+
+----------------------------------------------------------------
+9. FOREACH — recorrer sin collect
+----------------------------------------------------------------
+
+Cuando no necesitas guardar el resultado, solo hacer algo:
+
+    personas.forEach(p -> System.out.println(p));
+
+    // con referencia a método (lo mismo):
+    personas.forEach(System.out::println);
+
+Léelo:
+    "para cada persona, imprímela"
+
+Equivalente sin stream:
+    for (Persona p : personas) {
+        System.out.println(p);
+    }
+
+
+----------------------------------------------------------------
+10. RESUMEN VISUAL — cómo leer un stream completo
+----------------------------------------------------------------
+
+personas  .stream()  .filter(...)  .map(...)  .sorted(...)  .collect(...)
+   │           │          │            │            │              │
+   │       convierte    filtra      transforma   ordena        recoge
+lista      a stream   (como if)   cada elemento resultado    resultado
+
+
+Ejemplo completo leído en voz alta:
+
+personas.stream()
+    .filter(p -> p.isJubilado())
+    .filter(p -> p.getGenero().equals("Female"))
+    .map(p -> p.getEmail())
+    .sorted()
+    .collect(Collectors.toList());
+
+"De todas las personas,
+ quédate con las jubiladas,
+ de esas solo las femeninas,
+ coge su email,
+ ordénalos alfabéticamente,
+ y guárdalos en una lista."
+
+
+----------------------------------------------------------------
+11. TRUCO PARA EL EXAMEN
+----------------------------------------------------------------
+
+Si no recuerdas cómo hacer algo con Stream, piensa primero
+cómo lo harías con un bucle normal, y luego tradúcelo:
+
+    BUCLE                          STREAM
+    -------------------------------------------------------
+    for (Persona p : lista)     →  lista.stream()
+    if (condicion)              →  .filter(p -> condicion)
+    variable = p.getCampo()     →  .map(p -> p.getCampo())
+    Collections.sort(...)       →  .sorted(...)
+    lista.add(resultado)        →  .collect(Collectors.toList())
+    map.put(clave, valor)       →  .collect(Collectors.groupingBy(...))
+
+================================================================

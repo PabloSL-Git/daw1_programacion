@@ -79,6 +79,12 @@ public class Vuelo implements Comparable<Vuelo> {
         return pasajeros.remove(pasajero);
     }
 
+    public Set<Pasajero> getPasajeros() {
+        return pasajeros;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 3;
