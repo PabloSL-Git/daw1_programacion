@@ -1,0 +1,101 @@
+IES MAR DE ALBORÁN – ESTEPONA – 19 febrero 2026
+Evaluación Estructuras de Datos – Programación – 1º DAW
+
+NOMBRE Y APELLIDOS: _______________________________________________
+
+Crea un nuevo proyecto Maven, llamado ext5+tunombre, con un paquete llamado alboran.
+
+EJ1.- Crea la clase Pasajero, con atributos encapsulados: id (final), NIF (final), nombre y email.
+Incluye constructores por defecto y parametrizado, toString, equals, hashcode y orden natural por id. El
+email debe contener exactamente un carácter '@' y mínimo un carácter '.' en al menos dos posiciones
+posteriores a la '@'.
+
+EJ2.- Crea la clase Vuelo, con atributos encapsulados: código de vuelo (final), ciudad origen, ciudad
+destino, duración en minutos y un conjunto de pasajeros únicos (final).
+Solo existe un constructor parametrizado que no recibe la lista de pasajeros porque inicialmente los
+vuelos se crean con la lista de pasajeros vacía. Las ciudades de origen y destino deben ser diferentes y la
+duración mayor que 45 minutos. La clase debe proporcionar métodos para añadir y borrar pasajeros al
+vuelo. Incluye equals, hashcode y orden natural por código de vuelo.
+
+EJ3.- En una clase Programa, con el método main, crea una lista de cinco vuelos con los datos que tú
+quieras. Añade pasajeros a los vuelos con datos inventados. Imprime la lista de vuelos usando un
+foreach.
+
+En distintos métodos de clase, dentro de la clase Programa, pasando la lista de vuelos, hay que obtener
+la siguiente información:
+  - Un conjunto de vuelos únicos.
+  - Devolver una estructura de datos donde para cada ciudad de destino se indique el número de
+    pasajeros que vuelan a ese destino, de entre todos los vuelos de la lista.
+  - Devolver la misma información que el apartado anterior pero garantizando que las ciudades
+    contenidas en la estructura de datos están ordenadas alfabéticamente.
+  - Generar una estructura de datos para asociar el código de vuelo a un conjunto de pasajeros de
+    ese vuelo.
+  - Borrar todos los vuelos que viajan a una ciudad de destino, que se pasa como parámetro, usando
+    iteradores.
+  - Ordenar la lista de vuelos según su orden natural.
+  - Ordenar la lista de vuelos por ciudad de origen.
+  - Realizar búsqueda binaria de vuelos según su id, devolviendo la posición en la lista en la que se
+    encuentra o -1 si no está.
+
+En el método main, prueba cada método de los anteriores, imprimiendo por consola la información
+necesaria para la depuración.
+
+Sube el proyecto en formato ZIP. Asegúrate de que el archivo contiene los archivos
+correctos y se puede descargar y abrir correctamente.
+
+================================================================================
+
+EXAMEN PRÁCTICO DE PROGRAMACIÓN
+Interfaces gráficas - Ficheros - API Stream
+30 abril de 2026
+
+Crea un nuevo proyecto Maven, llamado ex30abr+tunombre. Incluye los
+siguientes paquetes: modelos, ficheros, gui, apistream.
+
+  - Procede a colocar en la raíz del proyecto el fichero "personas.csv", adjunto en la tarea.
+
+  - La clase Persona estará en el paquete modelos. Es una clase POJO que implementa equals y
+    hashcode por id y el atributo fecha de nacimiento debe ser de tipo LocalDate. Esta clase sirve
+    para mapear los objetos del fichero CSV de la tarea.
+
+  - En el paquete gui crea un JFrame con un botón "Ejecutar" y un ComboBox con cuatro opciones:
+    "salir", "leerCSV" para leer el fichero, "generarJSON" para generar un fichero en este formato
+    y la última opción desplegable es "API Stream". El botón Ejecutar procede a ejecutar la opción
+    seleccionada por el usuario en las opciones desplegables.
+
+  - En el paquete ficheros, crea una clase llamada LeerCSV, con un método de clase para leer el
+    fichero adjunto y devolver una lista de objetos de tipo Persona. Puedes usar OpenCSV o hacer
+    la lectura manualmente. También incluye una clase, llamada EscribirJSON, con un método de
+    clase.
+
+  - En el paquete apistream, dentro de una clase llamada OperacionesStream, sitúa los métodos
+    estáticos necesarios que se piden en el ejercicio y hacen uso de API Stream.
+
+La funcionalidad de cada opción se describe a continuación.
+
+  - salir: pregunta mediante JOptionPane si estás seguro de querer salir, en caso afirmativo cierra
+    el programa.
+
+  - leerCSV, debe:
+      o Leer el fichero adjunto y devolver una lista de objetos de tipo Persona. Puedes usar
+        OpenCSV o hacer la lectura manualmente. Para ello usa una clase LeerCSV con un
+        método de clase para esta tarea.
+      o Generar un JDialog modal con un JTable que muestre solamente el correo y el nombre
+        de aquellas personas mayores de 25 años. Para obtener esta lista usa API Stream.
+        Además este JDialog tendrá un botón "Cerrar" para volver al JFrame principal. El
+        JDialog estará en el paquete gui.
+
+  - generarJSON, debe:
+      o Leer el fichero CSV adjunto y cargarlo en una lista de personas.
+      o Generar una lista con aquellas personas jubiladas de género femenino ordenadas por
+        fecha de nacimiento, para obtener esta lista usa API Stream.
+      o Guardar esta lista en un fichero JSON, en la raíz del proyecto. El método para generar
+        el fichero debe estar en la clase EscribirJSON del paquete ficheros.
+
+  - Usa la clase OperacionesStream, se deben obtener los siguientes datos, desde la lista de
+    personas, y mostrarlos por consola:
+      o Un set de correos de aquellas personas que viven en Los Ángeles.
+      o Un map que cuente las personas por género.
+      o Un map con la lista de personas por género.
+
+Sube el proyecto con las modificaciones en formato ZIP y realiza la entrega de la tarea.
