@@ -152,7 +152,7 @@ public class Programa {
      public static Map<Integer, Set<Pasajero>> pasajerosPorCodigoVuelo(List<Vuelo> vuelos) {
           Map<Integer, Set<Pasajero>> vuelosPasajeros = new HashMap<>();
           for (Vuelo vuelo : vuelos) {
-               vuelosPasajeros.put(vuelo.getCodigoVuelo(), vuelo.getPasajero());
+               vuelosPasajeros.put(vuelo.getCodigoVuelo(), vuelo.getPasajeros());
           }
           return vuelosPasajeros;
      }
