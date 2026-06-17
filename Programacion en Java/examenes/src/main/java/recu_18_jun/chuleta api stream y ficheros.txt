@@ -10,15 +10,15 @@ ESTRUCTURA TÍPICA DEL PROYECTO MAVEN
 
 src/main/java/
   modelos/
-    Persona.java        ← POJO con anotaciones OpenCSV
+    Persona.java            ← POJO con anotaciones OpenCSV
   ficheros/
-    LeerCSV.java        ← lee el CSV y devuelve List<Persona>
-    EscribirJSON.java   ← escribe una lista a fichero JSON
+    LeerCSV.java            ← lee el CSV y devuelve List<Persona>
+    EscribirJSON.java       ← escribe una lista a fichero JSON
   apistream/
     OperacionesStream.java  ← métodos estáticos con Stream
-  Programa.java         ← main, prueba todo
-personas.csv            ← en la raíz del proyecto
-salida.json             ← se genera en la raíz del proyecto
+  Programa.java             ← main, prueba todo
+personas.csv                ← en la raíz del proyecto
+salida.json                 ← se genera en la raíz del proyecto
 
 
 ----------------------------------------------------------------
@@ -79,6 +79,9 @@ public class Persona {
     @CsvBindByName(column = "nombre")
     private String nombre;
 
+    @CsvBindByName(column = "apellido")
+    private String apellido;
+
     @CsvBindByName(column = "email")
     private String email;
 
@@ -97,10 +100,12 @@ public class Persona {
 
     public Persona() {}   // ← OBLIGATORIO para Jackson
 
-    public Persona(long id, String nombre, String email, String genero,
-                   LocalDate fechaNacimiento, boolean jubilado, String ciudad) {
+    public Persona(long id, String nombre, String apellido, String email,
+                   String genero, LocalDate fechaNacimiento,
+                   boolean jubilado, String ciudad) {
         this.id = id;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.email = email;
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
@@ -112,6 +117,8 @@ public class Persona {
     public void setId(long id) { this.id = id; }
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getApellido() { return apellido; }
+    public void setApellido(String apellido) { this.apellido = apellido; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getGenero() { return genero; }
@@ -136,17 +143,20 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Persona{id=" + id + ", nombre=" + nombre + ", email=" + email
+        return "Persona{id=" + id + ", nombre=" + nombre
+             + ", apellido=" + apellido + ", email=" + email
              + ", genero=" + genero + ", fechaNacimiento=" + fechaNacimiento
              + ", jubilado=" + jubilado + ", ciudad=" + ciudad + "}";
     }
 }
 
 ⚠ Los nombres en column = "..." deben coincidir EXACTAMENTE
-  con las cabeceras del CSV (mayúsculas, guiones bajos, etc.)
+  con las cabeceras del CSV (copia y pega del CSV para estar seguro)
 
 ⚠ Para boolean usa isJubilado() como getter, no getJubilado()
   Jackson y OpenCSV lo esperan así
+
+⚠ @CsvDate solo va en atributos LocalDate, no en Strings
 
 
 ----------------------------------------------------------------
@@ -180,10 +190,15 @@ Cómo funciona:
     usando las anotaciones @CsvBindByName
   - withIgnoreLeadingWhiteSpace(true) evita errores por espacios
   - try-with-resources cierra el fichero automáticamente al acabar
-  - El método lanza IOException → en el main hay que poner throws IOException
+  - El método lanza IOException → en el main se envuelve en try-catch
 
 Cómo llamarlo desde el main:
-  List<Persona> personas = LeerCSV.leer("personas.csv");
+  List<Persona> personas = null;
+  try {
+      personas = LeerCSV.leer("personas.csv");
+  } catch (IOException e) {
+      System.out.println("Error al leer el fichero: " + e.getMessage());
+  }
 
 
 ----------------------------------------------------------------
@@ -218,7 +233,7 @@ Cómo funciona línea a línea:
     → sin esto Jackson no sabe manejar LocalDate y lanza error
 
   mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    → sin esto escribe la fecha como número (timestamp)
+    → sin esto escribe la fecha como número [2026,3,21]
     → con false escribe "1985-03-21" en formato legible
 
   mapper.writerWithDefaultPrettyPrinter().writeValue(new File(ruta), personas);
@@ -226,7 +241,11 @@ Cómo funciona línea a línea:
     → writeValue() → escribe la lista en el fichero
 
 Cómo llamarlo desde el main:
-  EscribirJSON.escribir(jubiladas, "jubiladas.json");
+  try {
+      EscribirJSON.escribir(jubiladas, "jubiladas.json");
+  } catch (IOException e) {
+      System.out.println("Error al escribir el fichero: " + e.getMessage());
+  }
 
 ⚠ El fichero JSON se crea en la raíz del proyecto (donde está el pom.xml)
 ⚠ Si el fichero ya existe lo sobreescribe
@@ -249,7 +268,7 @@ public static List<Persona> leer(String ruta) {
                 Long.parseLong(partes[0].trim()),
                 partes[1].trim(),
                 partes[2].trim()
-                // ... etc según columnas
+                // ... etc según columnas del CSV
             );
             lista.add(p);
         }
@@ -259,9 +278,8 @@ public static List<Persona> leer(String ruta) {
     return lista;
 }
 
-⚠ Con este método tienes que parsear cada campo manualmente
+⚠ Tienes que parsear cada campo manualmente
 ⚠ Las fechas hay que convertirlas: LocalDate.parse(partes[5].trim())
-  o con formatter si el formato no es yyyy-MM-dd
 
 
 ----------------------------------------------------------------
@@ -290,69 +308,76 @@ Los streams siguen siempre esta estructura:
   lista.stream()
        .operacionIntermedia()   // filter, map, sorted, limit...
        .operacionIntermedia()   // se pueden encadenar
-       .operacionTerminal();    // collect, forEach, count, reduce...
+       .operacionTerminal();    // collect, forEach, count...
 
--- PATRÓN 1: filter + map + collect → Set o List --
+-- PATRÓN 1: filter + map + collect → Set de Strings --
 
-// Set de emails de personas en Los Angeles
 Set<String> correos = personas.stream()
     .filter(p -> p.getCiudad().equals("Los Angeles"))
-    .map(Persona::getEmail)          // extrae solo el email
-    .collect(Collectors.toSet());    // → HashSet (sin orden)
-    // .collect(Collectors.toList()) → si quieres List
+    .map(p -> p.getEmail())
+    .collect(Collectors.toSet());
+
+Léelo: "quédate con las de Los Angeles → coge su email → mete en Set"
+
 
 -- PATRÓN 2: groupingBy + counting → Map<String, Long> --
 
-// Contar personas por género
 Map<String, Long> conteo = personas.stream()
     .collect(Collectors.groupingBy(
-        Persona::getGenero,      // clave del map
-        Collectors.counting()    // valor = cuántos hay
+        p -> p.getGenero(),
+        Collectors.counting()
     ));
-// resultado: {"Female"=320, "Male"=280, ...}
+
+Léelo: "agrupa por género y cuenta cuántas hay en cada grupo"
+Resultado: {"Female"=320, "Male"=280}
+
 
 -- PATRÓN 3: groupingBy solo → Map<String, List<Persona>> --
 
-// Agrupar personas por género
 Map<String, List<Persona>> grupos = personas.stream()
-    .collect(Collectors.groupingBy(Persona::getGenero));
-// resultado: {"Female"=[Persona1, Persona2...], "Male"=[...]}
+    .collect(Collectors.groupingBy(p -> p.getGenero()));
+
+Léelo: "agrupa por género guardando la lista completa de cada grupo"
+Resultado: {"Female"=[Persona1, Persona2...], "Male"=[...]}
+
 
 -- PATRÓN 4: filter + filter + sorted + collect → List ordenada --
 
-// Jubiladas femeninas ordenadas por fecha de nacimiento
 List<Persona> jubiladas = personas.stream()
-    .filter(Persona::isJubilado)
+    .filter(p -> p.isJubilado())
     .filter(p -> p.getGenero().equals("Female"))
-    .sorted(Comparator.comparing(Persona::getFechaNacimiento))
+    .sorted(Comparator.comparing(p -> p.getFechaNacimiento()))
     .collect(Collectors.toList());
 
-// Orden inverso:
-    .sorted(Comparator.comparing(Persona::getFechaNacimiento).reversed())
+Léelo: "jubiladas → solo femeninas → ordena por fecha → a lista"
 
--- PATRÓN 5: map + collect → cambiar tipo de colección --
+Orden inverso:
+    .sorted(Comparator.comparing(p -> p.getFechaNacimiento()).reversed())
 
-// Lista de nombres (de List<Persona> a List<String>)
+
+-- PATRÓN 5: map + collect → extraer campo a lista --
+
 List<String> nombres = personas.stream()
-    .map(Persona::getNombre)
+    .map(p -> p.getNombre())
     .collect(Collectors.toList());
+
 
 -- PATRÓN 6: filter + count → contar elementos --
 
 long mayoresDe25 = personas.stream()
-    .filter(p -> calcularEdad(p.getFechaNacimiento()) > 25)
+    .filter(p -> p.getEdad() > 25)
     .count();
+
 
 -- OTROS OPERADORES ÚTILES --
 
-.limit(10)                          // solo los primeros 10
-.distinct()                         // elimina duplicados
-.sorted()                           // orden natural
-.sorted(Comparator.comparing(...))  // orden por campo
-.map(String::toUpperCase)           // transformar cada elemento
-.anyMatch(p -> p.isJubilado())      // ¿alguno cumple? → boolean
-.allMatch(p -> p.isJubilado())      // ¿todos cumplen? → boolean
-.findFirst()                        // primer elemento → Optional
+.limit(10)                                    // solo los primeros 10
+.distinct()                                   // elimina duplicados
+.sorted()                                     // orden natural
+.sorted(Comparator.comparing(p -> p.getNombre()))  // orden por campo
+.anyMatch(p -> p.isJubilado())                // ¿alguno cumple? → boolean
+.allMatch(p -> p.isJubilado())                // ¿todos cumplen? → boolean
+.findFirst()                                  // primer elemento
 
 
 ----------------------------------------------------------------
@@ -377,10 +402,15 @@ CLASE PROGRAMA — ESTRUCTURA DEL MAIN
 
 public class Programa {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        // 1. Leer datos
-        List<Persona> personas = LeerCSV.leer("personas.csv");
+        // 1. Leer CSV con try-catch
+        List<Persona> personas = null;
+        try {
+            personas = LeerCSV.leer("personas.csv");
+        } catch (IOException e) {
+            System.out.println("Error al leer el fichero: " + e.getMessage());
+        }
 
         // 2. Operaciones Stream
         System.out.println("Correos en Los Angeles:");
@@ -397,16 +427,20 @@ public class Programa {
             OperacionesStream.jubiladasFemeninasOrdenadasPorFecha(personas);
 
         System.out.println("\nJubiladas femeninas:");
-        jubiladas.forEach(System.out::println);
+        jubiladas.forEach(p -> System.out.println(p));
 
-        // 4. Escribir JSON
-        EscribirJSON.escribir(jubiladas, "jubiladas.json");
-        System.out.println("\nFichero generado correctamente.");
+        // 4. Escribir JSON con try-catch
+        try {
+            EscribirJSON.escribir(jubiladas, "jubiladas.json");
+            System.out.println("\nFichero generado correctamente.");
+        } catch (IOException e) {
+            System.out.println("Error al escribir el fichero: " + e.getMessage());
+        }
     }
 }
 
-⚠ throws IOException en el main es necesario si LeerCSV
-  o EscribirJSON lanzan IOException
+⚠ personas se declara fuera del try para poder usarla después
+⚠ Cada llamada a ficheros va en su propio try-catch
 
 
 ----------------------------------------------------------------
@@ -438,6 +472,7 @@ import java.time.Period;
 import java.util.List;
 import java.util.Set;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.Comparator;
 
@@ -463,7 +498,7 @@ ERRORES TÍPICOS A EVITAR
 ⚠ El fichero CSV debe estar en la raíz del proyecto (donde pom.xml)
   para que la ruta "personas.csv" funcione sin ruta absoluta
 
-⚠ throws IOException hay que ponerlo en el main si los métodos
-  de ficheros lo lanzan, o envolver en try-catch
+⚠ Declarar personas dentro del try-catch
+  → no podrás usarla fuera, declárala antes como null
 
 ================================================================

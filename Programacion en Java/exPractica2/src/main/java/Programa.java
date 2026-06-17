@@ -7,8 +7,13 @@ import modelos.Persona;
 
 public class Programa {
 
-    public static void main(String[] args) throws IOException {
-        List<Persona> personas = LeerCSV.leer("personas.csv");
+    public static void main(String[] args) {
+        List<Persona> personas = null;
+        try {
+            personas = LeerCSV.leer("personas.csv");
+        } catch (IOException e) {
+            System.out.println("Error al leer el fichero: " + e.getMessage());
+        }
 
         System.out.println("Correos en Los Angeles:");
         System.out.println(OperacionesStream.correosEnLosAngeles(personas));
@@ -21,9 +26,13 @@ public class Programa {
 
         List<Persona> jubiladas = OperacionesStream.jubiladasFemeninasOrdenadasPorFecha(personas);
         System.out.println("\nJubiladas femeninas ordenadas por fecha de nacimiento:");
-        jubiladas.forEach(System.out::println);
+        jubiladas.forEach(p -> System.out.println(p));
 
-        EscribirJSON.escribir(jubiladas, "jubiladas.json");
+        try {
+            EscribirJSON.escribir(jubiladas, "jubiladas.json");
+        } catch (IOException e) {
+            System.out.println("Error al escribir el fichero: " + e.getMessage());
+        }
         System.out.println("\nFichero jubiladas.json generado correctamente.");
     }
 }

@@ -12,25 +12,25 @@ public class OperacionesStream {
     public static Set<String> correosEnLosAngeles(List<Persona> personas) {
         return personas.stream()
                 .filter(p -> p.getCiudad().equals("Los Angeles"))
-                .map(Persona::getEmail)
+                .map(p -> p.getEmail())
                 .collect(Collectors.toSet());
     }
 
     public static Map<String, Long> contarPorGenero(List<Persona> personas) {
         return personas.stream()
-                .collect(Collectors.groupingBy(Persona::getGenero, Collectors.counting()));
+                .collect(Collectors.groupingBy(p -> p.getGenero(), Collectors.counting()));
     }
 
     public static Map<String, List<Persona>> agruparPorGenero(List<Persona> personas) {
         return personas.stream()
-                .collect(Collectors.groupingBy(Persona::getGenero));
+                .collect(Collectors.groupingBy(p -> p.getGenero()));
     }
 
     public static List<Persona> jubiladasFemeninasOrdenadasPorFecha(List<Persona> personas) {
         return personas.stream()
-                .filter(Persona::isJubilado)
+                .filter(p -> p.isJubilado())
                 .filter(p -> p.getGenero().equals("Female"))
-                .sorted(Comparator.comparing(Persona::getFechaNacimiento))
+                .sorted(Comparator.comparing(p -> p.getFechaNacimiento()))
                 .collect(Collectors.toList());
     }
 }
