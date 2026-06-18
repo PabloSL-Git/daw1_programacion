@@ -1,15 +1,11 @@
 package ficheros;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import modelos.Persona;
 
 public class EscribirCSV {
-
     public static void escribir(List<Persona> personas, String ruta) {
         try (FileWriter fw = new FileWriter(ruta)) {
             fw.write("id,nombre,apellido,email,genero,fecha_nacimiento,jubilado,ciudad\n");

@@ -1,0 +1,565 @@
+================================================================
+CHULETA JAVA — COLECCIONES + STREAM API
+================================================================
+
+
+================================================================
+1. ARRAYLIST
+================================================================
+
+--- CREAR Y AÑADIR ---
+
+List<String> lista = new ArrayList<>();
+lista.add("Nolan");            // añade al final
+lista.add(0, "Cameron");       // añade en posición 0
+lista.addAll(otraLista);       // añade otra lista entera
+
+--- ACCEDER Y MODIFICAR ---
+
+lista.get(0);                  // obtener por índice
+lista.set(0, "Lynch");         // reemplazar en índice
+lista.size();                  // número de elementos
+lista.isEmpty();               // true si vacía
+lista.contains("Nolan");       // true/false
+lista.indexOf("Nolan");        // posición del elemento (-1 si no existe)
+lista.lastIndexOf("Nolan");    // última posición
+lista.subList(0, 5);           // elementos del 0 al 4 (sin incluir 5)
+lista.toArray();               // convertir a array
+
+--- ELIMINAR ---
+
+lista.remove(0);               // elimina por índice
+lista.remove("Nolan");         // elimina por valor
+lista.clear();                 // vacía la lista
+
+--- ELIMINAR CON ITERATOR (seguro dentro de un bucle) ---
+
+Iterator<String> it = lista.iterator();
+while (it.hasNext()) {
+    if (it.next().equals("Nolan"))
+        it.remove();           // seguro — no lanza ConcurrentModificationException
+}
+// NUNCA uses lista.remove() dentro de un for-each normal
+
+
+================================================================
+2. SET
+================================================================
+
+--- LAS TRES IMPLEMENTACIONES ---
+
+Set<String> set = new HashSet<>();        // sin orden, el más rápido
+Set<String> set = new TreeSet<>();        // ordenado alfabéticamente
+Set<String> set = new LinkedHashSet<>();  // mantiene orden de inserción
+
+Regla rápida:
+  ¿Solo necesitas unicidad?          → HashSet
+  ¿Necesitas que salga ordenado?     → TreeSet
+  ¿Necesitas el orden que insertas?  → LinkedHashSet
+
+--- OPERACIONES PRINCIPALES ---
+
+set.add("Nolan");          // añade (ignora si ya existe)
+set.remove("Nolan");       // elimina
+set.contains("Nolan");     // true/false
+set.size();                // número de elementos
+set.isEmpty();             // true si vacío
+set.clear();               // vacía el set
+
+// Convertir set a lista
+List<String> lista = new ArrayList<>(set);
+
+--- OPERACIONES DE CONJUNTOS ---
+
+Set<String> a = new HashSet<>(List.of("A","B","C"));
+Set<String> b = new HashSet<>(List.of("B","C","D"));
+
+a.addAll(b);       // UNIÓN        → {A, B, C, D}
+a.retainAll(b);    // INTERSECCIÓN → {B, C}
+a.removeAll(b);    // DIFERENCIA   → {A}
+
+
+================================================================
+3. MAP
+================================================================
+
+--- LAS TRES IMPLEMENTACIONES ---
+
+Map<String,Integer> map = new HashMap<>();        // sin orden, el más rápido
+Map<String,Integer> map = new TreeMap<>();         // claves ordenadas alfabéticamente
+Map<String,Integer> map = new LinkedHashMap<>();   // mantiene orden de inserción
+
+Regla rápida:
+  ¿Solo necesitas clave-valor?         → HashMap
+  ¿Necesitas claves ordenadas?         → TreeMap  ← usar en groupingBy ordenado
+  ¿Necesitas el orden que insertas?    → LinkedHashMap
+
+--- OPERACIONES PRINCIPALES ---
+
+map.put("Azul", 3);             // añadir o sobreescribir
+map.get("Azul");                // obtener valor → 3 (null si no existe)
+map.getOrDefault("Rojo", 0);    // obtener con valor por defecto si no existe
+map.containsKey("Azul");        // true/false
+map.containsValue(3);           // true/false
+map.remove("Azul");             // elimina la entrada
+map.size();                     // número de entradas
+map.isEmpty();                  // true si vacío
+map.keySet();                   // Set con todas las claves
+map.values();                   // Collection con todos los valores
+
+--- RECORRER UN MAP ---
+
+// Opción 1: entrySet() — la más completa
+for (Map.Entry<String, Integer> e : map.entrySet()) {
+    System.out.println(e.getKey() + " → " + e.getValue());
+}
+
+// Opción 2: forEach con lambda — la más limpia
+map.forEach((clave, valor) -> {
+    System.out.println(clave + " → " + valor);
+});
+
+// Opción 3: solo claves
+for (String clave : map.keySet()) {
+    System.out.println(clave + " → " + map.get(clave));
+}
+
+--- MAP MANUAL AGRUPANDO UNA LISTA (sin Stream) ---
+
+Map<String, List<Pelicula>> porGenero = new HashMap<>();
+for (Pelicula p : lista) {
+    if (!porGenero.containsKey(p.genero())) {
+        porGenero.put(p.genero(), new ArrayList<>());
+    }
+    porGenero.get(p.genero()).add(p);
+}
+// Esto es exactamente lo que hace groupingBy() por debajo
+
+
+================================================================
+4. RECORRER COLECCIONES
+================================================================
+
+--- FOR-EACH (la más usada) ---
+
+// Lista
+for (Pelicula p : lista) {
+    System.out.println(p.titulo());
+}
+
+// Set (mismo patrón)
+for (String director : setDirectores) {
+    System.out.println(director);
+}
+
+// Map
+for (Map.Entry<String, Integer> e : map.entrySet()) {
+    System.out.println(e.getKey() + ": " + e.getValue());
+}
+
+--- FOREACH CON LAMBDA (más moderno) ---
+
+lista.forEach(p -> System.out.println(p.titulo()));
+lista.forEach(System.out::println);            // referencia a método
+map.forEach((k, v) -> System.out.println(k + ": " + v));
+
+--- ITERATOR (único seguro para borrar en bucle) ---
+
+Iterator<Pelicula> it = lista.iterator();
+while (it.hasNext()) {
+    Pelicula p = it.next();
+    if (p.anio() < 2000) {
+        it.remove();           // seguro
+    }
+}
+
+--- FOR CLÁSICO CON ÍNDICE (solo List) ---
+
+for (int i = 0; i < lista.size(); i++) {
+    System.out.println(i + ": " + lista.get(i));
+}
+
+// Al revés
+for (int i = lista.size() - 1; i >= 0; i--) {
+    System.out.println(lista.get(i));
+}
+
+
+================================================================
+5. ORDENAR Y BUSCAR
+================================================================
+
+--- COLLECTIONS.SORT ---
+
+import java.util.Collections;
+
+Collections.sort(lista);                                    // orden natural
+
+Collections.sort(lista, Comparator.comparing(Pelicula::anio));          // por atributo
+Collections.sort(lista, Comparator.comparing(Pelicula::puntuacion).reversed()); // invertido
+
+// Por varios criterios
+Collections.sort(lista,
+    Comparator.comparing(Pelicula::anio)
+              .thenComparing(Pelicula::titulo));
+
+// Alternativa moderna — mismo resultado
+lista.sort(Comparator.comparing(Pelicula::anio));
+
+--- COLLECTIONS.BINARYSEARCH ---
+// OJO: la lista DEBE estar ordenada antes de buscar
+
+// 1. Ordenar primero (OBLIGATORIO)
+Collections.sort(lista, Comparator.comparing(Pelicula::titulo));
+
+// 2. Buscar — devuelve índice si encuentra, negativo si no
+Pelicula buscada = new Pelicula(0, "Inception", "", "", 0, 0, "");
+int pos = Collections.binarySearch(
+    lista,
+    buscada,
+    Comparator.comparing(Pelicula::titulo)   // mismo Comparator que el sort
+);
+
+if (pos >= 0) {
+    System.out.println("Encontrada en posición: " + pos);
+} else {
+    System.out.println("No encontrada");
+}
+
+// El Comparator del binarySearch debe ser el mismo con el que ordenaste
+
+--- BÚSQUEDA SECUENCIAL (sin ordenar) ---
+
+public static Pelicula buscarPorTitulo(List<Pelicula> lista, String titulo) {
+    for (Pelicula p : lista) {
+        if (p.titulo().equalsIgnoreCase(titulo)) {
+            return p;
+        }
+    }
+    return null;
+}
+
+// Con Stream (más elegante)
+lista.stream()
+     .filter(p -> p.titulo().equalsIgnoreCase("Inception"))
+     .findFirst()
+     .orElse(null);
+
+--- OTRAS UTILIDADES DE COLLECTIONS ---
+
+Collections.reverse(lista);          // invierte el orden
+Collections.shuffle(lista);          // orden aleatorio
+Collections.min(lista);              // el menor (orden natural)
+Collections.max(lista);              // el mayor (orden natural)
+Collections.frequency(lista, x);     // cuántas veces aparece x
+Collections.nCopies(5, "hola");      // lista con 5 repeticiones de "hola"
+
+
+================================================================
+6. STREAM API
+================================================================
+
+Estructura base — siempre igual:
+
+    lista.stream()
+         .operacionesIntermedias()   // lazy, se encadenan
+         .operacionTerminal();       // dispara la ejecución
+
+Las intermedias no se ejecutan hasta que llega un terminal.
+Un Stream solo se puede consumir una vez.
+
+--- OPERACIONES INTERMEDIAS ---
+
+.filter(p -> p.anio() >= 2010)                          // filtrar
+.map(p -> p.director())                                 // transformar
+.map(Pelicula::director)                                // equivalente con referencia
+.mapToInt(Pelicula::anio)                               // convertir a IntStream
+.mapToDouble(Pelicula::puntuacion)                      // convertir a DoubleStream
+.sorted(Comparator.comparing(Pelicula::anio))           // ordenar
+.sorted(Comparator.comparing(Pelicula::anio).reversed()) // ordenar invertido
+.limit(5)                                               // máximo 5 elementos
+.skip(10)                                               // salta los primeros 10
+.distinct()                                             // elimina duplicados
+.peek(p -> System.out.println(p))                       // ver sin modificar (debug)
+
+--- OPERACIONES TERMINALES ---
+
+.collect(Collectors.toList())         // recoger en List
+.collect(Collectors.toSet())          // recoger en Set
+.forEach(System.out::println)         // mostrar
+.count()                              // contar → devuelve long
+.anyMatch(p -> p.genero().equals("Drama"))   // ¿alguno cumple? → boolean
+.allMatch(p -> p.anio() >= 1990)             // ¿todos cumplen? → boolean
+.noneMatch(p -> p.anio() < 0)               // ¿ninguno cumple? → boolean
+.findFirst().orElse(null)             // primer elemento o null
+.findAny().orElse(null)              // cualquier elemento o null
+.mapToInt(Pelicula::anio).min().getAsInt()          // mínimo
+.mapToInt(Pelicula::anio).max().getAsInt()          // máximo
+.mapToDouble(Pelicula::puntuacion).average().getAsDouble()  // media
+.mapToInt(Pelicula::anio).sum()                     // suma
+
+--- GROUPINGBY — el más importante ---
+
+import java.util.stream.Collectors;
+
+// Contar por color → Map<String, Long>
+Map<String, Long> porColor = lista.stream()
+    .collect(Collectors.groupingBy(
+        Pelicula::colorPortada,
+        Collectors.counting()
+    ));
+
+// Contar ORDENADO → añade TreeMap como segundo argumento
+Map<String, Long> porColorOrdenado = lista.stream()
+    .collect(Collectors.groupingBy(
+        Pelicula::colorPortada,
+        new TreeMap<>(),             // ordena claves alfabéticamente
+        Collectors.counting()
+    ));
+
+// Agrupar en listas → Map<String, List<Pelicula>>
+Map<String, List<Pelicula>> porDirector = lista.stream()
+    .collect(Collectors.groupingBy(
+        Pelicula::director
+        // toList() es el valor por defecto, no hace falta escribirlo
+    ));
+
+Regla: ¿quieres contar? → añade counting()
+       ¿quieres las listas de objetos? → no añadas nada
+
+--- EJEMPLOS ENCADENADOS COMPLETOS ---
+
+// Set de géneros con puntuación > 8
+Set<String> buenosGeneros = lista.stream()
+    .filter(p -> p.puntuacion() > 8.0)
+    .map(Pelicula::genero)
+    .collect(Collectors.toSet());
+
+// Saltar 10, coger los 5 siguientes
+List<Pelicula> rango = lista.stream()
+    .skip(10)
+    .limit(5)
+    .collect(Collectors.toList());
+
+// Buscar uno concreto
+Pelicula encontrada = lista.stream()
+    .filter(p -> p.titulo().equals("Inception"))
+    .findFirst()
+    .orElse(null);
+
+// Año más antiguo
+int anioMin = lista.stream()
+    .mapToInt(Pelicula::anio)
+    .min()
+    .getAsInt();
+
+// Suma de todas las puntuaciones
+double total = lista.stream()
+    .mapToDouble(Pelicula::puntuacion)
+    .sum();
+
+// Contar películas de Nolan
+long cuantos = lista.stream()
+    .filter(p -> p.director().equalsIgnoreCase("Nolan"))
+    .count();
+
+// Ordenar por puntuación de mayor a menor
+List<Pelicula> ordenadas = lista.stream()
+    .sorted(Comparator.comparing(Pelicula::puntuacion).reversed())
+    .collect(Collectors.toList());
+
+// Set de directores únicos
+Set<String> directores = lista.stream()
+    .map(Pelicula::director)
+    .collect(Collectors.toSet());
+
+
+================================================================
+7. CSV — LEER Y ESCRIBIR
+================================================================
+
+--- LEER CON BUFFEREDREADER ---
+
+public static List<Pelicula> leerCSV(String ruta) {
+    List<Pelicula> lista = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        String linea;
+        br.readLine();                          // salta la cabecera
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            int id                = Integer.parseInt(datos[0].trim());
+            String titulo         = datos[1].trim();
+            String director       = datos[2].trim();
+            String genero         = datos[3].trim();
+            int anio              = Integer.parseInt(datos[4].trim());
+            double puntuacion     = Double.parseDouble(datos[5].trim());
+            String colorPortada   = datos[6].trim();
+            lista.add(new Pelicula(id, titulo, director, genero, anio, puntuacion, colorPortada));
+        }
+    } catch (IOException e) {
+        System.out.println("Error al leer: " + e.getMessage());
+    }
+    return lista;
+}
+
+--- ESCRIBIR CON BUFFEREDWRITER ---
+
+// Escribir un Map<String, Long> como CSV
+try (BufferedWriter bw = new BufferedWriter(new FileWriter("salida.csv"))) {
+    for (Map.Entry<String, Long> e : mapa.entrySet()) {
+        bw.write(e.getKey() + "," + e.getValue());
+        bw.newLine();
+    }
+} catch (IOException e) {
+    System.out.println("Error al escribir: " + e.getMessage());
+}
+
+// Con forEach lambda (dentro del try)
+conteoPorColor.forEach((color, total) -> {
+    try {
+        bw.write(color + "," + total);
+        bw.newLine();
+    } catch (IOException e) {
+        System.out.println("Error: " + e.getMessage());
+    }
+});
+
+
+================================================================
+8. JSON — JACKSON
+================================================================
+
+--- DEPENDENCIA POM.XML ---
+
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.15.2</version>
+</dependency>
+
+--- CLASE POJO ---
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Pelicula {
+    @JsonProperty("titulo")
+    private String titulo;
+
+    @JsonProperty("anio")
+    private int anio;
+
+    public Pelicula() {}      // constructor vacío OBLIGATORIO para Jackson
+
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String t) { titulo = t; }
+    // ... resto de getters y setters
+}
+
+// Si el campo JSON tiene el mismo nombre que el atributo,
+// @JsonProperty no es obligatorio
+
+--- LEER JSON ---
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+public static List<Pelicula> leerJSON(String ruta) {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        return mapper.readValue(
+            new File(ruta),
+            new TypeReference<List<Pelicula>>() {}
+        );
+    } catch (IOException e) {
+        e.printStackTrace();
+        return new ArrayList<>();
+    }
+}
+
+--- ESCRIBIR JSON ---
+
+ObjectMapper mapper = new ObjectMapper();
+
+// Minificado (sin espacios)
+mapper.writeValue(new File("salida.json"), lista);
+
+// Pretty print (legible)
+mapper.writerWithDefaultPrettyPrinter()
+      .writeValue(new File("salida.json"), lista);
+
+
+================================================================
+9. RECORD
+================================================================
+
+public record Pelicula(
+    int id,
+    String titulo,
+    String director,
+    String genero,
+    int anio,
+    double puntuacion,
+    String colorPortada
+) {}
+
+// El record genera automáticamente:
+//   - constructor con todos los parámetros
+//   - getters: p.titulo(), p.anio(), etc. (sin "get")
+//   - equals(), hashCode(), toString()
+
+// Acceder a los campos (sin get):
+Pelicula p = new Pelicula(1, "Inception", "Nolan", "SciFi", 2010, 9.2, "Azul");
+p.titulo()       // "Inception"
+p.anio()         // 2010
+p.director()     // "Nolan"
+
+
+================================================================
+10. PARSEAR — CONVERTIR STRING A TIPO DE DATO
+================================================================
+
+// Cuando lees un CSV todo llega como String.
+// Necesitas convertirlo al tipo correcto con estos métodos:
+
+String texto       = datos[0].trim();                          // String — no necesita parseo
+int numero         = Integer.parseInt(datos[1].trim());        // int
+double decimal     = Double.parseDouble(datos[2].trim());      // double
+boolean bool       = Boolean.parseBoolean(datos[3].trim());    // boolean
+LocalDate fecha    = LocalDate.parse(datos[4].trim());         // LocalDate
+
+// Regla: trim() SIEMPRE para eliminar espacios sobrantes
+
+--- BOOLEAN ---
+
+Boolean.parseBoolean("true")   // → true
+Boolean.parseBoolean("false")  // → false
+Boolean.parseBoolean("si")     // → false (cualquier cosa que no sea "true" → false)
+
+--- LOCALDATE ---
+
+// Si el formato en el CSV es yyyy-MM-dd (el estándar):
+LocalDate fecha = LocalDate.parse("2024-06-18");   // → 2024-06-18
+
+// Si el formato es distinto, por ejemplo dd/MM/yyyy:
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+LocalDate fecha = LocalDate.parse("18/06/2024", formatter);
+
+// Otros patrones de formato:
+// "dd/MM/yyyy"     → 18/06/2024
+// "yyyy-MM-dd"     → 2024-06-18  (estándar, no necesita formatter)
+// "dd-MM-yyyy"     → 18-06-2024
+// "MM/dd/yyyy"     → 06/18/2024  (formato americano)
+
+--- EJEMPLO COMPLETO EN LEERCSV ---
+
+String[] datos = linea.split(",");
+String titulo         = datos[0].trim();
+int anio              = Integer.parseInt(datos[1].trim());
+double puntuacion     = Double.parseDouble(datos[2].trim());
+boolean disponible    = Boolean.parseBoolean(datos[3].trim());
+LocalDate fecha       = LocalDate.parse(datos[4].trim());
+
+
+================================================================
+FIN DE LA CHULETA
+================================================================

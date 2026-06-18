@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>daw</groupId>
-    <artifactId>ex30abrPablo</artifactId>
+    <artifactId>exPractica2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -35,4 +35,5 @@
             <version>2.14.1</version>
         </dependency>
     </dependencies>
+    <name>exPractica2</name>
 </project>
