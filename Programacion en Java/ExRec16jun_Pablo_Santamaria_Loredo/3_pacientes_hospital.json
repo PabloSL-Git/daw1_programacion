@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "nombre": "Fernando Torres Sanz",
+    "edad": 25,
+    "fechaIngreso": "2026-04-23",
+    "diagnostico": "Gastroenteritis severa",
+    "habitacion": 443
+  },
+  {
+    "id": 2,
+    "nombre": "Natalia Gil Ruiz",
+    "edad": 25,
+    "fechaIngreso": "2026-03-28",
+    "diagnostico": "Insuficiencia renal crónica",
+    "habitacion": 316
+  },
+  {
+    "id": 3,
+    "nombre": "Juan Lozano Ramírez",
+    "edad": 41,
+    "fechaIngreso": "2026-04-06",
+    "diagnostico": "Neumonía bacteriana",
+    "habitacion": 502
+  },
+  {
+    "id": 4,
+    "nombre": "Pablo Prieto Marín",
+    "edad": 30,
+    "fechaIngreso": "2026-03-30",
+    "diagnostico": "Colecistitis",
+    "habitacion": 472
+  },
+  {
+    "id": 5,
+    "nombre": "Manuel Ramos Cortes",
+    "edad": 31,
+    "fechaIngreso": "2026-04-30",
+    "diagnostico": "Diabetes tipo 2 descompensada",
+    "habitacion": 500
+  },
+  {
+    "id": 6,
+    "nombre": "Ana Cortes Suarez",
+    "edad": 42,
+    "fechaIngreso": "2026-03-31",
+    "diagnostico": "Infección urinaria alta",
+    "habitacion": 479
+  },
+  {
+    "id": 7,
+    "nombre": "Luis Gómez Molina",
+    "edad": 27,
+    "fechaIngreso": "2026-04-01",
+    "diagnostico": "Fractura de fémur",
+    "habitacion": 109
+  },
+  {
+    "id": 8,
+    "nombre": "Óscar Domínguez Torres",
+    "edad": 43,
+    "fechaIngreso": "2026-04-27",
+    "diagnostico": "Hipertensión arterial",
+    "habitacion": 205
+  },
+  {
+    "id": 9,
+    "nombre": "Claudia Moreno Iglesias",
+    "edad": 74,
+    "fechaIngreso": "2026-04-30",
+    "diagnostico": "Fractura de fémur",
+    "habitacion": 290
+  },
+  {
+    "id": 10,
+    "nombre": "Carmen Serrano Castillo",
+    "edad": 23,
+    "fechaIngreso": "2026-04-23",
+    "diagnostico": "Insuficiencia cardíaca",
+    "habitacion": 162
+  },
+  {
+    "id": 11,
+    "nombre": "Elena Álvarez Ramírez",
+    "edad": 70,
+    "fechaIngreso": "2026-04-22",
+    "diagnostico": "Colecistitis",
+    "habitacion": 257
+  },
+  {
+    "id": 12,
+    "nombre": "Marta Martínez Jiménez",
+    "edad": 88,
+    "fechaIngreso": "2026-04-30",
+    "diagnostico": "Insuficiencia renal crónica",
+    "habitacion": 467
+  },
+  {
+    "id": 13,
+    "nombre": "Patricia Delgado Fernández",
+    "edad": 72,
+    "fechaIngreso": "2026-04-23",
+    "diagnostico": "Colecistitis",
+    "habitacion": 508
+  },
+  {
+    "id": 14,
+    "nombre": "Isabel Jiménez Lozano",
+    "edad": 70,
+    "fechaIngreso": "2026-04-02",
+    "diagnostico": "Fractura de fémur",
+    "habitacion": 254
+  },
+  {
+    "id": 15,
+    "nombre": "Juan Alonso Vázquez",
+    "edad": 82,
+    "fechaIngreso": "2026-04-25",
+    "diagnostico": "Gastroenteritis severa",
+    "habitacion": 224
+  },
+  {
+    "id": 16,
+    "nombre": "Miguel Torres Muñoz",
+    "edad": 82,
+    "fechaIngreso": "2026-04-16",
+    "diagnostico": "Insuficiencia renal crónica",
+    "habitacion": 397
+  },
+  {
+    "id": 17,
+    "nombre": "Roberto Núñez Fernández",
+    "edad": 25,
+    "fechaIngreso": "2026-04-08",
+    "diagnostico": "Insuficiencia cardíaca",
+    "habitacion": 478
+  },
+  {
+    "id": 18,
+    "nombre": "Gonzalo Molina Prieto",
+    "edad": 69,
+    "fechaIngreso": "2026-04-15",
+    "diagnostico": "Gastroenteritis severa",
+    "habitacion": 225
+  },
+  {
+    "id": 19,
+    "nombre": "Cristina Prieto Pérez",
+    "edad": 92,
+    "fechaIngreso": "2026-05-01",
+    "diagnostico": "Infección urinaria alta",
+    "habitacion": 346
+  },
+  {
+    "id": 20,
+    "nombre": "Fernando Domínguez Hernández",
+    "edad": 20,
+    "fechaIngreso": "2026-04-24",
+    "diagnostico": "Diabetes tipo 2 descompensada",
+    "habitacion": 118
+  },
+  {
+    "id": 21,
+    "nombre": "Marcos Ruiz Diaz",
+    "edad": 37,
+    "fechaIngreso": "2026-04-07",
+    "diagnostico": "Anemia severa",
+    "habitacion": 126
+  },
+  {
+    "id": 22,
+    "nombre": "Irene Domínguez Gómez",
+    "edad": 46,
+    "fechaIngreso": "2026-03-28",
+    "diagnostico": "Fractura de fémur",
+    "habitacion": 340
+  },
+  {
+    "id": 23,
+    "nombre": "Roberto Marín Sanz",
+    "edad": 79,
+    "fechaIngreso": "2026-04-15",
+    "diagnostico": "Anemia severa",
+    "habitacion": 139
+  },
+  {
+    "id": 24,
+    "nombre": "Manuel Gil Diaz",
+    "edad": 84,
+    "fechaIngreso": "2026-04-22",
+    "diagnostico": "Insuficiencia cardíaca",
+    "habitacion": 375
+  },
+  {
+    "id": 25,
+    "nombre": "Getrudis González López",
+    "edad": 74,
+    "fechaIngreso": "2026-04-08",
+    "diagnostico": "Covid-19 mas síntomas",
+    "habitacion": 462
+  },
+  {
+    "id": 26,
+    "nombre": "Javier Lozano Sanz",
+    "edad": 67,
+    "fechaIngreso": "2026-04-02",
+    "diagnostico": "Insuficiencia cardíaca",
+    "habitacion": 507
+  },
+  {
+    "id": 27,
+    "nombre": "Gonzalo Guerrero Rodríguez",
+    "edad": 76,
+    "fechaIngreso": "2026-04-08",
+    "diagnostico": "Anemia severa",
+    "habitacion": 360
+  },
+  {
+    "id": 28,
+    "nombre": "Alicia Castillo Fernández",
+    "edad": 21,
+    "fechaIngreso": "2026-04-27",
+    "diagnostico": "Covid-19 mas síntomas",
+    "habitacion": 224
+  },
+  {
+    "id": 29,
+    "nombre": "Javier Gil Marín",
+    "edad": 86,
+    "fechaIngreso": "2026-04-20",
+    "diagnostico": "Asma bronquial en crisis",
+    "habitacion": 140
+  },
+  {
+    "id": 30,
+    "nombre": "Alberto Gómez Martin",
+    "edad": 53,
+    "fechaIngreso": "2026-04-07",
+    "diagnostico": "Anemia severa",
+    "habitacion": 114
+  },
+  {
+    "id": 31,
+    "nombre": "Alejandro Medina Domínguez",
+    "edad": 55,
+    "fechaIngreso": "2026-04-16",
+    "diagnostico": "Diabetes tipo 2 descompensada",
+    "habitacion": 233
+  },
+  {
+    "id": 32,
+    "nombre": "Ana Gómez Gutiérrez",
+    "edad": 46,
+    "fechaIngreso": "2026-04-29",
+    "diagnostico": "Covid-19 mas síntomas",
+    "habitacion": 250
+  },
+  {
+    "id": 33,
+    "nombre": "Ángela Torres Hernández",
+    "edad": 36,
+    "fechaIngreso": "2026-04-23",
+    "diagnostico": "Asma bronquial en crisis",
+    "habitacion": 506
+  },
+  {
+    "id": 34,
+    "nombre": "Irene Romero Navarro",
+    "edad": 24,
+    "fechaIngreso": "2026-04-25",
+    "diagnostico": "Diabetes tipo 2 descompensada",
+    "habitacion": 387
+  },
+  {
+    "id": 35,
+    "nombre": "Teresa Ortiz Pérez",
+    "edad": 45,
+    "fechaIngreso": "2026-04-19",
+    "diagnostico": "Bronquitis crónica",
+    "habitacion": 432
+  },
+  {
+    "id": 36,
+    "nombre": "Enrique Vázquez Hernández",
+    "edad": 69,
+    "fechaIngreso": "2026-03-30",
+    "diagnostico": "Gastroenteritis severa",
+    "habitacion": 503
+  },
+  {
+    "id": 37,
+    "nombre": "Beatriz Álvarez González",
+    "edad": 80,
+    "fechaIngreso": "2026-04-13",
+    "diagnostico": "Bronquitis crónica",
+    "habitacion": 357
+  },
+  {
+    "id": 38,
+    "nombre": "Carlos Blanco Molina",
+    "edad": 33,
+    "fechaIngreso": "2026-04-07",
+    "diagnostico": "Hipertensión arterial",
+    "habitacion": 133
+  },
+  {
+    "id": 39,
+    "nombre": "Andrés García Sanz",
+    "edad": 19,
+    "fechaIngreso": "2026-03-30",
+    "diagnostico": "Insuficiencia renal crónica",
+    "habitacion": 348
+  },
+  {
+    "id": 40,
+    "nombre": "Gonzalo Domínguez Torres",
+    "edad": 42,
+    "fechaIngreso": "2026-04-14",
+    "diagnostico": "Asma bronquial en crisis",
+    "habitacion": 166
+  },
+  {
+    "id": 41,
+    "nombre": "Julia Gutiérrez Domínguez",
+    "edad": 74,
+    "fechaIngreso": "2026-04-26",
+    "diagnostico": "Asma bronquial en crisis",
+    "habitacion": 461
+  },
+  {
+    "id": 42,
+    "nombre": "Javier Navarro Rodríguez",
+    "edad": 38,
+    "fechaIngreso": "2026-04-02",
+    "diagnostico": "Gastroenteritis severa",
+    "habitacion": 373
+  },
+  {
+    "id": 43,
+    "nombre": "Marta García López",
+    "edad": 75,
+    "fechaIngreso": "2026-04-16",
+    "diagnostico": "Insuficiencia renal crónica",
+    "habitacion": 189
+  },
+  {
+    "id": 44,
+    "nombre": "Sara Diaz García",
+    "edad": 79,
+    "fechaIngreso": "2026-04-12",
+    "diagnostico": "Colecistitis",
+    "habitacion": 416
+  },
+  {
+    "id": 45,
+    "nombre": "Beatriz Castillo Serrano",
+    "edad": 55,
+    "fechaIngreso": "2026-04-04",
+    "diagnostico": "Colecistitis",
+    "habitacion": 451
+  },
+  {
+    "id": 46,
+    "nombre": "Natalia Martin Delgado",
+    "edad": 25,
+    "fechaIngreso": "2026-04-19",
+    "diagnostico": "Fractura de fémur",
+    "habitacion": 413
+  },
+  {
+    "id": 47,
+    "nombre": "Marta López López",
+    "edad": 81,
+    "fechaIngreso": "2026-05-01",
+    "diagnostico": "Accidente cerebrovascular leve",
+    "habitacion": 279
+  },
+  {
+    "id": 48,
+    "nombre": "Paula Ruiz Hernández",
+    "edad": 76,
+    "fechaIngreso": "2026-04-03",
+    "diagnostico": "Diabetes tipo 2 descompensada",
+    "habitacion": 129
+  },
+  {
+    "id": 49,
+    "nombre": "Gonzalo Moreno Marín",
+    "edad": 68,
+    "fechaIngreso": "2026-04-25",
+    "diagnostico": "Bronquitis crónica",
+    "habitacion": 153
+  },
+  {
+    "id": 50,
+    "nombre": "Elena Ramos Pérez",
+    "edad": 92,
+    "fechaIngreso": "2026-04-28",
+    "diagnostico": "Infección urinaria alta",
+    "habitacion": 369
+  }
+]

@@ -1,0 +1,166 @@
+================================================================
+TUTORIAL — PARSEAR EN JAVA
+================================================================
+
+Parsear = convertir un String en otro tipo de dato.
+Cuando lees un fichero CSV todo llega como texto (String),
+así que hay que convertir cada campo al tipo correcto.
+
+
+----------------------------------------------------------------
+TIPOS BÁSICOS
+----------------------------------------------------------------
+
+String texto = "42";
+
+int    n = Integer.parseInt(texto);         // "42"    → 42
+long   n = Long.parseLong(texto);           // "42"    → 42L
+double n = Double.parseDouble(texto);       // "3.14"  → 3.14
+float  n = Float.parseFloat(texto);         // "3.14"  → 3.14f
+boolean b = Boolean.parseBoolean(texto);    // "true"  → true
+                                            // "false" → false
+                                            // cualquier otra cosa → false
+
+⚠ Si el String no es un número válido lanza NumberFormatException:
+  Integer.parseInt("hola") → ERROR
+
+
+----------------------------------------------------------------
+FECHAS — LocalDate
+----------------------------------------------------------------
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+// Si el formato es yyyy-MM-dd (estándar ISO, el más común):
+LocalDate fecha = LocalDate.parse("1985-03-21");
+
+// Si el formato es diferente, hay que indicárselo:
+LocalDate fecha = LocalDate.parse("21-03-1985",
+    DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+LocalDate fecha = LocalDate.parse("21/03/1985",
+    DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+LocalDate fecha = LocalDate.parse("March 21 1985",
+    DateTimeFormatter.ofPattern("MMMM dd yyyy"));
+
+// Patrones más usados:
+//   dd    → día con dos dígitos (01, 02... 31)
+//   MM    → mes con dos dígitos (01, 02... 12)
+//   yyyy  → año con cuatro dígitos
+//   /     → separador barra
+//   -     → separador guión
+
+
+----------------------------------------------------------------
+EJEMPLO COMPLETO — leer CSV manualmente
+----------------------------------------------------------------
+
+CSV con esta estructura:
+  id,nombre,apellido,email,genero,fecha_nacimiento,jubilado,ciudad
+  1,Juan,Pérez,juan@correo.com,Male,21-03-1985,false,Madrid
+
+public static List<Persona> leer(String ruta) {
+    List<Persona> lista = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        String linea;
+        br.readLine(); // saltar cabecera
+
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+
+            long id           = Long.parseLong(partes[0].trim());
+            String nombre     = partes[1].trim();
+            String apellido   = partes[2].trim();
+            String email      = partes[3].trim();
+            String genero     = partes[4].trim();
+            LocalDate fecha   = LocalDate.parse(partes[5].trim(),
+                                    DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            boolean jubilado  = Boolean.parseBoolean(partes[6].trim());
+            String ciudad     = partes[7].trim();
+
+            Persona p = new Persona(id, nombre, apellido, email,
+                                    genero, fecha, jubilado, ciudad);
+            lista.add(p);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return lista;
+}
+
+⚠ .trim() quita espacios al principio y al final de cada campo
+⚠ El índice de partes[] depende del orden de columnas del CSV
+  — mira siempre la cabecera primero
+
+
+----------------------------------------------------------------
+CON OPENCSV — parseo automático
+----------------------------------------------------------------
+
+Con OpenCSV no necesitas parsear nada manualmente.
+Las anotaciones lo hacen por ti:
+
+@CsvBindByName(column = "id")
+private long id;                    // OpenCSV parsea el String a long
+
+@CsvBindByName(column = "jubilado")
+private boolean jubilado;           // OpenCSV parsea "true"/"false"
+
+@CsvDate("dd-MM-yyyy")              // ← le dices el formato
+@CsvBindByName(column = "fecha_nacimiento")
+private LocalDate fechaNacimiento;  // OpenCSV parsea la fecha
+
+Sin @CsvDate en el LocalDate → error al leer el CSV
+
+
+----------------------------------------------------------------
+CONVERTIR AL REVÉS — tipo a String (para escribir CSV)
+----------------------------------------------------------------
+
+Cuando escribes un CSV necesitas convertir cada campo a String:
+
+int n = 42;
+String texto = String.valueOf(n);       // 42      → "42"
+String texto = Integer.toString(n);     // 42      → "42"
+
+// En la práctica dentro de un write() se convierte solo:
+fw.write(p.getId() + "," + p.getNombre() + "\n");
+// Java convierte getId() (long) a String automáticamente
+// cuando lo concatenas con +
+
+
+----------------------------------------------------------------
+ERRORES TÍPICOS
+----------------------------------------------------------------
+
+⚠ NumberFormatException — el String no es un número válido:
+  Integer.parseInt("") → ERROR (String vacío)
+  Integer.parseInt(" 42") → ERROR (tiene espacio)
+  Integer.parseInt("42 ") → ERROR (tiene espacio)
+  Solución: usar .trim() siempre antes de parsear
+
+⚠ DateTimeParseException — el formato no coincide:
+  LocalDate.parse("21-03-1985") → ERROR (espera yyyy-MM-dd por defecto)
+  Solución: indicar el formatter con DateTimeFormatter.ofPattern(...)
+
+⚠ ArrayIndexOutOfBoundsException — menos columnas de las esperadas:
+  Si una línea del CSV tiene menos comas de las esperadas,
+  partes[6] puede no existir
+  Solución: asegurarte de que el CSV tiene todas las columnas
+
+
+----------------------------------------------------------------
+IMPORTS NECESARIOS
+----------------------------------------------------------------
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+================================================================
